@@ -39,6 +39,11 @@
   --sl-z-scrim: 70;
   --sl-z-sheet: 80;
   --sl-z-toast: 90;
+  /* 板块之间的距离。想再紧一点或再松一点，只改这四个值（全站子页面同步变化） */
+  --sl-gap-head: clamp(28px, 6vw, 48px);     /* 页面标题上方 */
+  --sl-gap-first: clamp(22px, 4.5vw, 32px);  /* 标题与第一个板块之间 */
+  --sl-gap-section: clamp(20px, 4vw, 28px);  /* 板块分隔线上方、下方各一份 */
+  --sl-gap-foot: clamp(32px, 6vw, 48px);     /* 页面底部署名上方 */
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -187,16 +192,24 @@ html[data-motion="simple"] *::after {
 
 /* ---------- 页面内容骨架 ---------- */
 .sl-main { max-width: 960px; margin: 0 auto; padding: 0 clamp(20px, 5vw, 40px); }
-.sl-section { padding: clamp(44px, 9vw, 84px) 0 0; }
+.sl-section { padding: var(--sl-gap-first) 0 0; }
+/* 相邻板块之间：缩小空隙，并放一条细小的分隔装饰（纯 CSS 线条与菱形，颜色跟随主题变量） */
+.sl-section + .sl-section { padding-top: var(--sl-gap-section); }
+.sl-section + .sl-section::before {
+  content: ""; display: block; width: 200px; max-width: 70%; height: 10px; margin: 0 auto var(--sl-gap-section);
+  background: var(--sl-faint); opacity: .8;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 10' fill='none' stroke='%23000' stroke-width='1'%3E%3Cpath d='M0 5H82M118 5H200'/%3E%3Cpath d='M100 .8L104.2 5L100 9.2L95.8 5Z'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 10' fill='none' stroke='%23000' stroke-width='1'%3E%3Cpath d='M0 5H82M118 5H200'/%3E%3Cpath d='M100 .8L104.2 5L100 9.2L95.8 5Z'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+}
 .sl-h2 { font-size: clamp(26px, 5vw, 34px); font-weight: 400; letter-spacing: .08em; line-height: 1.3; }
 .sl-lede { margin-top: 10px; color: var(--sl-mute); max-width: 36em; }
 .sl-ph { color: var(--sl-mute); font-style: italic; }
 .sl-loading { color: var(--sl-mute); padding: 16px 0; }
-.sl-empty { margin-top: 28px; padding: 28px 0; border-top: 1px solid var(--sl-line); color: var(--sl-mute); }
+.sl-empty { margin-top: 20px; padding: 20px 0; border-top: 1px solid var(--sl-line); color: var(--sl-mute); }
 .sl-error { margin-top: 18px; padding: 14px 16px; border: 1px solid var(--sl-ink); border-radius: var(--sl-radius-s); display: grid; gap: 4px; font-size: 14px; line-height: 1.7; }
 .sl-ai-note { margin-top: 18px; padding: 12px 16px; border-left: 2px solid var(--sl-ink); background: var(--sl-line-2); font-size: 14px; line-height: 1.7; }
 
-.sl-page-head { padding-top: clamp(40px, 9vw, 72px); }
+.sl-page-head { padding-top: var(--sl-gap-head); }
 .sl-page-title { font-family: var(--sl-font-body); font-size: clamp(30px, 7vw, 46px); font-weight: 300; letter-spacing: .1em; line-height: 1.25; }
 
 /* 价目 */
@@ -221,7 +234,7 @@ html[data-motion="simple"] *::after {
 .sl-entry-main { display: grid; gap: 2px; }
 
 /* 页面底部署名 */
-.sl-foot { margin-top: clamp(56px, 10vw, 96px); padding: 24px 0 8px; border-top: 1px solid var(--sl-line-2); font-size: 13px; color: var(--sl-mute); letter-spacing: .08em; }
+.sl-foot { margin-top: var(--sl-gap-foot); padding: 24px 0 8px; border-top: 1px solid var(--sl-line-2); font-size: 13px; color: var(--sl-mute); letter-spacing: .08em; }
 
 /* 导航没挂上时的兜底入口：3 秒后才出现，避免正常情况下闪一下 */
 .sl-fallback { position: fixed; left: 12px; top: calc(var(--sl-sat) + 10px); z-index: var(--sl-z-head); padding: 8px 14px; background: var(--sl-surface); border: 1px solid var(--sl-line); border-radius: var(--sl-radius-pill); font-size: 14px; opacity: 0; pointer-events: none; animation: sl-fallback-in 0s 3s forwards; }

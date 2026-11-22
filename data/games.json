@@ -1,4 +1,15 @@
 {
-  "_说明": "小游戏登记。每个游戏是一张卡片。每个：id、title、summary、cover（封面文件名，放在 assets/covers/）、path（游戏所在的文件夹路径）。",
-  "items": []
+  "_说明": "小游戏登记。每个游戏是一张卡片。字段：id（英文，不重复，也是 games/play/ 下的文件夹名）、title、summary（一两句话介绍玩法与样式，没写就显示占位）、cover（封面文件名，放在 assets/covers/；没有就留 null）、tags（几个短标签，没有就留空数组）、path（游戏所在的文件夹，格式固定为 games/play/<id>/）、status（ready 表示可以玩，点卡片会跳转；soon 表示制作中，卡片不能点击）。新增游戏的步骤见 games/play/README.txt。",
+  "intro": "这些小游戏都由 Shadow 亲手制作，也是 Vibecoding 网站定制的能力展示。点一张卡片，就能直接开始玩。",
+  "items": [
+    {
+      "id": "catch-bad-cat",
+      "title": "抓坏猫",
+      "summary": null,
+      "cover": null,
+      "tags": [],
+      "path": "games/play/catch-bad-cat/",
+      "status": "soon"
+    }
+  ]
 }

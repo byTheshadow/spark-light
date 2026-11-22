@@ -1,2 +1,49 @@
 /* AI 漫剧页专属样式。所有选择器都限定在 body[data-page="drama"] 下，避免影响其他页面。 */
 body[data-page="drama"] .sl-page-head { padding-bottom: 4px; }
+
+/* 列表：手机一列，宽屏两列 */
+body[data-page="drama"] .dr-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 22px; }
+@media (min-width: 720px) { body[data-page="drama"] .dr-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 26px 22px; } }
+body[data-page="drama"] .dr-card { display: grid; gap: 12px; width: 100%; text-align: left; border-radius: var(--sl-radius-m); }
+body[data-page="drama"] .dr-media { position: relative; display: block; aspect-ratio: 16 / 9; overflow: hidden; border-radius: var(--sl-radius-m); background: var(--sl-surface-2); }
+body[data-page="drama"] .dr-media img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .6s var(--sl-ease); }
+body[data-page="drama"] .dr-nocover::after { content: ""; position: absolute; inset: 0; background: repeating-linear-gradient(45deg, transparent 0 10px, var(--sl-line-2) 10px 11px); }
+body[data-page="drama"] .dr-card--ph .dr-media { border: 1px dashed var(--sl-line); background: transparent; }
+body[data-page="drama"] .dr-ph-label { position: absolute; inset: 0; z-index: 1; display: grid; place-items: center; font-size: 14px; letter-spacing: .2em; color: var(--sl-mute); }
+body[data-page="drama"] .dr-info { display: grid; gap: 4px; }
+body[data-page="drama"] .dr-title { font-size: 19px; letter-spacing: .06em; line-height: 1.5; overflow-wrap: anywhere; }
+body[data-page="drama"] .dr-sum { font-size: 14px; color: var(--sl-ink-2); line-height: 1.7; overflow-wrap: anywhere; }
+body[data-page="drama"] .dr-date { font-family: var(--sl-font-disp); font-style: italic; font-size: 15px; color: var(--sl-mute); }
+body[data-page="drama"] .dr-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+@media (hover: hover) and (pointer: fine) { body[data-page="drama"] button.dr-card:hover .dr-media img { transform: scale(1.04); } }
+
+/* 观看窗：深色底，阅读和看视频都更专注 */
+body[data-page="drama"] .dr-scrim { position: fixed; inset: 0; z-index: var(--sl-z-scrim); background: rgba(0, 0, 0, .86); opacity: 0; visibility: hidden; transition: opacity .3s var(--sl-ease), visibility 0s .3s; }
+body[data-page="drama"] .dr-scrim.on { opacity: 1; visibility: visible; transition-delay: 0s; }
+body[data-page="drama"] .dr-viewer { position: fixed; inset: 0; z-index: var(--sl-z-sheet); display: grid; grid-template-rows: auto minmax(0, 1fr); color: #fff; background: #0b0b0e; opacity: 0; visibility: hidden; transition: opacity .3s var(--sl-ease), visibility 0s .3s; }
+body[data-page="drama"] .dr-viewer.on { opacity: 1; visibility: visible; transition-delay: 0s; }
+body[data-page="drama"] .dr-v-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: calc(var(--sl-sat) + 8px) 12px 8px 20px; }
+body[data-page="drama"] .dr-v-ht { display: flex; align-items: baseline; gap: 14px; min-width: 0; }
+body[data-page="drama"] .dr-v-title { margin: 0; font-size: 18px; font-weight: 400; letter-spacing: .06em; overflow-wrap: anywhere; }
+body[data-page="drama"] .dr-v-count { flex: none; font-family: var(--sl-font-disp); font-style: italic; font-size: 16px; opacity: .75; }
+body[data-page="drama"] .dr-v-x { flex: none; color: #fff; background: rgba(255, 255, 255, .12); }
+body[data-page="drama"] .dr-v-body { overflow-y: auto; overscroll-behavior: contain; padding: 0 12px calc(var(--sl-sab) + 20px); }
+body[data-page="drama"] .dr-v-meta { margin: 0; font-size: 13px; letter-spacing: .12em; opacity: .75; }
+body[data-page="drama"] .dr-v-end { padding: 18px 0 8px; text-align: center; }
+
+/* 视频 */
+body[data-page="drama"] .dr-vwrap { max-width: 960px; margin: 0 auto; display: grid; gap: 14px; }
+body[data-page="drama"] .dr-player { position: relative; aspect-ratio: 16 / 9; background: #000; border-radius: var(--sl-radius-s); overflow: hidden; }
+body[data-page="drama"] .dr-player-wait { position: absolute; inset: 0; display: grid; place-items: center; margin: 0; font-size: 14px; letter-spacing: .2em; opacity: .6; }
+body[data-page="drama"] .dr-frame { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+body[data-page="drama"] .dr-v-info { display: grid; gap: 8px; padding: 0 4px; }
+body[data-page="drama"] .dr-v-sum { margin: 0; font-size: 15px; line-height: 1.8; opacity: .92; }
+body[data-page="drama"] .dr-v-out { margin: 0; font-size: 14px; opacity: .85; }
+body[data-page="drama"] .dr-v-out a { margin-left: .4em; text-underline-offset: 4px; }
+
+/* 图文：竖向连续阅读，未加载时用固定比例的框占位，滚动不跳动 */
+body[data-page="drama"] .dr-pages { max-width: 720px; margin: 0 auto; display: grid; gap: 6px; }
+body[data-page="drama"] .dr-pg { position: relative; aspect-ratio: 3 / 4; background: rgba(255, 255, 255, .06); border-radius: 4px; overflow: hidden; }
+body[data-page="drama"] .dr-pg-img { display: block; width: 100%; height: 100%; object-fit: contain; }
+body[data-page="drama"] .dr-pg-fail { position: absolute; inset: 0; display: grid; place-content: center; justify-items: center; gap: 12px; font-size: 14px; }
+body[data-page="drama"] .dr-viewer .sl-btn--ghost { color: #fff; border-color: rgba(255, 255, 255, .6); }

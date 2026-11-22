@@ -1,0 +1,5 @@
+/* 单个小游戏的专属样式。所有选择器都限定在 body[data-page="game"] 下；
+   换游戏时可以再加 [data-game="<id>"] 进一步限定。颜色、字体用全站 --sl-* 变量。 */
+body[data-page="game"] .gp-back { display: inline-flex; align-items: center; min-height: 44px; font-size: 14px; letter-spacing: .14em; text-underline-offset: 6px; }
+body[data-page="game"] .sl-page-head { padding-bottom: 4px; }
+body[data-page="game"] .gp-root { min-height: 40vh; }

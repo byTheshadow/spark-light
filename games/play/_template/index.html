@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="zh-CN" data-root="../../../" data-page="game">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>新游戏模板 · Spark Light</title>
+<meta name="theme-color" content="#f8f8f9">
+<link rel="icon" href="../../../favicon.svg" type="image/svg+xml">
+<!-- 字体：非阻塞加载，加载不出来时自动使用兜底字体 -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Noto+Serif+SC:wght@300;400;600&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Noto+Serif+SC:wght@300;400;600&display=swap"></noscript>
+<link rel="stylesheet" href="../../../core/base.css">
+<script src="../../../themes/registry.js"></script>
+<script src="../../../core/init.js"></script>
+<noscript><style>.sl-fallback{opacity:1!important;animation:none!important;pointer-events:auto!important}</style></noscript>
+<link rel="stylesheet" href="game.css">
+</head>
+<body data-page="game" data-game="_template">
+<a class="sl-fallback" href="../../">返回小游戏</a>
+<main id="main" class="sl-main">
+  <header class="sl-page-head">
+    <a class="gp-back" href="../../">返回小游戏</a>
+    <h1 class="sl-page-title" id="page-title">新游戏模板</h1>
+  </header>
+  <section class="sl-section" aria-label="游戏区域">
+    <!-- 游戏本体画在这里。game.js 只操作 #game-root 里面的东西 -->
+    <div id="game-root" class="gp-root"><p class="sl-empty">这是新游戏的模板页，不对外展示。复制整个文件夹后再改。</p></div>
+  </section>
+  <footer class="sl-foot">Spark Light</footer>
+</main>
+<script type="module" src="../../../core/boot.js"></script>
+<script type="module" src="game.js"></script>
+</body>
+</html>

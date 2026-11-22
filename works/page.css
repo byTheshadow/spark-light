@@ -4,13 +4,14 @@ body[data-page="works"] .wk-jump { margin-top: 22px; display: flex; gap: 22px; }
 body[data-page="works"] .wk-jump a { min-height: 44px; display: inline-flex; align-items: center; font-size: 14px; letter-spacing: .14em; text-underline-offset: 6px; }
 
 /* 分类筛选 */
-body[data-page="works"] .wk-filters { margin-top: 18px; display: flex; flex-wrap: wrap; gap: 8px; }
+body[data-page="works"] .wk-filters[hidden] { display: none; }
+body[data-page="works"] .wk-filters { margin-top: 14px; display: flex; flex-wrap: wrap; gap: 8px; }
 body[data-page="works"] .wk-chip { min-height: 40px; padding: 0 16px; display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--sl-line); border-radius: var(--sl-radius-pill); font-size: 14px; letter-spacing: .08em; transition: background-color .3s var(--sl-ease), color .3s var(--sl-ease); }
 body[data-page="works"] .wk-chip[aria-pressed="true"] { background: var(--sl-ink); color: var(--sl-on-ink); border-color: var(--sl-ink); }
 body[data-page="works"] .wk-n { font-family: var(--sl-font-disp); font-size: 15px; opacity: .7; }
 
 /* 作品网格：手机 2 列，宽屏 3 列 */
-body[data-page="works"] .wk-grid { margin-top: 22px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+body[data-page="works"] .wk-grid { margin-top: 16px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
 @media (min-width: 720px) { body[data-page="works"] .wk-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; } }
 body[data-page="works"] .wk-grid > .sl-empty, body[data-page="works"] .wk-grid > .sl-loading, body[data-page="works"] .wk-grid > .sl-error { grid-column: 1 / -1; }
 body[data-page="works"] .wk-card { position: relative; display: grid; gap: 8px; text-align: left; border-radius: var(--sl-radius-m); }

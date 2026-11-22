@@ -1,2 +1,18 @@
-/* 小游戏页专属样式。所有选择器都限定在 body[data-page="games"] 下，避免影响其他页面。 */
+/* 小游戏页（游戏列表）专属样式。所有选择器都限定在 body[data-page="games"] 下，避免影响其他页面。 */
 body[data-page="games"] .sl-page-head { padding-bottom: 4px; }
+body[data-page="games"] .gm-intro { max-width: 36em; margin-bottom: 18px; color: var(--sl-ink-2); }
+
+body[data-page="games"] .gm-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 22px; }
+@media (min-width: 720px) { body[data-page="games"] .gm-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 26px 22px; } }
+body[data-page="games"] .gm-card { position: relative; display: grid; gap: 12px; text-decoration: none; border-radius: var(--sl-radius-m); }
+body[data-page="games"] .gm-media { position: relative; display: block; aspect-ratio: 4 / 3; overflow: hidden; border-radius: var(--sl-radius-m); background: var(--sl-surface-2); }
+body[data-page="games"] .gm-media img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .6s var(--sl-ease); }
+body[data-page="games"] .gm-nocover::after { content: ""; position: absolute; inset: 0; background: repeating-linear-gradient(45deg, transparent 0 10px, var(--sl-line-2) 10px 11px); }
+body[data-page="games"] .gm-cover-ph { position: absolute; inset: 0; z-index: 1; display: grid; place-items: center; font-size: 14px; letter-spacing: .2em; color: var(--sl-mute); }
+body[data-page="games"] .gm-card--soon .gm-media { border: 1px dashed var(--sl-line); background: transparent; }
+body[data-page="games"] .gm-info { display: grid; gap: 4px; }
+body[data-page="games"] .gm-title { font-size: 21px; letter-spacing: .08em; line-height: 1.4; overflow-wrap: anywhere; }
+body[data-page="games"] .gm-sum { font-size: 14px; color: var(--sl-ink-2); line-height: 1.7; overflow-wrap: anywhere; }
+body[data-page="games"] .gm-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+body[data-page="games"] .gm-go { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; font-size: 14px; letter-spacing: .16em; }
+@media (hover: hover) and (pointer: fine) { body[data-page="games"] a.gm-card:hover .gm-media img { transform: scale(1.04); } }

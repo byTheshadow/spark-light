@@ -1,4 +1,4 @@
 {
-  "_说明": "AI 漫剧登记。视频不放在仓库里，只登记 B 站视频的 BV 号。每部：id、title、summary、cover（封面文件名，放在 assets/covers/）、bvid、date。页面会自动标注“由 AI 生成”。",
+  "_说明": "AI 漫剧登记。每部一项，写在 items 里，页面按顺序显示，想让谁排前面就写在前面。通用字段：id（英文或数字，不重复）、title、summary、cover（封面文件名，放在 assets/covers/；也可以写 http 或 https 开头的图片地址）、date（年-月-日）。来源有两种，用 type 区分：1) type 填 bilibili，再写 bvid（B 站视频的 BV 号，BV 开头共 12 位），可选 page（分 P，默认 1）；2) type 填 images，再写 pages（图片列表，按阅读顺序，每项是 http 或 https 开头的图床地址，或者放在 assets/drama/<id>/ 里的文件名）。还没有真实来源的作品，不写 type，页面会显示成占位框。页面会自动标注“由 AI 生成”，不需要在这里写。items 为空时页面显示两个占位框。",
   "items": []
 }

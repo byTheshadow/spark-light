@@ -137,7 +137,11 @@ svg{display:block}
 @keyframes dn{0%,100%{transform:translateY(-3px);opacity:.4}50%{transform:translateY(3px);opacity:1}}
 
 /* ---------- 章节：一章一屏，章头收成一行 ---------- */
-.chap{position:relative;min-height:100svh;padding:calc(var(--head) + clamp(14px,3vh,36px)) clamp(16px,3.6vw,52px) clamp(28px,5vh,56px);max-width:1260px;margin:0 auto;display:flex;flex-direction:column;justify-content:center;scroll-snap-align:start}
+/* 章节不再强制占满一屏：高度由内容决定，章与章之间只留小空隙，并放一条分隔装饰。
+   想恢复“一章一屏”，把 --chap-min 改成 100svh。 */
+:root{--chap-min:0px}
+.chap{position:relative;min-height:var(--chap-min);padding:clamp(24px,4vh,40px) clamp(16px,3.6vw,52px) clamp(14px,2.4vh,24px);max-width:1260px;margin:0 auto;display:flex;flex-direction:column;justify-content:flex-start;scroll-snap-align:start}
+.chap + .chap::before{content:"";align-self:center;flex:none;width:200px;max-width:70%;height:10px;margin:0 0 clamp(14px,2.4vh,22px);background:var(--mute);opacity:.55;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 10' fill='none' stroke='%23000' stroke-width='1'%3E%3Cpath d='M0 5H82M118 5H200'/%3E%3Cpath d='M100 .8L104.2 5L100 9.2L95.8 5Z'/%3E%3C/svg%3E") center / 100% 100% no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 10' fill='none' stroke='%23000' stroke-width='1'%3E%3Cpath d='M0 5H82M118 5H200'/%3E%3Cpath d='M100 .8L104.2 5L100 9.2L95.8 5Z'/%3E%3C/svg%3E") center / 100% 100% no-repeat}
 .ch-head{display:grid;grid-template-columns:auto auto minmax(0,1fr);column-gap:clamp(12px,2vw,28px);align-items:end;border-bottom:1px solid var(--ink);padding-bottom:10px;margin-bottom:clamp(12px,2.4vh,26px)}
 .ch-no{font-family:var(--disp);font-size:clamp(48px,6vw,80px);line-height:.8;letter-spacing:-.03em;color:transparent;-webkit-text-stroke:1px var(--ink);clip-path:inset(100% 0 0 0);transition:clip-path 1.4s var(--ease) .1s}
 .ch-head.in .ch-no{clip-path:inset(-10% -10% -10% -10%)}
@@ -796,7 +800,7 @@ button.pc:hover{transform:translateY(-6px)}
 .toast.on{opacity:1;translate:-50% 0}
 
 /* ---------- 版权页 ---------- */
-.colo{position:relative;max-width:1260px;margin:0 auto;padding:clamp(90px,15vh,150px) clamp(16px,3.6vw,52px) calc(var(--sab) + 110px)}
+.colo{position:relative;max-width:1260px;margin:0 auto;padding:clamp(40px,7vh,72px) clamp(16px,3.6vw,52px) calc(var(--sab) + 110px)}
 .colo-mark{margin:0;font-family:var(--disp);font-weight:400;font-size:clamp(84px,19vw,280px);line-height:.8;letter-spacing:-.04em;white-space:nowrap;color:transparent;-webkit-text-stroke:1px var(--ink)}
 .colo-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px;border-top:2px solid var(--ink);padding-top:16px;margin-top:22px}
 .colo-grid h4{margin:0 0 4px;font-family:var(--disp);font-style:italic;font-weight:400;font-size:16px;color:var(--mute)}
@@ -821,5 +825,4 @@ html[data-motion="simple"] *,html[data-motion="simple"] *::before,html[data-moti
 /* ---------- 与全站外壳衔接（主界面专用） ---------- */
 body[data-page="home"]{padding:0}
 body[data-page="home"] .sl-orderbar{z-index:45}
-.chap{padding-bottom:calc(var(--sl-bar-h,64px) + var(--sab) + 12px)}
 .cal .d.unk{opacity:.55}

@@ -26,7 +26,7 @@
 | `lenormand.json` | 占卜演示里水晶球抽到的牌名与牌义 | 主界面 |
 | `works.json` | 作品登记 | 作品与碎碎念页（阶段 3） |
 | `thoughts.json` | 碎碎念 | 作品与碎碎念页（阶段 3） |
-| `dramas.json` | AI 漫剧登记 | AI 漫剧页（阶段 4） |
+| `dramas.json` | AI 漫剧登记（B 站视频或图床图片） | AI 漫剧页（阶段 4） |
 | `games.json` | 小游戏登记 | 小游戏页（阶段 4） |
 
 ## 常用改法
@@ -87,3 +87,42 @@
 - `date`：写成 `年-月-日`。
 - `text`：文字，没有就填 `null`。
 - `image`：配图文件名，图片放在 `assets/thoughts/`，没有就填 `null`。文字和配图至少要有一个。
+
+### 登记 AI 漫剧（`dramas.json`）
+
+在 `items` 里加一项。漫剧有两种来源，用 `type` 区分。
+
+B 站视频（视频不放仓库，只登记 BV 号）：
+
+```json
+{ "id": "drama-01", "type": "bilibili", "bvid": "BV1xxxxxxxxx", "title": "标题", "summary": "一两句简介", "cover": "drama-01.webp", "date": "2026-11-22" }
+```
+
+图床图片（长图连续阅读）：
+
+```json
+{ "id": "drama-02", "type": "images", "pages": ["https://图床地址/01.webp", "https://图床地址/02.webp"], "title": "标题", "summary": "简介", "cover": "drama-02.webp", "date": "2026-11-22" }
+```
+
+- `id`：不重复就行，英文或数字。
+- `bvid`：B 站视频的 BV 号，BV 开头共 12 位。分 P 视频可以再加 `"page": 2`。
+- `pages`：按阅读顺序排列。每项可以是 `http` 或 `https` 开头的图床地址，也可以是放在 `assets/drama/<id>/` 里的文件名。
+- `cover`：封面文件名，图片放在 `assets/covers/`；也可以写 `http` 或 `https` 开头的图片地址。
+- 页面会自动标注“由 AI 生成”，不用在这里写。新作品写在前面就排在前面。
+- 还没有真实来源的作品，不写 `type`，页面会显示成“待上线”的占位框。`items` 为空时页面显示两个占位框。
+- 写错的 BV 号或空的图片列表，会当作占位处理，不会影响其他漫剧。
+
+页面只在访客点开时才创建播放器或加载图片；关闭窗口、离开页面或切到后台时会立刻释放，不会在访客手机里堆积。
+
+### 登记小游戏（`games.json`）
+
+在 `items` 里加一项：
+
+```json
+{ "id": "catch-bad-cat", "title": "抓坏猫", "summary": "一两句玩法介绍", "cover": null, "tags": ["休闲"], "path": "games/play/catch-bad-cat/", "status": "soon" }
+```
+
+- `status`：`soon` 表示制作中，卡片显示“制作中”且不能点；`ready` 表示做好了，点卡片会跳转到这个游戏。
+- `path`：固定写成 `games/play/<id>/`，`<id>` 和游戏文件夹同名。
+- `intro`：小游戏页顶部那段说明，可以直接改字。
+- 游戏本体放在 `games/play/<id>/`，做法见 `games/play/README.txt`。新增游戏不需要改列表页的代码。
