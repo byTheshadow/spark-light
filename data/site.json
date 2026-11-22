@@ -5,6 +5,13 @@
   "ownerLine": "Shadow 的个人服务站",
   "tagline": null,
   "intro": null,
+  "chapters": [
+    { "id": "cover",  "title": "封面",     "en": "cover" },
+    { "id": "bench",  "title": "今日字卡", "en": "workbench" },
+    { "id": "craft",  "title": "四件星物", "en": "crafts" },
+    { "id": "price",  "title": "价目星牌", "en": "price cards" },
+    { "id": "letter", "title": "一封来信", "en": "letter" }
+  ],
   "nav": [
     { "id": "home",     "title": "主界面",       "path": "",          "desc": "业务介绍、价目与营业须知" },
     { "id": "feedback", "title": "返图与反馈",   "path": "feedback/", "desc": "客人凭口令留言和返图，也可以看大家的反馈" },

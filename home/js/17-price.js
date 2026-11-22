@@ -57,7 +57,7 @@ var Price=(function(){
     $('#pdD').textContent=it.d||'';
     var fl=d.flow||[];$('#pdF').innerHTML=fl.map(function(x,i){return '<li><span class="lab">'+(i+1)+'</span>'+x+'</li>'}).join('');$('#pdFw').hidden=!fl.length;
     var nt=(d.notes||[]).concat(d.rules||[]);$('#pdN').innerHTML=nt.map(function(x){return '<p>'+x+'</p>'}).join('');
-    syncAdd();pdm.classList.add('on');
+    syncAdd();pdm.classList.add('on');if(window.SLSpark)SLSpark.burst();
     if(!simple){var a=b.querySelector('.pc-art').getBoundingClientRect(),c=pdArt.getBoundingClientRect();pdArt.animate([{transform:flipT(a,c),borderRadius:'10px'},{transform:'none'}],{duration:700,easing:'cubic-bezier(.22,.8,.18,1)'})}
     setTimeout(function(){$('#pdmX').focus({preventScroll:true})},80)}
   function closeDetail(){if(!pdm.classList.contains('on'))return;pdm.classList.remove('on');if(pdBack)pdBack.focus({preventScroll:true})}

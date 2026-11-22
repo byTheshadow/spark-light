@@ -44,6 +44,8 @@
   --sl-gap-first: clamp(22px, 4.5vw, 32px);  /* 标题与第一个板块之间 */
   --sl-gap-section: clamp(20px, 4vw, 28px);  /* 板块分隔线上方、下方各一份 */
   --sl-gap-foot: clamp(32px, 6vw, 48px);     /* 页面底部署名上方 */
+  /* 四角星的形状（作为遮罩使用，颜色由 background 决定），弹层装饰与星光迸发共用 */
+  --sl-star: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M10 0c.6 5.4 4 8.8 10 10-6 1.2-9.4 4.6-10 10-.6-5.4-4-8.8-10-10 6-1.2 9.4-4.6 10-10z'/%3E%3C/svg%3E");
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -241,3 +243,13 @@ html[data-motion="simple"] *::after {
 html[data-shell] .sl-fallback { display: none; }
 @keyframes sl-fallback-in { to { opacity: 1; pointer-events: auto; } }
 html[data-motion="simple"] .sl-fallback { animation-delay: 3s !important; }
+
+/* ---------- 星光迸发（core/spark.js 创建的节点）---------- */
+.sl-spark-layer { position: fixed; inset: 0; z-index: 120; pointer-events: none; overflow: hidden; }
+.sl-spark { position: absolute; left: 0; top: 0; will-change: transform, opacity; -webkit-mask: var(--sl-star) center / contain no-repeat; mask: var(--sl-star) center / contain no-repeat; }
+
+/* ---------- 小标签链接（弹层里的快捷入口）---------- */
+.sl-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.sl-chip { min-height: 40px; padding: 0 16px; display: inline-flex; align-items: center; border: 1px solid var(--sl-line); border-radius: var(--sl-radius-pill); font-size: 14px; letter-spacing: .08em; text-decoration: none; transition: background-color .3s var(--sl-ease), color .3s var(--sl-ease), transform .3s var(--sl-ease); }
+.sl-chip:hover { background: var(--sl-ink); color: var(--sl-on-ink); border-color: var(--sl-ink); }
+.sl-chip:active { transform: scale(.96); }

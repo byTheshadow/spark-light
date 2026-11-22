@@ -2,7 +2,7 @@
 'use strict';
 /* ============ 抽屉 ============ */
 var Sheets=(function(){var scrim=$('#sscrim'),cur=null;
-  function open(id){close();cur=$('#'+id);cur.classList.add('on');scrim.classList.add('on');buzz(8);var x=cur.querySelector('[data-close]');setTimeout(function(){if(x)x.focus({preventScroll:true})},80)}
+  function open(id){close();cur=$('#'+id);cur.classList.add('on');scrim.classList.add('on');buzz(8);if(window.SLSpark)SLSpark.burst();var x=cur.querySelector('[data-close]');setTimeout(function(){if(x)x.focus({preventScroll:true})},80)}
   function close(){if(cur){cur.classList.remove('on');cur=null}scrim.classList.remove('on')}
   scrim.addEventListener('click',close);$$('[data-close]').forEach(function(b){b.addEventListener('click',close)});
   $$('.sheet').forEach(function(sh){var y0=null;sh.addEventListener('touchstart',function(e){y0=sh.scrollTop<=0?e.touches[0].clientY:null},{passive:true});sh.addEventListener('touchend',function(e){if(y0!=null&&e.changedTouches[0].clientY-y0>80&&innerWidth<900)close();y0=null},{passive:true})});

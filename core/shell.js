@@ -2,6 +2,7 @@
    外壳只依赖 core/ 和 data/，不依赖任何页面的代码；外壳出错也不会影响页面本身。 */
 import { h, clear, icon, store, root, placeholder, errorBox } from './util.js';
 import { loadData } from './data.js';
+import './spark.js';   /* 弹层打开时的星光迸发，失败只记控制台 */
 
 const doc = document;
 const html = doc.documentElement;
@@ -34,6 +35,7 @@ function makeSheet(titleText, build) {
     scrim.classList.add('on'); sheet.classList.add('on');
     doc.body.classList.add('sl-lock');
     doc.addEventListener('keydown', onKey);
+    if (window.SLSpark) window.SLSpark.burst();
     setTimeout(() => closeBtn.focus(), 30);
   }
   function close() {
@@ -132,6 +134,10 @@ export function mountShell() {
         h('li', null, h('a', { class: 'sl-row', href: root + (n.path || ''), 'aria-current': n.id === pageId ? 'page' : null },
           h('span', { class: 'sl-row-main' }, h('span', { class: 'sl-row-title' }, n.title), n.desc ? h('span', { class: 'sl-row-desc' }, n.desc) : null),
           icon('arrow', 18))))));
+      /* 主界面各章的快捷入口（章节清单来自 data/site.json 的 chapters，主界面悬浮球菜单用同一份） */
+      const chs = (Array.isArray(site.chapters) ? site.chapters : []).filter((c) => c && c.title && /^[A-Za-z][\w-]*$/.test(String(c.id || '')));
+      if (chs.length) navSec.appendChild(h('div', { class: 'sl-sheet-sec' }, h('h3', null, '主界面各章'),
+        h('div', { class: 'sl-chips' }, chs.map((c) => h('a', { class: 'sl-chip', href: root + '#' + c.id, onclick: close }, c.title)))));
     } catch (e) {
       navSec.append(errorBox('导航读取失败', e.message), h('p', null, h('a', { href: root }, '回到主界面')));
     }

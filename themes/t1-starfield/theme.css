@@ -58,3 +58,109 @@ html[data-theme="t1-starfield"] .sl-sheet { background: rgba(252, 252, 253, .96)
 
 /* 首页大标题 */
 html[data-theme="t1-starfield"] .sl-hero-title { font-family: var(--sl-font-disp); font-weight: 400; letter-spacing: -.01em; }
+
+
+/* ===== 三、弹层皮肤：星盘面板 =====
+   覆盖全站外壳的弹层（.sl-sheet）、主界面的抽屉（.sheet）、价目详情（.pdm-card）、悬浮球菜单（.omenu）与提示条。
+   组成：边缘微光、角落星光闪烁、标题小星、内容逐行浮入、按压回弹；星光迸发在 core/spark.js。
+   全部动画都只改 transform / opacity / 阴影；简化动效下由 core/base.css 统一停掉，星星静止显示。 */
+html[data-theme="t1-starfield"] {
+  --sl-pop-bg: radial-gradient(120% 70% at 50% -12%, rgba(207, 200, 255, .38), transparent 62%), radial-gradient(90% 60% at 100% 112%, rgba(191, 230, 225, .3), transparent 60%), rgba(252, 252, 253, .94);
+  --sl-pop-rim: inset 0 0 0 1px rgba(255, 255, 255, .8), 0 0 0 1px rgba(150, 140, 225, .3);
+  --sl-pop-glow: 0 0 54px -8px rgba(125, 108, 225, .32), 0 26px 64px -30px rgba(0, 0, 0, .3);
+  --sl-star-fill: linear-gradient(135deg, #d8d2ff 0%, #a597ff 58%, #74c9bc 100%);
+  --sl-spring: cubic-bezier(.34, 1.56, .64, 1);
+}
+html[data-theme="t1-starfield"] .sl-sheet, html[data-theme="t1-starfield"] .sheet, html[data-theme="t1-starfield"] .pdm-card, html[data-theme="t1-starfield"] .omenu { background: var(--sl-pop-bg); box-shadow: var(--sl-pop-rim), var(--sl-pop-glow); }
+
+/* 打开时边缘光晕闪一下，再回落 */
+@keyframes sl-rim {
+  from { box-shadow: var(--sl-pop-rim), 0 0 96px 6px rgba(160, 145, 255, .7), 0 26px 64px -30px rgba(0, 0, 0, .3); }
+  to   { box-shadow: var(--sl-pop-rim), var(--sl-pop-glow); }
+}
+html[data-theme="t1-starfield"] .sl-sheet.on, html[data-theme="t1-starfield"] .sheet.on, html[data-theme="t1-starfield"] .pdm.on .pdm-card, html[data-theme="t1-starfield"] .omenu.on { animation: sl-rim 1s ease-out; }
+
+/* 右上角两颗错开节奏的小星，在关闭按钮旁边闪 */
+@keyframes sl-twinkle {
+  0%, 100% { opacity: .4; transform: scale(.7) rotate(0deg); }
+  50%      { opacity: 1;  transform: scale(1.15) rotate(18deg); }
+}
+html[data-theme="t1-starfield"] .sl-sheet::before,
+html[data-theme="t1-starfield"] .sheet::before,
+html[data-theme="t1-starfield"] .pdm-card::before,
+html[data-theme="t1-starfield"] .omenu::before,
+html[data-theme="t1-starfield"] .sl-sheet::after,
+html[data-theme="t1-starfield"] .sheet::after,
+html[data-theme="t1-starfield"] .pdm-card::after,
+html[data-theme="t1-starfield"] .omenu::after {
+  content: ""; position: absolute; z-index: 1; pointer-events: none;
+  background: var(--sl-star-fill);
+  -webkit-mask: var(--sl-star) center / contain no-repeat; mask: var(--sl-star) center / contain no-repeat;
+  animation: sl-twinkle 3.4s ease-in-out infinite;
+}
+html[data-theme="t1-starfield"] .sl-sheet::before,
+html[data-theme="t1-starfield"] .sheet::before,
+html[data-theme="t1-starfield"] .pdm-card::before,
+html[data-theme="t1-starfield"] .omenu::before { right: 58px; top: 15px; width: 14px; height: 14px; }
+html[data-theme="t1-starfield"] .sl-sheet::after,
+html[data-theme="t1-starfield"] .sheet::after,
+html[data-theme="t1-starfield"] .pdm-card::after,
+html[data-theme="t1-starfield"] .omenu::after  { right: 86px; top: 27px; width: 9px; height: 9px; animation-duration: 4.7s; animation-delay: -1.8s; }
+html[data-theme="t1-starfield"] .omenu::before { right: 20px; top: 12px; }
+html[data-theme="t1-starfield"] .omenu::after  { right: 44px; top: 20px; }
+
+/* 标题前的小星 */
+html[data-theme="t1-starfield"] .sl-sheet-title::before, html[data-theme="t1-starfield"] .sh-h h2::before, html[data-theme="t1-starfield"] .pdm-info h3::before {
+  content: ""; display: inline-block; width: .52em; height: .52em; margin-right: .55em; vertical-align: .1em;
+  background: var(--sl-star-fill);
+  -webkit-mask: var(--sl-star) center / contain no-repeat; mask: var(--sl-star) center / contain no-repeat;
+  animation: sl-twinkle 3s ease-in-out infinite;
+}
+
+/* 内容逐行浮入。fill-mode 用 backwards：播完后交还给 :active 等状态，按压反馈才不会被盖住 */
+@keyframes sl-rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+html[data-theme="t1-starfield"] .sl-sheet.on .sl-rows > li, html[data-theme="t1-starfield"] .sl-sheet.on .sl-sheet-sec, html[data-theme="t1-starfield"] .sheet.on .row, html[data-theme="t1-starfield"] .sheet.on .msgbox, html[data-theme="t1-starfield"] .pdm.on .pdm-info > * {
+  animation: sl-rise .55s var(--sl-ease, ease) backwards; animation-delay: 140ms;
+}
+html[data-theme="t1-starfield"] .sl-sheet.on .sl-rows > li:nth-child(1), html[data-theme="t1-starfield"] .sheet.on .row:nth-child(2) { animation-delay: calc(0 * 45ms + 140ms); }
+html[data-theme="t1-starfield"] .sl-sheet.on .sl-rows > li:nth-child(2), html[data-theme="t1-starfield"] .sheet.on .row:nth-child(3) { animation-delay: calc(1 * 45ms + 140ms); }
+html[data-theme="t1-starfield"] .sl-sheet.on .sl-rows > li:nth-child(3), html[data-theme="t1-starfield"] .sheet.on .row:nth-child(4) { animation-delay: calc(2 * 45ms + 140ms); }
+html[data-theme="t1-starfield"] .sl-sheet.on .sl-rows > li:nth-child(4), html[data-theme="t1-starfield"] .sheet.on .row:nth-child(5) { animation-delay: calc(3 * 45ms + 140ms); }
+html[data-theme="t1-starfield"] .sl-sheet.on .sl-rows > li:nth-child(5), html[data-theme="t1-starfield"] .sheet.on .row:nth-child(6) { animation-delay: calc(4 * 45ms + 140ms); }
+html[data-theme="t1-starfield"] .sl-sheet.on .sl-rows > li:nth-child(6), html[data-theme="t1-starfield"] .sheet.on .row:nth-child(7) { animation-delay: calc(5 * 45ms + 140ms); }
+html[data-theme="t1-starfield"] .sl-sheet.on .sl-rows > li:nth-child(7), html[data-theme="t1-starfield"] .sheet.on .row:nth-child(8) { animation-delay: calc(6 * 45ms + 140ms); }
+html[data-theme="t1-starfield"] .sl-sheet.on .sl-rows > li:nth-child(8), html[data-theme="t1-starfield"] .sheet.on .row:nth-child(9) { animation-delay: calc(7 * 45ms + 140ms); }
+
+/* 关闭按钮：按下或悬停时转一下，带回弹 */
+html[data-theme="t1-starfield"] .sl-sheet .sl-iconbtn, html[data-theme="t1-starfield"] .sheet .x, html[data-theme="t1-starfield"] .pdm-x { transition: background-color .3s, transform .5s var(--sl-spring); }
+html[data-theme="t1-starfield"] .sl-sheet .sl-iconbtn:active, html[data-theme="t1-starfield"] .sheet .x:active, html[data-theme="t1-starfield"] .pdm-x:active { transform: rotate(90deg) scale(.88); }
+@media (hover: hover) and (pointer: fine) {
+  html[data-theme="t1-starfield"] .sl-sheet .sl-iconbtn:hover, html[data-theme="t1-starfield"] .sheet .x:hover, html[data-theme="t1-starfield"] .pdm-x:hover { transform: rotate(90deg); }
+}
+
+/* 列表行：悬停时淡淡的星光渐变，箭头前移；按下回弹 */
+html[data-theme="t1-starfield"] .sl-sheet .sl-row, html[data-theme="t1-starfield"] .sheet .row, html[data-theme="t1-starfield"] .mi { transition: background-color .3s, transform .4s var(--sl-spring), padding-left .4s var(--sl-spring); }
+html[data-theme="t1-starfield"] .sl-sheet .sl-row:active, html[data-theme="t1-starfield"] .sheet .row:active, html[data-theme="t1-starfield"] .mi:active { transform: scale(.975); }
+html[data-theme="t1-starfield"] .sl-sheet .sl-row svg { transition: transform .4s var(--sl-spring); }
+@media (hover: hover) and (pointer: fine) {
+  html[data-theme="t1-starfield"] .sl-sheet a.sl-row:hover, html[data-theme="t1-starfield"] .sl-sheet button.sl-row:hover { background: linear-gradient(90deg, rgba(207, 200, 255, .3), transparent 80%); padding-left: 8px; }
+  html[data-theme="t1-starfield"] .sl-sheet a.sl-row:hover svg { transform: translateX(4px); }
+}
+html[data-theme="t1-starfield"] .omenu-lab { margin: 8px 12px 2px; font-size: 12px; letter-spacing: .24em; color: var(--sl-mute); }
+html[data-theme="t1-starfield"] .omenu { max-height: calc(100vh - 20px); max-height: calc(100dvh - 20px); overflow-y: auto; overscroll-behavior: contain; scrollbar-width: none; }
+
+/* 宽屏居中弹窗：带回弹地弹出 */
+@media (min-width: 720px) {
+  html[data-theme="t1-starfield"] .sl-sheet { transform: translate(-50%, -44%) scale(.93); transition: transform .62s cubic-bezier(.34, 1.45, .5, 1), opacity .35s var(--sl-ease), visibility 0s .62s; }
+  html[data-theme="t1-starfield"] .sl-sheet.on { transform: translate(-50%, -50%); transition-delay: 0s; }
+}
+
+/* 提示条：前面一颗闪烁的小星，弹出时轻轻回弹 */
+@keyframes sl-pop { 0% { scale: .86; } 60% { scale: 1.05; } 100% { scale: 1; } }
+html[data-theme="t1-starfield"] .sl-toast.on, html[data-theme="t1-starfield"] .toast.on { animation: sl-pop .5s var(--sl-spring); }
+html[data-theme="t1-starfield"] .sl-toast::before, html[data-theme="t1-starfield"] .toast::before {
+  content: ""; display: inline-block; width: 11px; height: 11px; margin-right: 10px; vertical-align: -1px;
+  background: linear-gradient(135deg, #fff, #cfc8ff);
+  -webkit-mask: var(--sl-star) center / contain no-repeat; mask: var(--sl-star) center / contain no-repeat;
+  animation: sl-twinkle 1.8s ease-in-out infinite;
+}

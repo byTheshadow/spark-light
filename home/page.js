@@ -49,7 +49,8 @@ function buildData(d) {
     pricing,
     notice: notice.groups.map((g) => ({ t: esc(g.title), b: g.clauses && g.clauses.length ? g.clauses.map((c, i) => (i + 1) + '. ' + esc(c)).join('<br>') : null })),
     contact: chans.length ? chans.map((c) => ({ label: esc(c.label || ''), v: esc(c.value) })) : [{ label: '下单渠道', v: null }, { label: '联系方式', v: null }],
-    pages: site.nav.filter((n) => n.id !== 'home').map((n) => ({ t: esc(n.title), href: root + n.path }))
+    pages: site.nav.filter((n) => n.id !== 'home').map((n) => ({ t: esc(n.title), href: esc(root + n.path) })),
+    chapters: (Array.isArray(site.chapters) ? site.chapters : []).filter((c) => c && c.title && /^[A-Za-z][\w-]*$/.test(String(c.id || ''))).map((c) => ({ id: c.id, t: esc(c.title), en: esc(c.en || '') }))
   };
 }
 
@@ -95,5 +96,12 @@ async function main() {
     if (typeof Contact !== 'undefined' && typeof bookMsg === 'function') { e.preventDefault(); Contact.open(bookMsg()); }
   });
   window.dispatchEvent(new CustomEvent('sl:home-ready'));
+  /* 从其他页面带着 #price 这类地址进来：等版面稳定后滑到对应章节；同页点到 #xxx 链接时同样处理 */
+  const toHash = () => {
+    const id = decodeURIComponent(location.hash.slice(1));
+    if (/^[A-Za-z][\w-]*$/.test(id) && document.getElementById(id) && typeof go === 'function') go(id);
+  };
+  if (location.hash) setTimeout(toHash, 450);
+  window.addEventListener('hashchange', toHash);
 }
 main();

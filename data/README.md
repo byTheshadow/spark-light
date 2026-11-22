@@ -29,6 +29,17 @@
 | `dramas.json` | AI 漫剧登记（B 站视频或图床图片） | AI 漫剧页（阶段 4） |
 | `games.json` | 小游戏登记 | 小游戏页（阶段 4） |
 
+## 导航里的章节清单（`site.json` 的 `chapters`）
+
+主界面悬浮球菜单和子页面菜单里的“主界面各章”都读这一份清单：
+
+```json
+{ "id": "price", "title": "价目星牌", "en": "price cards" }
+```
+
+- `id` 必须是主界面里对应章节的编号（`cover`、`bench`、`craft`、`price`、`letter`），不能随便改；`title` 和 `en` 是菜单里显示的文字，可以改。
+- 页面清单仍然是 `nav`，菜单里的页面名称和说明都来自它。
+
 ## 常用改法
 
 ### 改排单状态（`status.json`）
