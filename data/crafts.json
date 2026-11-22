@@ -1,0 +1,25 @@
+{
+  "_说明": "主界面“四件星物”里每项业务的介绍。desc 是一段话，tags 是几个小标签（文字列表）。null 或空表示待站主提供。",
+  "crafts": [
+    {
+      "id": "divination",
+      "desc": null,
+      "tags": []
+    },
+    {
+      "id": "vibecoding",
+      "desc": null,
+      "tags": []
+    },
+    {
+      "id": "tuning",
+      "desc": null,
+      "tags": []
+    },
+    {
+      "id": "ai",
+      "desc": null,
+      "tags": []
+    }
+  ]
+}

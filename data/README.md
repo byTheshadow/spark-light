@@ -19,9 +19,11 @@
 | `site.json` | 站名、定位语、导航 | 全站 |
 | `status.json` | 排单状态 | 全站（底部状态条） |
 | `services.json` | 价目与服务 | 主界面 |
-| `notice.json` | 营业须知 | 主界面（阶段 2） |
+| `notice.json` | 营业须知（五章） | 主界面（一封来信） |
 | `contact.json` | 联系方式与下单渠道 | 全站（“下单与联系”弹层） |
-| `cards.json` | 免费字卡 | 主界面（阶段 2） |
+| `cards.json` | 免费字卡的卡面和文案 | 主界面（今日字卡） |
+| `crafts.json` | 四件星物里每项业务的介绍和小标签 | 主界面 |
+| `lenormand.json` | 占卜演示里水晶球抽到的牌名与牌义 | 主界面 |
 | `works.json` | 作品登记 | 作品与碎碎念页（阶段 3） |
 | `thoughts.json` | 碎碎念 | 作品与碎碎念页（阶段 3） |
 | `dramas.json` | AI 漫剧登记 | AI 漫剧页（阶段 4） |
@@ -62,3 +64,27 @@
 ```
 
 `link` 是可选外链，没有就填 `null`。如果这张图是 AI 生成的，`ai` 填 `true`，页面会如实标注。
+
+### 填业务介绍（`crafts.json`）
+
+```json
+{ "id": "divination", "desc": "一段话介绍这项业务", "tags": ["雷诺曼", "塔罗"] }
+```
+
+`id` 不要改，只改 `desc` 和 `tags`。`null` 或空列表时页面显示占位。
+
+### 填字卡文案（`cards.json`）
+
+把每张卡的 `text` 从 `null` 改成一句话。想增减卡片数量，加删 `cards` 里的项就行，`glyph` 是卡面图案，可选：`rings`、`spark`、`arc`、`tri`、`lines`、`moon`、`eye`。
+
+### 填价目说明（`services.json`）
+
+- 每项的 `desc`：点开价目牌详情时显示的说明。
+- 每个分类的 `flow`：流程步骤，比如 `["先聊需求", "定价", "交付"]`。
+- 每个分类的 `notes`：补充须知，同样是文字列表。
+
+主界面价目目前只显示 `id` 为 `divination`、`vibecoding`、`tuning`、`ai` 的四个分类，`id` 不要改。
+
+### 填营业须知（`notice.json`）
+
+每一章的 `clauses` 里按顺序写条款，页面自动编号。一共五章：通用、占卜、Vibecoding、AI 创作、退款与交付。

@@ -79,6 +79,10 @@ function applyTheme(t) {
   let link = doc.getElementById('sl-theme-css');
   if (!link) { link = h('link', { rel: 'stylesheet', id: 'sl-theme-css' }); doc.head.appendChild(link); }
   link.setAttribute('href', root + t.css);
+  const pg = html.getAttribute('data-page');
+  let pl = doc.getElementById('sl-theme-page-css');
+  if (pl) pl.remove();
+  if (pg && t.pages && t.pages[pg]) { pl = h('link', { rel: 'stylesheet', id: 'sl-theme-page-css', href: root + t.pages[pg] }); doc.head.appendChild(pl); }
   const m = doc.querySelector('meta[name="theme-color"]'); if (m && t.themeColor) m.setAttribute('content', t.themeColor);
 }
 
@@ -97,6 +101,7 @@ function statusText(st) {
 /* ---------- 构建外壳 ---------- */
 export function mountShell() {
   const pageId = doc.body.getAttribute('data-page') || 'home';
+  const noHeader = doc.body.getAttribute('data-shell-header') === 'off'; // 主界面自带顶栏与悬浮球导航
 
   const brandPage = h('span', { class: 'sl-brand-page' });
   const menuBtn = h('button', { class: 'sl-iconbtn', type: 'button', 'aria-haspopup': 'dialog', 'aria-label': '打开导航与设置' }, icon('menu'));
@@ -111,7 +116,7 @@ export function mountShell() {
   const bar = h('div', { class: 'sl-orderbar', role: 'region', 'aria-label': '排单状态与下单入口' }, statusBtn, orderBtn);
 
   const skip = h('a', { class: 'sl-skip', href: '#main' }, '跳到正文');
-  doc.body.prepend(skip, head);
+  if (noHeader) doc.body.prepend(skip); else doc.body.prepend(skip, head);
   doc.body.appendChild(bar);
 
   /* 导航与设置 */
@@ -179,8 +184,10 @@ export function mountShell() {
     } catch (e) { chanSec.appendChild(errorBox('联系方式读取失败', e.message)); }
     body.appendChild(h('div', { class: 'sl-sheet-sec' }, h('a', { class: 'sl-btn sl-btn--ghost', href: root + '#price', onclick: close }, '先看价目')));
   });
-  orderBtn.addEventListener('click', () => contactSheet.open(orderBtn));
-  statusBtn.addEventListener('click', () => contactSheet.open(statusBtn));
+  /* 页面可以接管“下单与联系”：监听 sl:open-contact 并 preventDefault 即可 */
+  const openContact = (from) => { if (doc.dispatchEvent(new CustomEvent('sl:open-contact', { cancelable: true }))) contactSheet.open(from); };
+  orderBtn.addEventListener('click', () => openContact(orderBtn));
+  statusBtn.addEventListener('click', () => openContact(statusBtn));
 
   /* 排单状态、当前页名 */
   loadData('status').then((st) => {

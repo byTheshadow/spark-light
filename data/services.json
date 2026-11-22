@@ -1,5 +1,5 @@
 {
-  "_说明": "服务与价目，全站价格只在这里写一份。price 填数字（单位是人民币，r 即元）。from 为 true 表示“底价……起”。unit 是计价单位，没有就填 null。items 为空且有 placeholder 的分类，会显示占位文字。",
+  "_说明": "服务与价目，全站价格只在这里写一份。price 填数字（单位是人民币，r 即元）。from 为 true 表示“底价……起”。unit 是计价单位，没有就填 null。items 为空且有 placeholder 的分类，会显示占位文字。 每项的 desc 是价目详情里的说明文字，每个分类的 flow 是流程步骤（文字列表）、notes 是补充须知（文字列表），都填 null 时页面显示占位。",
   "currency": "r",
   "currencyNote": "单位是人民币，r 即元",
   "categories": [
@@ -8,22 +8,83 @@
       "name": "占卜",
       "summary": "雷诺曼、塔罗、字卡、指引类",
       "items": [
-        { "id": "ln-tarot-1q",      "name": "雷诺曼 / 塔罗，一个问题", "price": 30, "unit": null, "from": false, "note": "不可指定牌阵" },
-        { "id": "fortune-single",   "name": "单个运势类",              "price": 40, "unit": null, "from": false, "note": "不可指定牌阵" },
-        { "id": "past-life",        "name": "前世今生",                "price": 50, "unit": null, "from": false, "note": "不可指定牌阵" },
-        { "id": "oc-entertainment", "name": "梦角 / OC 娱乐向占卜",    "price": 50, "unit": null, "from": false, "note": "不可指定牌阵" },
-        { "id": "cards-random",     "name": "字卡、指引类，随机抽牌",  "price": 5,  "unit": "次", "from": false, "note": "随机抽取" }
+        {
+          "id": "ln-tarot-1q",
+          "name": "雷诺曼 / 塔罗，一个问题",
+          "price": 30,
+          "unit": null,
+          "from": false,
+          "note": "不可指定牌阵",
+          "desc": null
+        },
+        {
+          "id": "fortune-single",
+          "name": "单个运势类",
+          "price": 40,
+          "unit": null,
+          "from": false,
+          "note": "不可指定牌阵",
+          "desc": null
+        },
+        {
+          "id": "past-life",
+          "name": "前世今生",
+          "price": 50,
+          "unit": null,
+          "from": false,
+          "note": "不可指定牌阵",
+          "desc": null
+        },
+        {
+          "id": "oc-entertainment",
+          "name": "梦角 / OC 娱乐向占卜",
+          "price": 50,
+          "unit": null,
+          "from": false,
+          "note": "不可指定牌阵",
+          "desc": null
+        },
+        {
+          "id": "cards-random",
+          "name": "字卡、指引类，随机抽牌",
+          "price": 5,
+          "unit": "次",
+          "from": false,
+          "note": "随机抽取",
+          "desc": null
+        }
       ],
       "rules": [],
       "placeholder": null,
-      "_待确认": ["不可指定牌阵是否适用于全部占卜项目：目前按适用于占卜类整体记录，待站主确认。"]
+      "_待确认": [
+        "不可指定牌阵是否适用于全部占卜项目：目前按适用于占卜类整体记录，待站主确认。"
+      ],
+      "flow": null,
+      "notes": null
     },
     {
       "id": "vibecoding",
       "name": "Vibecoding 网站定制",
       "summary": "从想法到能打开、能分享的网站",
       "items": [
-        { "id": "website", "name": "网站定制", "price": 100, "unit": null, "from": true, "note": "按网站难度和功能决定工期与价格" }
+        {
+          "id": "website",
+          "name": "网站定制",
+          "price": 100,
+          "unit": null,
+          "from": true,
+          "note": "按网站难度和功能决定工期与价格",
+          "desc": null
+        },
+        {
+          "id": "rush",
+          "name": "加急",
+          "price": 30,
+          "unit": null,
+          "from": true,
+          "note": "加 30-50r，不等，按具体情况定",
+          "desc": null
+        }
       ],
       "rules": [
         "下单后先与客人沟通想要的风格、想要的元素、想放的功能。",
@@ -31,7 +92,11 @@
         "加急加 30-50r，不等，按具体情况定。"
       ],
       "placeholder": null,
-      "_待确认": ["加急的具体档位：30r 与 50r 分别对应什么情况，待站主说明。"]
+      "_待确认": [
+        "加急的具体档位：30r 与 50r 分别对应什么情况，待站主说明。"
+      ],
+      "flow": null,
+      "notes": null
     },
     {
       "id": "tuning",
@@ -39,7 +104,9 @@
       "summary": null,
       "items": [],
       "rules": [],
-      "placeholder": "服务内容与价格待站主提供"
+      "placeholder": "服务内容与价格待站主提供",
+      "flow": null,
+      "notes": null
     },
     {
       "id": "ai",
@@ -47,7 +114,9 @@
       "summary": "漫剧、生图",
       "items": [],
       "rules": [],
-      "placeholder": "服务内容与价格待站主提供"
+      "placeholder": "服务内容与价格待站主提供",
+      "flow": null,
+      "notes": null
     }
   ]
 }

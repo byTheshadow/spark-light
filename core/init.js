@@ -12,6 +12,8 @@
   if (pick) {
     d.setAttribute('data-theme', pick.id);
     document.write('<link rel="stylesheet" id="sl-theme-css" href="' + root + pick.css + '">');
+    var pg = d.getAttribute('data-page');
+    if (pg && pick.pages && pick.pages[pg]) document.write('<link rel="stylesheet" id="sl-theme-page-css" href="' + root + pick.pages[pg] + '">');
     var m = document.querySelector('meta[name="theme-color"]');
     if (m && pick.themeColor) m.setAttribute('content', pick.themeColor);
   }

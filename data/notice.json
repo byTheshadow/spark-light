@@ -1,10 +1,34 @@
 {
   "_说明": "营业须知。每个分组的 clauses 里按顺序写条款文字，页面自动编号。条款为空时页面显示占位。条款内容由站主提供，程序不自带任何条款。",
   "groups": [
-    { "id": "general",    "title": "通用须知",         "clauses": [] },
-    { "id": "divination", "title": "占卜须知",         "clauses": [] },
-    { "id": "vibecoding", "title": "Vibecoding 须知",  "clauses": [] },
-    { "id": "ai",         "title": "AI 创作须知",      "clauses": [] }
+    {
+      "id": "general",
+      "title": "通用须知",
+      "clauses": []
+    },
+    {
+      "id": "divination",
+      "title": "占卜须知",
+      "clauses": []
+    },
+    {
+      "id": "vibecoding",
+      "title": "Vibecoding 须知",
+      "clauses": []
+    },
+    {
+      "id": "ai",
+      "title": "AI 创作须知",
+      "clauses": []
+    },
+    {
+      "id": "refund",
+      "title": "退款与交付",
+      "clauses": []
+    }
   ],
-  "consent": { "title": "返图与评价的授权说明", "text": null }
+  "consent": {
+    "title": "返图与评价的授权说明",
+    "text": null
+  }
 }

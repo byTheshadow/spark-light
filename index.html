@@ -1,45 +1,434 @@
 <!doctype html>
-<html lang="zh-CN" data-root="./">
+<html lang="zh-CN" data-root="./" data-page="home">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Spark Light，Shadow 的个人服务站</title>
 <meta name="theme-color" content="#f8f8f9">
-<link rel="icon" href="./favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
 <!-- 字体：非阻塞加载。加载不出来时，自动使用 core/base.css 里设置的兜底字体，页面不会卡住 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Noto+Serif+SC:wght@300;400;600&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Noto+Serif+SC:wght@300;400;600&display=swap"></noscript>
-<link rel="stylesheet" href="./core/base.css">
-<script src="./themes/registry.js"></script>
-<script src="./core/init.js"></script>
+<link rel="stylesheet" href="core/base.css">
+<script src="themes/registry.js"></script>
+<script src="core/init.js"></script>
 <noscript><style>.sl-fallback{opacity:1!important;animation:none!important;pointer-events:auto!important}</style></noscript>
-<link rel="stylesheet" href="home/page.css">
 </head>
-<body data-page="home">
+<body data-page="home" data-shell-header="off">
 <a class="sl-fallback" href="./">Spark Light 主界面</a>
-<main id="main" class="sl-main">
+<canvas id="bg" aria-hidden="true"></canvas>
+<div class="grain" aria-hidden="true"></div>
 
-  <section class="sl-hero" aria-labelledby="hero-title">
-    <p class="sl-hero-owner" id="hero-owner">Shadow 的个人服务站</p>
-    <h1 class="sl-hero-title" id="hero-title"><span>Spark</span> <span>Light</span></h1>
-    <p class="sl-tagline" id="hero-tagline"></p>
-  </section>
+<header class="folio top" id="folio">
+  <button type="button" class="sage-btn" id="sageBtn" aria-label="点燃鼠尾草，净化此空间">
+    <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path class="wisp" d="M23 6c-2-2 1-3-1-5" stroke="rgba(0,0,0,.4)"/>
+      <g transform="rotate(40 16 16)">
+        <path d="M16 4c3 2.4 4.2 6 4 10.6S18.5 24.8 16 28c-2.5-3.2-4.2-8.4-4-13S13 6.4 16 4z" fill="rgba(0,0,0,.05)"/>
+        <path d="M16 6.5V28"/>
+        <path d="M16 9l-2.3 2M16 9l2.3 2M16 13l-2.8 2.3M16 13l2.8 2.3M16 17.2l-3 2.4M16 17.2l3 2.4" stroke-width=".8"/>
+        <path d="M13.2 23.4c1.9.6 3.7.6 5.6 0M13.6 25.6c1.6.5 3.2.5 4.8 0" stroke-width=".9"/>
+      </g>
+      <circle class="ember" cx="23" cy="7" r="1.8" fill="#e9a35e" stroke="none"/>
+    </svg>
+  </button>
+  <div class="fo-mid"><em>Spark Light</em><span class="fo-sep"></span><span class="fo-sec" id="foSec">封面</span></div>
+  <div class="fo-no">p.<span id="foNo">00</span></div>
+</header>
 
-  <section class="sl-section" id="price" aria-labelledby="price-title">
-    <h2 class="sl-h2" id="price-title">价目</h2>
-    <p class="sl-lede" id="price-note"></p>
-    <div id="price-root"><p class="sl-loading">正在读取价目</p></div>
-  </section>
+<main id="main">
 
-  <section class="sl-section" id="entries" aria-labelledby="entries-title">
-    <h2 class="sl-h2" id="entries-title">其他页面</h2>
-    <div id="entries-root"><p class="sl-loading">正在读取</p></div>
-  </section>
+<!-- 封面 -->
+<section class="cover" id="cover" data-folio="封面" data-no="00" aria-label="封面">
+  <div class="cov-sky" id="covSky" aria-hidden="true"></div>
+  <div class="cov-meta">
+    <span>第 <em id="issueNo"></em> 期</span>
+    <span id="moonMeta"></span>
+  </div>
+  <div class="cov-stage">
+    <div class="cov-title" id="covTitle">
+      <h1 class="mast" id="mast" aria-label="Spark Light"><span class="l1" data-kin="hover">Spark</span><span class="l2" data-kin="hover">Light</span></h1>
+      <p class="cov-sub" data-kin id="covSub">Shadow 的个人服务站</p>
+      <p class="cov-intro" data-kin id="covIntro"></p>
+      <p class="cov-hint"><span>月亮旁边漂着的小物件，点一下就去对应的那一页</span></p>
+    </div>
+    <div class="moon-wrap" id="moonWrap">
+      <div class="moon-halo" id="moonHalo" aria-hidden="true"></div>
+      <svg class="moon-ring" id="moonRing" viewBox="-100 -100 200 200" aria-hidden="true"></svg>
+      <canvas id="moonCv" aria-hidden="true"></canvas>
+      <nav class="fobs" id="fobs" aria-label="本期目录"></nav>
+    </div>
+  </div>
+  <div class="cov-foot">
+    <span class="lab">the Shadow issue</span>
+    <button type="button" class="cov-down" data-go="bench">往下翻<svg viewBox="0 0 10 18" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true"><path d="M5 0v17M1 13l4 4 4-4"/></svg></button>
+  </div>
+</section>
 
-  <footer class="sl-foot" id="foot">Spark Light</footer>
+<!-- 1 今日字卡 -->
+<section class="chap" id="bench" data-folio="今日字卡" data-no="01" aria-labelledby="t1">
+  <header class="ch-head rv">
+    <span class="ch-no" aria-hidden="true">01</span>
+    <div class="ch-tw"><p class="ch-en">the workbench</p><h2 class="ch-title" id="t1" data-kin>今日字卡</h2></div>
+    <p class="ch-lede" data-kin>洗一洗桌上的字卡，凭直觉抽一张。它会变成一枚小书签，夹进今天的书里。</p>
+  </header>
+  <div class="bench rv">
+    <div class="desk" id="desk">
+      <div class="desk-grain" aria-hidden="true"></div>
+      <div class="mat" id="mat" data-depth=".3">
+        <svg class="mat-art" id="matArt" viewBox="-100 -100 200 200" aria-hidden="true"></svg>
+        <div class="deck" id="deck" role="group" aria-label="字卡牌堆"></div>
+      </div>
+      <div class="book" id="book" data-depth=".85">
+        <span class="ribbon" aria-hidden="true"></span>
+        <button type="button" class="bm" id="bm" aria-label="今日书签，轻触展开全文"><span class="bm-body"><span class="bm-g" id="bmG"></span></span><span class="bm-tas" aria-hidden="true"></span></button>
+        <div class="book-cover">
+          <svg viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width=".8" aria-hidden="true"><circle cx="30" cy="30" r="26"/><circle cx="30" cy="30" r="20" stroke-dasharray="1 2.5"/><path d="M30 10c1 12 8 19 20 20-12 1-19 8-20 20-1-12-8-19-20-20 12-1 19-8 20-20z"/></svg>
+          <span class="bk-t">今日之书</span><span class="bk-en">liber diei</span>
+        </div>
+      </div>
+      <div class="moon" id="moonDial" aria-hidden="true" data-depth=".55"></div>
+      <button type="button" class="candle" id="candle" aria-label="蜡烛，轻触吹灭或点燃" data-depth="1.3"><span class="c-glow"></span><span class="c-wax"></span><span class="c-fl"></span></button>
+      <button type="button" class="sprig" id="sprig" aria-label="桌上的鼠尾草，轻触净化空间" data-depth="1.1">
+        <svg viewBox="0 0 44 80" aria-hidden="true">
+          <path d="M22 4C30 12 34 28 33 48c-1 10-5 16-8 20h-6c-3-4-7-10-8-20C10 28 14 12 22 4z" fill="#ececef" stroke="#000" stroke-width=".8"/>
+          <path d="M22 8v62M22 16l-5 4M22 16l5 4M22 26l-7 5M22 26l7 5M22 36l-8 6M22 36l8 6M22 46l-8 6M22 46l8 6" stroke="#000" stroke-width=".5" fill="none" opacity=".6"/>
+          <path d="M12 52l20-5M11 57l21-4M13 62l17-4" stroke="#000" stroke-width=".9" fill="none"/>
+          <path d="M20 68v10M22 68v11M24 68v9" stroke="#000" stroke-width="1" stroke-linecap="round"/>
+          <path d="M17 9c2-4 8-4 10 0-2 3-8 3-10 0z" fill="#2a2a30"/>
+        </svg>
+      </button>
+      <span class="desk-tag" id="deskTag" data-depth=".15"></span>
+    </div>
+    <div class="bench-ctl">
+      <p class="bench-st" id="benchSt">牌已经放在桌上了。</p>
+      <button type="button" class="btn" id="drawBtn"><span>抽一张</span></button>
+    </div>
+  </div>
+</section>
+
+<!-- 2 四件星物 -->
+<section class="chap" id="craft" data-folio="四件星物" data-no="02" aria-labelledby="t2">
+  <header class="ch-head rv">
+    <span class="ch-no" aria-hidden="true">02</span>
+    <div class="ch-tw"><p class="ch-en">four crafts</p><h2 class="ch-title" id="t2" data-kin>四件星物</h2></div>
+    <p class="ch-lede" data-kin>每一件都是一项业务，每一件都能上手玩。左右翻页，拖一拖、碰一碰它们。</p>
+  </header>
+  <div class="tabs rv" role="tablist" id="tabs">
+    <button type="button" class="tab on" role="tab" data-t="0"><span class="lab">i</span>占卜</button>
+    <button type="button" class="tab" role="tab" data-t="1"><span class="lab">ii</span>网站定制</button>
+    <button type="button" class="tab" role="tab" data-t="2"><span class="lab">iii</span>灵摆调频</button>
+    <button type="button" class="tab" role="tab" data-t="3"><span class="lab">iv</span>AI 映画</button>
+    <span class="tab-ind" id="tabInd"></span>
+  </div>
+  <div class="rail" id="rail">
+    <article class="plate cur" aria-label="占卜">
+      <div class="pl-text">
+        <span class="pl-no" aria-hidden="true">i</span>
+        <p class="pl-en">tarot and lenormand</p>
+        <h3 class="pl-title" data-kin>占卜</h3>
+        <p class="pl-desc" data-kin data-craft="0"></p>
+        <ul class="pl-tags" data-craft-tags="0"></ul>
+        <button type="button" class="lnk pl-go" data-cat="0">看占卜的价目<svg class="arrow" viewBox="0 0 18 10" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true"><path d="M0 5h17M13 1l4 4-4 4"/></svg></button>
+      </div>
+      <div class="stage">
+        <div class="diff" style="background:radial-gradient(circle,rgba(200,190,255,.9),rgba(191,230,225,.45) 45%,transparent 70%)"></div>
+        <div class="ent-wrap" data-depth=".45">
+          <div class="ent" id="ent" role="button" tabindex="0" aria-label="一对纠缠的水晶球：拖动其中一颗搅动雾气，轻触观测" data-noripple><canvas id="entCv"></canvas></div>
+          <p class="ent-cap" id="entCap" aria-live="polite"><b id="capN"></b><span><span id="capE" style="font-family:var(--disp);font-style:italic"></span>，<span id="capK"></span></span></p>
+        </div>
+        <p class="hint lab">拨动一颗，另一颗会反着转。轻触观测，两颗同时坍缩成答案。仅供娱乐</p>
+      </div>
+    </article>
+
+    <article class="plate" aria-label="网站定制">
+      <div class="pl-text">
+        <span class="pl-no" aria-hidden="true">ii</span>
+        <p class="pl-en">vibecoding</p>
+        <h3 class="pl-title" data-kin>网站定制</h3>
+        <p class="pl-desc" data-kin data-craft="1"></p>
+        <ul class="pl-tags" data-craft-tags="1"></ul>
+        <button type="button" class="lnk pl-go" data-cat="1">看网站定制的价目<svg class="arrow" viewBox="0 0 18 10" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true"><path d="M0 5h17M13 1l4 4-4 4"/></svg></button>
+      </div>
+      <div class="stage code-stage">
+        <div class="diff" style="background:radial-gradient(circle,rgba(191,230,225,.95),rgba(207,200,255,.4) 45%,transparent 70%)"></div>
+        <div class="sigil" id="sigil" role="button" tabindex="0" aria-label="运行代码：网站定制演示" data-depth=".45">
+          <span class="sig-orbit" aria-hidden="true"></span>
+          <div class="editor"><span class="ed-tab">spark-light.js</span><pre id="code"></pre><div class="site" id="site"></div></div>
+          <svg class="sig-glyph" viewBox="0 0 120 80" aria-hidden="true"><path class="bl" d="M38 14 L12 40 L38 66"/><path class="sl" d="M70 8 L50 72"/><path class="br" d="M82 14 L108 40 L82 66"/></svg>
+        </div>
+        <p class="hint lab">轻触运行，再轻触复位</p>
+      </div>
+    </article>
+
+    <article class="plate" aria-label="灵摆调频">
+      <div class="pl-text">
+        <span class="pl-no" aria-hidden="true">iii</span>
+        <p class="pl-en">pendulum tuning</p>
+        <h3 class="pl-title" data-kin>灵摆调频</h3>
+        <p class="pl-desc" data-kin data-craft="2"></p>
+        <ul class="pl-tags" data-craft-tags="2"></ul>
+        <button type="button" class="lnk pl-go" data-cat="2">看灵摆调频的价目<svg class="arrow" viewBox="0 0 18 10" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true"><path d="M0 5h17M13 1l4 4-4 4"/></svg></button>
+      </div>
+      <div class="stage">
+        <div class="diff" style="background:radial-gradient(circle,rgba(191,230,225,.85),rgba(241,216,226,.45) 50%,transparent 70%)"></div>
+        <div class="pend-wrap" data-depth=".4">
+          <div class="pend" id="pend" data-noripple aria-label="灵摆：拖动灵摆把它甩起来"><canvas id="pendCv"></canvas></div>
+          <div class="pend-hud">
+            <div><p class="pend-st" aria-live="polite"><b id="pendSt">自由摆动</b><span id="pendSub">拖动灵摆，把它甩起来</span></p><p class="lab" id="pendRd">振幅 0.00，周期 1.60 秒</p></div>
+            <button type="button" class="btn" id="pendBtn"><span>开始调频</span></button>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="plate veiled" id="aiPlate" aria-label="AI 映画">
+      <div class="pl-text">
+        <span class="pl-no" aria-hidden="true">iv</span>
+        <p class="pl-en">ai images and comic dramas</p>
+        <h3 class="pl-title" data-kin>AI 映画</h3>
+        <p class="pl-desc" data-kin data-craft="3"></p>
+        <ul class="pl-tags" data-craft-tags="3"></ul>
+        <button type="button" class="lnk pl-go" data-cat="3">看 AI 映画的价目<svg class="arrow" viewBox="0 0 18 10" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true"><path d="M0 5h17M13 1l4 4-4 4"/></svg></button>
+      </div>
+      <div class="stage">
+        <div class="diff" style="background:radial-gradient(circle,rgba(241,216,226,.95),rgba(207,200,255,.45) 50%,transparent 70%)"></div>
+        <div class="comic-wrap" data-depth=".4">
+          <div class="seg" role="group" aria-label="切换演示"><button type="button" data-m="still" aria-pressed="false">生图</button><button type="button" data-m="reel" aria-pressed="true">漫剧</button></div>
+          <p class="c-prompt"><span class="lab">prompt</span><span id="cPrompt" class="ph">按住按钮，开始生成</span></p>
+          <div class="comic" id="comic">
+            <div class="panel"><canvas></canvas><span class="sfx" aria-hidden="true">沙——</span><span class="csteps" id="cSteps">0 / 30</span></div>
+            <div class="panel"><canvas></canvas><span class="bubble" id="cBub"></span></div>
+            <div class="panel"><canvas></canvas><span class="ep" id="cEp"></span></div>
+          </div>
+          <button type="button" class="hold" id="holdBtn"><svg viewBox="0 0 60 60" aria-hidden="true"><circle cx="30" cy="30" r="26" class="hr-bg"/><circle cx="30" cy="30" r="26" class="hr" id="holdRing"/></svg><span class="dot" aria-hidden="true"><i></i></span><span id="holdLbl">按住生成</span></button>
+        </div>
+      </div>
+      <div class="veil" id="aiVeil" role="dialog" aria-labelledby="veilT">
+        <div class="veil-card">
+          <svg class="veil-ic" viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true"><circle cx="30" cy="30" r="28" stroke-dasharray="1 3"/><g class="eye-l"><path d="M10 30c9-11 31-11 40 0-9 11-31 11-40 0z"/><circle cx="30" cy="30" r="6"/><circle cx="30" cy="30" r="2" fill="currentColor"/></g></svg>
+          <h4 id="veilT">这一页的内容由 AI 生成</h4>
+          <p>里面是 AI 生图与 AI 漫剧的示例和业务介绍。能接受 AI 生成的内容再进入，不能接受的话，直接跳过这一页。</p>
+          <div class="veil-act"><button type="button" class="btn" id="veilOk"><span>可以接受，进入</span></button><button type="button" class="btn ghost" id="veilNo"><span>跳过这一页</span></button></div>
+        </div>
+      </div>
+    </article>
+  </div>
+  <div class="rail-ctl">
+    <span class="lab"><b id="railNo">1</b> of 4</span>
+    <div class="rail-bar"><i id="railBar"></i></div>
+    <button type="button" class="rbtn" id="rPrev" aria-label="上一件"><svg viewBox="0 0 18 10" fill="none" stroke="currentColor" stroke-width="1"><path d="M18 5H1M5 1L1 5l4 4"/></svg></button>
+    <button type="button" class="rbtn" id="rNext" aria-label="下一件"><svg viewBox="0 0 18 10" fill="none" stroke="currentColor" stroke-width="1"><path d="M0 5h17M13 1l4 4-4 4"/></svg></button>
+  </div>
+</section>
+
+<!-- 3 价目星牌 -->
+<section class="chap" id="price" data-folio="价目星牌" data-no="03" aria-labelledby="t3">
+  <header class="ch-head rv">
+    <span class="ch-no" aria-hidden="true">03</span>
+    <div class="ch-tw"><p class="ch-en">the price cards</p><h2 class="ch-title" id="t3" data-kin>价目星牌</h2></div>
+    <p class="ch-lede" data-kin>选一类，每张价目牌都会演一遍自己的样子。轻触看详情，想约的再点亮。单位是人民币，r 即元。</p>
+  </header>
+  <div class="rv">
+    <div class="pc-cats" id="pcCats" role="tablist" aria-label="价目分类"></div>
+    <div class="pc-row" id="pcRow" aria-live="polite"></div>
+    <div class="pc-foot">
+      <div class="pc-rules" id="pcRules"></div>
+      <div class="pbag" id="pbag"><div class="sum"><span id="pbCount"></span><b id="pbTotal"></b></div><button type="button" class="btn" id="pbGo"><span>带上清单去预约</span></button></div>
+    </div>
+  </div>
+</section>
+
+<!-- 4 一封来信 -->
+<section class="chap" id="letter" data-folio="一封来信" data-no="04" aria-labelledby="t4">
+  <header class="ch-head rv">
+    <span class="ch-no" aria-hidden="true">04</span>
+    <div class="ch-tw"><p class="ch-en">a letter from Shadow</p><h2 class="ch-title" id="t4" data-kin>一封来信</h2></div>
+    <p class="ch-lede" data-kin>营业须知和时间安排，都封在这封信里。拆开读一读，再决定要不要约。</p>
+  </header>
+  <div class="ltr rv" id="ltr">
+    <div class="road" id="road" aria-hidden="true">
+      <span class="rd-moon"></span>
+      <div class="rd-l rd-far" data-depth=".25"></div>
+      <div class="rd-l rd-mid" data-depth=".55"></div>
+      <div class="rd-l rd-near"></div>
+      <div class="coach" id="coach" title="送信的马车">
+        <svg viewBox="0 0 290 110" aria-hidden="true">
+          <g class="cb">
+            <path d="M118 72L206 66" stroke="#111" stroke-width="2.4"/>
+            <path d="M30 18H106L100 11H36Z" fill="#111"/><circle cx="68" cy="7" r="3" fill="#111"/>
+            <path d="M20 40Q20 21 40 19H96Q116 21 116 40V78H20Z" fill="#111"/>
+            <rect x="34" y="31" width="26" height="22" rx="3" fill="#efedfb"/><path d="M47 31v22M34 42h26" stroke="#111" stroke-width="1.4"/>
+            <rect id="coachDoor" x="70" y="29" width="32" height="42" rx="2" fill="none" stroke="rgba(255,255,255,.35)"/><circle cx="97" cy="51" r="1.6" fill="#fff"/>
+            <path d="M47 60L48.2 63.8L52 65L48.2 66.2L47 70L45.8 66.2L42 65L45.8 63.8Z" fill="#cfc8ff"/>
+            <path d="M16 78H124" stroke="#111" stroke-width="3" stroke-linecap="round"/>
+            <path d="M116 34h7v11h-7z" fill="#111"/><circle class="lamp" cx="119.5" cy="39.5" r="2.4" fill="#ffd9a8"/>
+            <path d="M112 50H140V56H112Z" fill="#111"/>
+            <path d="M124 50Q124 34 132 32Q140 34 139 50Z" fill="#111"/><circle cx="132" cy="28" r="5" fill="#111"/><path d="M126 24h12v-2h-2v-9h-8v9h-2z" fill="#111"/>
+            <path d="M137 43Q200 54 270 46" stroke="#111" stroke-width=".7" fill="none"/>
+          </g>
+          <g class="wh" style="transform-origin:40px 86px"><circle cx="40" cy="86" r="17" fill="none" stroke="#111" stroke-width="3"/><path d="M40 69v34M23 86h34M28 74l24 24M52 74l-24 24" stroke="#111" stroke-width="1.2"/><circle cx="40" cy="86" r="3.2" fill="#111"/></g>
+          <g class="wh" style="transform-origin:100px 90px"><circle cx="100" cy="90" r="13" fill="none" stroke="#111" stroke-width="3"/><path d="M100 77v26M87 90h26M91 81l18 18M109 81l-18 18" stroke="#111" stroke-width="1.1"/><circle cx="100" cy="90" r="2.6" fill="#111"/></g>
+          <g class="horse">
+            <g class="lg la" style="transform-origin:190px 70px"><path d="M190 70L193 87L190 103" stroke="#111" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></g>
+            <g class="lg lb" style="transform-origin:241px 70px"><path d="M241 70L244 87L241 103" stroke="#111" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></g>
+            <path d="M182 58Q168 62 167 82Q175 70 184 66Z" fill="#111"/>
+            <ellipse cx="215" cy="64" rx="34" ry="14" fill="#111"/>
+            <g class="lg lb" style="transform-origin:199px 70px"><path d="M199 70L202 87L199 103" stroke="#222" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></g>
+            <g class="lg la" style="transform-origin:232px 70px"><path d="M232 70L235 87L232 103" stroke="#222" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></g>
+            <g class="hd" style="transform-origin:244px 62px">
+              <path d="M238 60L250 38Q254 30 262 30L276 38Q280 41 277 45L268 45Q263 45 261 49L252 66Z" fill="#111"/>
+              <path d="M258 31L260 23L263 31Z" fill="#111"/><path d="M248 42L243 40L250 35L246 33L253 30" stroke="#111" stroke-width="2" fill="none"/>
+              <path d="M259 30Q256 18 265 13Q262 22 262 29Z" fill="#cfc8ff"/><circle cx="267" cy="36" r="1.2" fill="#fff"/>
+            </g>
+            <path d="M236 54Q243 64 237 74" stroke="#cfc8ff" stroke-width="2" fill="none"/>
+            <path d="M212 57L213 60L216 61L213 62L212 65L211 62L208 61L211 60Z" fill="#cfc8ff"/>
+          </g>
+        </svg>
+      </div>
+    </div>
+    <div class="env-stage" id="envStage">
+      <div class="env away" id="env">
+        <div class="env-in"></div>
+        <div class="peek" id="peek"><span class="lab">a letter</span><p>见字如面：</p></div>
+        <div class="env-front">
+          <svg class="folds" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path d="M0 100L44 62M100 100L56 62" vector-effect="non-scaling-stroke"/></svg>
+          <div class="addr"><span class="lab">from Shadow</span><b>致每一位来访的你</b><span>营业须知与时间安排，内附</span></div>
+          <div class="stamp" aria-hidden="true"><div class="stamp-in"><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width=".9"><circle cx="20" cy="20" r="15" stroke-dasharray="1 2"/><path d="M20 6c.8 7.4 5.6 12.2 14 14-8.4 1.8-13.2 6.6-14 14-.8-7.4-5.6-12.2-14-14 8.4-1.8 13.2-6.6 14-14z"/></svg></div></div>
+          <svg class="pmark" id="pmark" viewBox="0 0 160 100" aria-hidden="true"></svg>
+        </div>
+        <div class="flap" id="flap"><div class="flap-o"></div><div class="flap-i"></div></div>
+        <button type="button" class="seal" id="seal" aria-label="拆开火漆印，读这封信">
+          <span class="half l"><span class="wax"><svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="1"><circle cx="15" cy="15" r="13"/><path d="M15 4c.6 5.6 4.4 9.4 11 11-6.6 1.6-10.4 5.4-11 11-.6-5.6-4.4-9.4-11-11 6.6-1.6 10.4-5.4 11-11z" fill="currentColor" fill-opacity=".25"/></svg></span></span>
+          <span class="half r"><span class="wax"><svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="1"><circle cx="15" cy="15" r="13"/><path d="M15 4c.6 5.6 4.4 9.4 11 11-6.6 1.6-10.4 5.4-11 11-.6-5.6-4.4-9.4-11-11 6.6-1.6 10.4-5.4 11-11z" fill="currentColor" fill-opacity=".25"/></svg></span></span>
+        </button>
+      </div>
+      <div class="env-act"><p class="lab" id="envHint" style="margin:0">有一封信，正在路上</p></div>
+    </div>
+    <div class="spread" id="spread">
+      <article class="sp-page sp-l" aria-label="营业须知">
+        <div class="sp-h"><span class="lab">i</span><h3>营业须知</h3><em>notice</em></div>
+        <p class="sp-greet" id="spGreet">见字如面。这封信是马车连夜送来的。下单之前，请先把下面这几条读一读；全部读完，上面这组星星会连成一线。</p>
+        <svg class="const-mini" id="constMini" viewBox="0 0 300 64" aria-hidden="true"></svg>
+        <p class="lab" id="ntProg" style="margin:0 0 4px"></p>
+        <div id="ntList"></div>
+      </article>
+      <article class="sp-page sp-r" aria-label="时间安排">
+        <div class="sp-h"><span class="lab">ii</span><h3>时间安排</h3><em id="calMonth"></em></div>
+        <div class="st-row"><span class="post-state"><i class="beacon"></i><b id="pState"></b></span><span class="lab" id="pStateEn"></span><span class="slots-w"><span id="slots"></span><span id="slotTxt"></span></span></div>
+        <div class="cal" id="cal" role="grid" aria-label="本月日程"></div>
+        <div class="legend"><span><i class="lo"></i>可约</span><span><i class="lf"></i>已满</span><span><i class="lr"></i>休息</span><span class="ph" id="calNote"></span></div>
+        <dl class="kv">
+          <dt class="lab">最近可排</dt><dd id="nextTxt" class="ph">待站主提供</dd>
+          <dt class="lab">回复时间</dt><dd id="replyTxt" class="ph">待站主提供</dd>
+          <dt class="lab">交付周期</dt><dd id="delivTxt" class="ph">待站主提供</dd>
+        </dl>
+        <p class="sp-sign">Shadow<span class="lab" id="spDate"></span></p>
+      </article>
+    </div>
+    <div class="sp-act" id="spAct">
+      <p class="sp-swipe lab">左右滑动，翻到另一页</p>
+      <button type="button" class="btn" id="bookBtn"><span>复制预约消息</span></button>
+      <button type="button" class="btn ghost" id="foldBtn"><span>把信收起来</span></button>
+    </div>
+  </div>
+</section>
+
+<!-- 价目详情 -->
+<div class="pdm" id="pdm" role="dialog" aria-modal="true" aria-labelledby="pdT">
+  <div class="pdm-bg" id="pdmBg"></div>
+  <div class="pdm-card">
+    <button type="button" class="x pdm-x" id="pdmX" aria-label="关闭"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <div class="pc-art pdm-art" id="pdmArt" aria-hidden="true"></div>
+    <div class="pdm-info">
+      <p class="lab" id="pdCat"></p>
+      <h3 id="pdT"></h3>
+      <p class="pdm-sub" id="pdS"></p>
+      <p class="pdm-price"><b id="pdP"></b><i id="pdU"></i></p>
+      <p class="pdm-desc" id="pdD"></p>
+      <div id="pdFw"><p class="lab pdm-h">流程</p><ol class="pdm-flow" id="pdF"></ol></div>
+      <div class="pdm-note" id="pdN"></div>
+      <div class="pdm-act"><button type="button" class="btn" id="pdAdd"><span>点亮，加入清单</span></button><button type="button" class="btn ghost" id="pdRead"><span>先看须知与档期</span></button></div>
+    </div>
+  </div>
+</div>
+
+<footer class="colo" aria-label="版权页">
+  <p class="colo-mark" data-kin>Spark Light</p>
+  <div class="colo-grid">
+    <div><h4>主编、设计与代码</h4><p>Shadow</p></div>
+    <div><h4>本期</h4><p id="coloIssue"></p></div>
+    <div><h4>字体</h4><p>Instrument Serif<br>Noto Serif SC</p></div>
+    <div><h4>说明</h4><p>部分文案待站主提供。</p></div>
+  </div>
+  <div class="colo-act">
+    <button type="button" class="lnk" id="fNotice">营业须知</button>
+    <button type="button" class="lnk" id="fMore">更多页面与设置</button>
+    <button type="button" class="lnk" id="fReset">重置今日字卡</button>
+  </div>
+</footer>
 </main>
+
+<!-- 翻开的字卡 -->
+<div class="reading" id="reading" role="dialog" aria-modal="true" aria-label="今日字卡">
+  <div class="rd-bg" id="rdBg"></div>
+  <div class="rd-wrap">
+    <div class="big" id="big"><div class="big-in">
+      <div class="bback" id="bigBack"></div>
+      <div class="face"><span class="fno lab" id="bigNo"></span><svg class="glyph" id="bigGlyph" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"></svg><p class="msg" id="bigMsg"></p><span class="fdate lab" id="bigDate"></span></div>
+    </div></div>
+    <div class="rd-act"><button type="button" class="btn" id="rdKeep"><span>夹进书里</span></button></div>
+  </div>
+</div>
+
+<!-- 抽屉 -->
+<div class="sscrim" id="sscrim"></div>
+<div class="sheet" id="contact" role="dialog" aria-modal="true" aria-labelledby="cTitle">
+  <div class="grab"></div>
+  <div class="sh-h"><h2 id="cTitle">预约消息已复制</h2><button type="button" class="x" data-close aria-label="关闭"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+  <p style="margin:0 0 12px;font-size:14px;color:var(--ink-2)">可以先改一改括号里的内容，再发到下面的渠道。</p>
+  <pre class="msgbox" id="msgbox"></pre>
+  <button type="button" class="btn ghost" id="copyAgain" style="width:100%"><span>再复制一次</span></button>
+  <div id="channels" style="margin-top:10px"></div>
+</div>
+<div class="sheet" id="more" role="dialog" aria-modal="true" aria-labelledby="mTitle">
+  <div class="grab"></div>
+  <div class="sh-h"><h2 id="mTitle">更多</h2><button type="button" class="x" data-close aria-label="关闭"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+  <div id="pages"></div>
+  <p class="lab sh-sub">动效</p>
+  <button type="button" class="row" id="gyroOpt"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="7" y="3" width="10" height="18" rx="2.5"/><path d="M3 9c-1 2-1 4 0 6M21 9c1 2 1 4 0 6"/></svg></span><span>体感视差<small id="gyroSub"></small></span></button>
+  <button type="button" class="row" id="motionOpt" role="switch" aria-checked="false"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="12" cy="12" r="8"/><path d="M12 4v16"/></svg></span><span>简化动效<small>关闭视差、粒子与抖动，更省电</small></span><span class="sw"><i></i></span></button>
+  <button type="button" class="row" id="resetDaily"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M5 12a7 7 0 1 0 2-5M5 4v4h4"/></svg></span><span>重置今日字卡<small>清掉今天的书签，可以重新抽</small></span></button>
+</div>
+
+<!-- 悬浮球 -->
+<div class="oscrim" id="oscrim"></div>
+<div class="orb" id="orb" role="button" tabindex="0" aria-label="打开导航，可拖动" aria-expanded="false" data-noripple>
+  <span class="orb-halo"></span><span class="orb-ball"></span>
+  <svg class="orb-prog" id="orbProg" viewBox="0 0 58 58" aria-hidden="true"><circle cx="29" cy="29" r="28"/></svg>
+  <span class="orb-ic"><svg class="st" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 0c.6 5.4 4 8.8 10 10-6 1.2-9.4 4.6-10 10-.6-5.4-4-8.8-10-10 6-1.2 9.4-4.6 10-10z" fill="currentColor"/></svg><svg class="x2" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 4l12 12M16 4L4 16" stroke="currentColor" stroke-width="1.4" fill="none"/></svg></span>
+</div>
+<nav class="omenu" id="omenu" aria-label="全站导航"></nav>
+
+<!-- 净化 -->
+<canvas id="smoke" aria-hidden="true"></canvas>
+<div class="wand" id="wand" aria-hidden="true">
+  <svg viewBox="0 0 44 92">
+    <defs><radialGradient id="wEmb"><stop offset="0" stop-color="#fff6e2"/><stop offset=".3" stop-color="#f1a25a"/><stop offset="1" stop-color="#f1a25a" stop-opacity="0"/></radialGradient></defs>
+    <circle class="w-glow" cx="22" cy="10" r="15" fill="url(#wEmb)"/>
+    <path d="M22 7C29 14 33 30 32 52c-1 12-5 20-8 26h-4c-3-6-7-14-8-26C11 30 15 14 22 7z" fill="#ececef" stroke="#000" stroke-width=".8"/>
+    <path d="M22 12v66M22 20l-5 4M22 20l5 4M22 30l-7 5M22 30l7 5M22 41l-8 6M22 41l8 6M22 52l-8 6M22 52l8 6" stroke="#000" stroke-width=".5" fill="none" opacity=".55"/>
+    <path d="M12 58l20-5M11 63l21-4M13 68l18-4" stroke="#000" stroke-width=".9" fill="none"/>
+    <path d="M20 78v12M22 78v13M24 78v11" stroke="#000" stroke-width="1" stroke-linecap="round"/>
+    <path d="M16 11c2-5 10-5 12 0-2 4-10 4-12 0z" fill="#2a2a30"/>
+    <circle cx="22" cy="9" r="2.2" fill="#ffd9a8"/>
+  </svg>
+</div>
+<div class="pur" id="pur" aria-live="polite"><span class="pur-ic" aria-hidden="true"></span><span><b class="pur-t" id="purT">正在净化此空间</b><span class="lab pur-s" id="purS">鼠尾草的烟正在扫过每一个字</span></span><span class="pur-line"><i></i></span></div>
+<div class="wave" id="wave"></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 <script type="module" src="core/boot.js"></script>
 <script type="module" src="home/page.js"></script>
 </body>
