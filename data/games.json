@@ -1,0 +1,4 @@
+{
+  "_说明": "小游戏登记。每个游戏是一张卡片。每个：id、title、summary、cover（封面文件名，放在 assets/covers/）、path（游戏所在的文件夹路径）。",
+  "items": []
+}

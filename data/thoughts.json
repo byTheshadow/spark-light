@@ -1,0 +1,4 @@
+{
+  "_说明": "碎碎念，按时间从新到旧显示。每条：date（日期）、text（文字）、image（配图文件名，放在 assets/thoughts/，没有就填 null）。",
+  "items": []
+}

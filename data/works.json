@@ -1,0 +1,11 @@
+{
+  "_说明": "作品登记。分类文件夹在 assets/works/ 下。添加作品：把图放进对应分类文件夹，再在 items 里加一条。写法见 data/README.md。",
+  "categories": [
+    { "id": "divination", "name": "占卜示例" },
+    { "id": "tuning",     "name": "调频" },
+    { "id": "web-games",  "name": "网页与小游戏" },
+    { "id": "oc",         "name": "OC 与梦女" },
+    { "id": "ai",         "name": "AI 漫剧与生图" }
+  ],
+  "items": []
+}

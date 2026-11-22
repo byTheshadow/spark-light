@@ -1,0 +1,53 @@
+{
+  "_说明": "服务与价目，全站价格只在这里写一份。price 填数字（单位是人民币，r 即元）。from 为 true 表示“底价……起”。unit 是计价单位，没有就填 null。items 为空且有 placeholder 的分类，会显示占位文字。",
+  "currency": "r",
+  "currencyNote": "单位是人民币，r 即元",
+  "categories": [
+    {
+      "id": "divination",
+      "name": "占卜",
+      "summary": "雷诺曼、塔罗、字卡、指引类",
+      "items": [
+        { "id": "ln-tarot-1q",      "name": "雷诺曼 / 塔罗，一个问题", "price": 30, "unit": null, "from": false, "note": "不可指定牌阵" },
+        { "id": "fortune-single",   "name": "单个运势类",              "price": 40, "unit": null, "from": false, "note": "不可指定牌阵" },
+        { "id": "past-life",        "name": "前世今生",                "price": 50, "unit": null, "from": false, "note": "不可指定牌阵" },
+        { "id": "oc-entertainment", "name": "梦角 / OC 娱乐向占卜",    "price": 50, "unit": null, "from": false, "note": "不可指定牌阵" },
+        { "id": "cards-random",     "name": "字卡、指引类，随机抽牌",  "price": 5,  "unit": "次", "from": false, "note": "随机抽取" }
+      ],
+      "rules": [],
+      "placeholder": null,
+      "_待确认": ["不可指定牌阵是否适用于全部占卜项目：目前按适用于占卜类整体记录，待站主确认。"]
+    },
+    {
+      "id": "vibecoding",
+      "name": "Vibecoding 网站定制",
+      "summary": "从想法到能打开、能分享的网站",
+      "items": [
+        { "id": "website", "name": "网站定制", "price": 100, "unit": null, "from": true, "note": "按网站难度和功能决定工期与价格" }
+      ],
+      "rules": [
+        "下单后先与客人沟通想要的风格、想要的元素、想放的功能。",
+        "大改内容、元素或风格需另外加钱。",
+        "加急加 30-50r，不等，按具体情况定。"
+      ],
+      "placeholder": null,
+      "_待确认": ["加急的具体档位：30r 与 50r 分别对应什么情况，待站主说明。"]
+    },
+    {
+      "id": "tuning",
+      "name": "调频",
+      "summary": null,
+      "items": [],
+      "rules": [],
+      "placeholder": "服务内容与价格待站主提供"
+    },
+    {
+      "id": "ai",
+      "name": "AI 创作",
+      "summary": "漫剧、生图",
+      "items": [],
+      "rules": [],
+      "placeholder": "服务内容与价格待站主提供"
+    }
+  ]
+}

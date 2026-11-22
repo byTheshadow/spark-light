@@ -1,0 +1,12 @@
+{
+  "_说明": "免费字卡。每张卡有一个图形名 glyph（卡面图案）和一句文案 text。text 为 null 表示文案待站主提供。",
+  "cards": [
+    { "id": "c1", "glyph": "rings", "text": null },
+    { "id": "c2", "glyph": "spark", "text": null },
+    { "id": "c3", "glyph": "arc",   "text": null },
+    { "id": "c4", "glyph": "tri",   "text": null },
+    { "id": "c5", "glyph": "lines", "text": null },
+    { "id": "c6", "glyph": "moon",  "text": null },
+    { "id": "c7", "glyph": "eye",   "text": null }
+  ]
+}

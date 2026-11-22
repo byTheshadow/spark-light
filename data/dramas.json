@@ -1,0 +1,4 @@
+{
+  "_说明": "AI 漫剧登记。视频不放在仓库里，只登记 B 站视频的 BV 号。每部：id、title、summary、cover（封面文件名，放在 assets/covers/）、bvid、date。页面会自动标注“由 AI 生成”。",
+  "items": []
+}

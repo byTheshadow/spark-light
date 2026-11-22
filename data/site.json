@@ -1,0 +1,15 @@
+{
+  "_说明": "站点基础信息与导航。值为 null 表示待站主提供，页面会显示占位。以下划线开头的键只是备注，程序不读取。",
+  "name": "Spark Light",
+  "owner": "Shadow",
+  "ownerLine": "Shadow 的个人服务站",
+  "tagline": null,
+  "intro": null,
+  "nav": [
+    { "id": "home",     "title": "主界面",       "path": "",          "desc": "业务介绍、价目与营业须知" },
+    { "id": "feedback", "title": "返图与反馈",   "path": "feedback/", "desc": "客人凭口令留言和返图，也可以看大家的反馈" },
+    { "id": "works",    "title": "作品与碎碎念", "path": "works/",    "desc": "Shadow 的作品图与随想" },
+    { "id": "drama",    "title": "AI 漫剧",      "path": "drama/",    "desc": "AI 漫剧视频展示" },
+    { "id": "games",    "title": "小游戏",       "path": "games/",    "desc": "可以直接玩的小游戏，由 Shadow 制作" }
+  ]
+}

@@ -1,0 +1,2 @@
+/* AI 漫剧页专属样式。所有选择器都限定在 body[data-page="drama"] 下，避免影响其他页面。 */
+body[data-page="drama"] .sl-page-head { padding-bottom: 4px; }

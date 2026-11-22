@@ -1,0 +1,60 @@
+/* themes/t1-starfield/theme.css —— 主题 1：白黑弥散星空
+   结构：一、变量（改这里，全站跟着变）  二、皮肤（背景与装饰）
+   说明：下面的配色是以站主给的 HTML 原型为准的“占位”，最终配色待站主确认后在这里统一改。 */
+
+/* ===== 一、变量 ===== */
+:root[data-theme="t1-starfield"] {
+  --sl-bg: #f8f8f9;
+  --sl-surface: #fdfdfd;
+  --sl-surface-2: #efeff1;
+  --sl-ink: #000;
+  --sl-ink-2: #2c2c30;
+  --sl-mute: #62626a;
+  --sl-faint: #acacb3;
+  --sl-on-ink: #fff;
+  --sl-line: rgba(0, 0, 0, .14);
+  --sl-line-2: rgba(0, 0, 0, .07);
+
+  /* 弥散光斑的三种颜色（占位，带透明度） */
+  --sl-glow-a: rgba(207, 200, 255, .7);
+  --sl-glow-b: rgba(191, 230, 225, .65);
+  --sl-glow-c: rgba(241, 216, 226, .65);
+
+  --sl-glass-bg: rgba(248, 248, 249, .8);
+  --sl-glass-blur: 16px;
+
+  --sl-font-disp: "Instrument Serif", "Didot", "Bodoni 72", "Times New Roman", serif;
+  --sl-font-body: "Noto Serif SC", "Source Han Serif SC", "Noto Serif CJK SC", "Songti SC", "STSong", "SimSun", serif;
+}
+
+/* ===== 二、皮肤 ===== */
+
+/* 弥散光斑：三团柔光缓慢漂移（简化动效下静止） */
+html[data-theme="t1-starfield"] body::before {
+  content: ""; position: fixed; inset: -25%; z-index: var(--sl-z-bg); pointer-events: none;
+  background:
+    radial-gradient(38% 32% at 18% 22%, var(--sl-glow-a), transparent 70%),
+    radial-gradient(34% 30% at 82% 30%, var(--sl-glow-b), transparent 70%),
+    radial-gradient(40% 34% at 55% 85%, var(--sl-glow-c), transparent 70%);
+  filter: blur(30px);
+  animation: sl-t1-drift 70s ease-in-out infinite alternate;
+}
+@keyframes sl-t1-drift {
+  from { transform: translate3d(-2%, -1%, 0) rotate(0deg); }
+  to   { transform: translate3d(2%, 2%, 0) rotate(6deg); }
+}
+
+/* 细颗粒噪点 */
+html[data-theme="t1-starfield"] body::after {
+  content: ""; position: fixed; inset: 0; z-index: var(--sl-z-grain); pointer-events: none;
+  opacity: .07; mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .9 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* 顶栏与底栏：玻璃感要保证文字可读，所以底色偏实 */
+html[data-theme="t1-starfield"] .sl-head,
+html[data-theme="t1-starfield"] .sl-orderbar { box-shadow: 0 0 0 1px transparent; }
+html[data-theme="t1-starfield"] .sl-sheet { background: rgba(252, 252, 253, .96); -webkit-backdrop-filter: blur(24px) saturate(1.2); backdrop-filter: blur(24px) saturate(1.2); }
+
+/* 首页大标题 */
+html[data-theme="t1-starfield"] .sl-hero-title { font-family: var(--sl-font-disp); font-weight: 400; letter-spacing: -.01em; }

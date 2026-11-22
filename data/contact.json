@@ -1,0 +1,5 @@
+{
+  "_说明": "联系方式与下单渠道，站主提供后填入。channels 里每一项的写法见 data/README.md。没有渠道时，页面显示占位。",
+  "channels": [],
+  "orderForm": { "enabled": null, "note": "是否需要在线下单表单，待站主确定" }
+}

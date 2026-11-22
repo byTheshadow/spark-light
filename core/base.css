@@ -1,0 +1,230 @@
+/* core/base.css
+   与主题无关的结构和组件骨架。所有颜色、字体、圆角、动效曲线都来自 --sl-* 变量。
+   主题文件（themes 文件夹下各主题的 theme.css）只负责给变量赋值和加装饰。
+   下面 :root 里的值是兜底：即使主题文件没加载出来，站点也能正常阅读。 */
+
+:root {
+  --sl-bg: #f8f8f9;
+  --sl-surface: #fdfdfd;
+  --sl-surface-2: #efeff1;
+  --sl-ink: #000;
+  --sl-ink-2: #2c2c30;
+  --sl-mute: #62626a;      /* 次要文字，对浅底对比度约 5.7:1 */
+  --sl-faint: #8a8a92;     /* 仅用于装饰，不用于需要阅读的文字 */
+  --sl-on-ink: #fff;
+  --sl-line: rgba(0, 0, 0, .14);
+  --sl-line-2: rgba(0, 0, 0, .07);
+  --sl-glow-a: rgba(207, 200, 255, .7);
+  --sl-glow-b: rgba(191, 230, 225, .65);
+  --sl-glow-c: rgba(241, 216, 226, .65);
+  --sl-glass-bg: rgba(253, 253, 253, .86);
+  --sl-glass-blur: 18px;
+  --sl-scrim: rgba(0, 0, 0, .35);
+  --sl-font-disp: "Instrument Serif", "Didot", "Bodoni 72", "Times New Roman", serif;
+  --sl-font-body: "Noto Serif SC", "Source Han Serif SC", "Noto Serif CJK SC", "Songti SC", "STSong", "SimSun", serif;
+  --sl-font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --sl-radius-s: 10px;
+  --sl-radius-m: 18px;
+  --sl-radius-l: 26px;
+  --sl-radius-pill: 999px;
+  --sl-ease: cubic-bezier(.22, .8, .18, 1);
+  --sl-head-h: 54px;
+  --sl-bar-h: 64px;
+  --sl-sat: env(safe-area-inset-top, 0px);
+  --sl-sab: env(safe-area-inset-bottom, 0px);
+  --sl-z-bg: -1;
+  --sl-z-head: 40;
+  --sl-z-bar: 45;
+  --sl-z-grain: 60;
+  --sl-z-scrim: 70;
+  --sl-z-sheet: 80;
+  --sl-z-toast: 90;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; -webkit-tap-highlight-color: transparent; scroll-padding-top: calc(var(--sl-head-h) + var(--sl-sat) + 12px); }
+html, body { overflow-x: hidden; overflow-x: clip; }
+body {
+  margin: 0;
+  padding-top: calc(var(--sl-head-h) + var(--sl-sat));
+  padding-bottom: calc(var(--sl-bar-h) + var(--sl-sab) + 24px);
+  background: var(--sl-bg);
+  color: var(--sl-ink);
+  font-family: var(--sl-font-body);
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 1.8;
+  letter-spacing: .02em;
+  min-height: 100vh;
+}
+body.sl-lock { overflow: hidden; }
+button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; touch-action: manipulation; -webkit-user-select: none; user-select: none; }
+a { color: inherit; }
+svg { display: block; }
+h1, h2, h3, p, ul, ol { margin: 0; }
+ul, ol { padding: 0; list-style: none; }
+:focus-visible { outline: 2px solid var(--sl-ink); outline-offset: 3px; border-radius: 4px; }
+
+.sl-visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.sl-skip { position: absolute; left: 12px; top: -60px; z-index: 100; padding: 10px 16px; background: var(--sl-ink); color: var(--sl-on-ink); border-radius: var(--sl-radius-s); text-decoration: none; }
+.sl-skip:focus { top: calc(var(--sl-sat) + 8px); }
+
+/* ---------- 动效降级 ----------
+   data-motion="simple" 由 core/init.js 根据访客选择或系统“减少动态效果”设置写入 */
+html[data-motion="simple"] *,
+html[data-motion="simple"] *::before,
+html[data-motion="simple"] *::after {
+  animation-duration: .001ms !important;
+  animation-delay: 0s !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: .001ms !important;
+  transition-delay: 0s !important;
+  scroll-behavior: auto !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  html:not([data-motion]) *, html:not([data-motion]) *::before, html:not([data-motion]) *::after {
+    animation-duration: .001ms !important; animation-delay: 0s !important; transition-duration: .001ms !important; transition-delay: 0s !important; scroll-behavior: auto !important;
+  }
+}
+
+/* ---------- 顶栏 ---------- */
+.sl-head {
+  position: fixed; left: 0; right: 0; top: 0; z-index: var(--sl-z-head);
+  height: calc(var(--sl-head-h) + var(--sl-sat));
+  padding: var(--sl-sat) clamp(20px, 5vw, 40px) 0;
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  background: var(--sl-glass-bg);
+  -webkit-backdrop-filter: blur(var(--sl-glass-blur)); backdrop-filter: blur(var(--sl-glass-blur));
+  border-bottom: 1px solid var(--sl-line-2);
+}
+.sl-brand { display: inline-flex; align-items: baseline; gap: 12px; min-height: 44px; align-items: center; text-decoration: none; }
+.sl-brand-name { font-family: var(--sl-font-disp); font-style: italic; font-size: 24px; line-height: 1; letter-spacing: .01em; }
+.sl-brand-page { font-size: 13px; color: var(--sl-mute); letter-spacing: .12em; }
+.sl-iconbtn { width: 44px; height: 44px; display: grid; place-items: center; border-radius: 50%; transition: background-color .3s var(--sl-ease); }
+.sl-iconbtn:hover { background: var(--sl-line-2); }
+
+/* ---------- 底部固定：排单状态 + 下单与联系 ---------- */
+.sl-orderbar {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: var(--sl-z-bar);
+  padding: 10px clamp(20px, 5vw, 40px) calc(10px + var(--sl-sab));
+  min-height: calc(var(--sl-bar-h) + var(--sl-sab));
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  background: var(--sl-glass-bg);
+  -webkit-backdrop-filter: blur(var(--sl-glass-blur)); backdrop-filter: blur(var(--sl-glass-blur));
+  border-top: 1px solid var(--sl-line-2);
+}
+.sl-status { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; padding: 0 4px; font-size: 14px; letter-spacing: .06em; text-align: left; }
+.sl-dot { width: 9px; height: 9px; border-radius: 50%; border: 1.5px solid var(--sl-ink); flex: none; }
+.sl-status[data-state="open"] .sl-dot { background: var(--sl-ink); }
+
+/* ---------- 按钮 ---------- */
+.sl-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  min-height: 46px; padding: 0 26px; border-radius: var(--sl-radius-pill);
+  background: var(--sl-ink); color: var(--sl-on-ink);
+  font-size: 14px; letter-spacing: .2em; text-decoration: none; white-space: nowrap;
+  transition: opacity .3s var(--sl-ease), transform .25s var(--sl-ease);
+}
+.sl-btn:hover { opacity: .86; }
+.sl-btn:active { transform: scale(.97); }
+.sl-btn--ghost { background: transparent; color: var(--sl-ink); border: 1px solid var(--sl-line); }
+
+/* ---------- 底部弹层（手机）/ 居中弹窗（宽屏）---------- */
+.sl-scrim { position: fixed; inset: 0; z-index: var(--sl-z-scrim); background: var(--sl-scrim); opacity: 0; visibility: hidden; transition: opacity .35s var(--sl-ease), visibility 0s .35s; }
+.sl-scrim.on { opacity: 1; visibility: visible; transition-delay: 0s; }
+.sl-sheet {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: var(--sl-z-sheet);
+  max-height: 86vh; max-height: 86dvh; overflow: auto; overscroll-behavior: contain;
+  padding: 10px clamp(20px, 5vw, 28px) calc(28px + var(--sl-sab));
+  border-radius: var(--sl-radius-l) var(--sl-radius-l) 0 0;
+  background: var(--sl-surface);
+  box-shadow: 0 -30px 70px -30px rgba(0, 0, 0, .35);
+  transform: translateY(105%); visibility: hidden;
+  transition: transform .5s var(--sl-ease), visibility 0s .5s;
+}
+.sl-sheet.on { transform: none; visibility: visible; transition-delay: 0s; }
+.sl-sheet-grip { width: 38px; height: 4px; border-radius: 4px; background: var(--sl-line); margin: 4px auto 6px; }
+.sl-sheet-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 8px; }
+.sl-sheet-title { font-size: 22px; font-weight: 400; letter-spacing: .06em; }
+.sl-sheet-sec { margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--sl-line-2); }
+.sl-sheet-sec > h3 { font-size: 13px; font-weight: 400; color: var(--sl-mute); letter-spacing: .14em; margin-bottom: 8px; }
+@media (min-width: 720px) {
+  .sl-sheet {
+    left: 50%; right: auto; bottom: auto; top: 50%; width: min(520px, 92vw);
+    border-radius: var(--sl-radius-l); padding-bottom: 28px; opacity: 0;
+    transform: translate(-50%, -46%) scale(.98);
+    box-shadow: 0 40px 90px -30px rgba(0, 0, 0, .4);
+    transition: transform .5s var(--sl-ease), opacity .4s var(--sl-ease), visibility 0s .5s;
+  }
+  .sl-sheet.on { transform: translate(-50%, -50%); opacity: 1; }
+  .sl-sheet-grip { display: none; }
+}
+
+/* 弹层里的列表行 */
+.sl-rows > li { border-bottom: 1px solid var(--sl-line-2); }
+.sl-rows > li:last-child { border-bottom: 0; }
+.sl-row { display: flex; align-items: center; justify-content: space-between; gap: 14px; width: 100%; min-height: 52px; padding: 8px 2px; text-align: left; text-decoration: none; }
+.sl-row-main { display: grid; gap: 2px; min-width: 0; }
+.sl-row-title { font-size: 17px; letter-spacing: .05em; }
+.sl-row-desc { font-size: 13px; color: var(--sl-mute); line-height: 1.6; }
+.sl-row[aria-current="page"] .sl-row-title { font-weight: 600; }
+.sl-row[aria-disabled="true"] { opacity: .55; cursor: default; }
+.sl-tag { font-size: 12px; letter-spacing: .1em; color: var(--sl-mute); border: 1px solid var(--sl-line); border-radius: var(--sl-radius-pill); padding: 1px 10px; white-space: nowrap; }
+
+/* 开关 */
+.sl-switch { position: relative; flex: none; width: 52px; height: 30px; border-radius: var(--sl-radius-pill); background: var(--sl-line); transition: background-color .3s var(--sl-ease); }
+.sl-switch::after { content: ""; position: absolute; left: 3px; top: 3px; width: 24px; height: 24px; border-radius: 50%; background: var(--sl-surface); box-shadow: 0 1px 3px rgba(0, 0, 0, .3); transition: transform .3s var(--sl-ease); }
+.sl-switch[aria-checked="true"] { background: var(--sl-ink); }
+.sl-switch[aria-checked="true"]::after { transform: translateX(22px); }
+
+/* 单选（主题列表）*/
+.sl-radio { flex: none; width: 20px; height: 20px; border-radius: 50%; border: 1.5px solid var(--sl-ink); display: grid; place-items: center; }
+.sl-row[aria-checked="true"] .sl-radio::after { content: ""; width: 10px; height: 10px; border-radius: 50%; background: var(--sl-ink); }
+
+/* 提示条 */
+.sl-toast { position: fixed; left: 50%; bottom: calc(var(--sl-bar-h) + var(--sl-sab) + 18px); z-index: var(--sl-z-toast); transform: translate(-50%, 12px); opacity: 0; pointer-events: none; padding: 10px 20px; border-radius: var(--sl-radius-pill); background: var(--sl-ink); color: var(--sl-on-ink); font-size: 14px; transition: opacity .3s var(--sl-ease), transform .3s var(--sl-ease); }
+.sl-toast.on { opacity: 1; transform: translate(-50%, 0); }
+
+/* ---------- 页面内容骨架 ---------- */
+.sl-main { max-width: 960px; margin: 0 auto; padding: 0 clamp(20px, 5vw, 40px); }
+.sl-section { padding: clamp(44px, 9vw, 84px) 0 0; }
+.sl-h2 { font-size: clamp(26px, 5vw, 34px); font-weight: 400; letter-spacing: .08em; line-height: 1.3; }
+.sl-lede { margin-top: 10px; color: var(--sl-mute); max-width: 36em; }
+.sl-ph { color: var(--sl-mute); font-style: italic; }
+.sl-loading { color: var(--sl-mute); padding: 16px 0; }
+.sl-empty { margin-top: 28px; padding: 28px 0; border-top: 1px solid var(--sl-line); color: var(--sl-mute); }
+.sl-error { margin-top: 18px; padding: 14px 16px; border: 1px solid var(--sl-ink); border-radius: var(--sl-radius-s); display: grid; gap: 4px; font-size: 14px; line-height: 1.7; }
+.sl-ai-note { margin-top: 18px; padding: 12px 16px; border-left: 2px solid var(--sl-ink); background: var(--sl-line-2); font-size: 14px; line-height: 1.7; }
+
+.sl-page-head { padding-top: clamp(40px, 9vw, 72px); }
+.sl-page-title { font-family: var(--sl-font-body); font-size: clamp(30px, 7vw, 46px); font-weight: 300; letter-spacing: .1em; line-height: 1.25; }
+
+/* 价目 */
+.sl-price-cat { margin-top: 36px; }
+.sl-price-cat > h3 { font-size: 20px; font-weight: 400; letter-spacing: .08em; }
+.sl-price-sum { font-size: 14px; color: var(--sl-mute); margin-top: 2px; }
+.sl-price-list { margin-top: 10px; }
+.sl-price-row { display: grid; grid-template-columns: 1fr auto; gap: 4px 18px; padding: 12px 0; border-bottom: 1px solid var(--sl-line-2); align-items: baseline; }
+.sl-price-name { letter-spacing: .04em; }
+.sl-price-val { font-family: var(--sl-font-disp); font-size: 22px; letter-spacing: .02em; white-space: nowrap; }
+.sl-price-note { grid-column: 1 / -1; font-size: 13px; color: var(--sl-mute); line-height: 1.6; }
+.sl-rules { margin-top: 12px; display: grid; gap: 6px; font-size: 14px; color: var(--sl-ink-2); }
+.sl-rules > li { padding-left: 1.1em; position: relative; }
+.sl-rules > li::before { content: ""; position: absolute; left: 0; top: .85em; width: .5em; height: 1px; background: var(--sl-ink); }
+
+/* 入口列表：带分隔线的行，不做成一堆卡片 */
+.sl-entries { margin-top: 18px; border-top: 1px solid var(--sl-line); }
+.sl-entry { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 20px 2px; border-bottom: 1px solid var(--sl-line); text-decoration: none; transition: padding-left .4s var(--sl-ease); }
+.sl-entry:hover { padding-left: 10px; }
+.sl-entry-title { font-size: clamp(20px, 4vw, 26px); letter-spacing: .06em; }
+.sl-entry-desc { font-size: 14px; color: var(--sl-mute); line-height: 1.6; }
+.sl-entry-main { display: grid; gap: 2px; }
+
+/* 页面底部署名 */
+.sl-foot { margin-top: clamp(56px, 10vw, 96px); padding: 24px 0 8px; border-top: 1px solid var(--sl-line-2); font-size: 13px; color: var(--sl-mute); letter-spacing: .08em; }
+
+/* 导航没挂上时的兜底入口：3 秒后才出现，避免正常情况下闪一下 */
+.sl-fallback { position: fixed; left: 12px; top: calc(var(--sl-sat) + 10px); z-index: var(--sl-z-head); padding: 8px 14px; background: var(--sl-surface); border: 1px solid var(--sl-line); border-radius: var(--sl-radius-pill); font-size: 14px; opacity: 0; pointer-events: none; animation: sl-fallback-in 0s 3s forwards; }
+html[data-shell] .sl-fallback { display: none; }
+@keyframes sl-fallback-in { to { opacity: 1; pointer-events: auto; } }
+html[data-motion="simple"] .sl-fallback { animation-delay: 3s !important; }
