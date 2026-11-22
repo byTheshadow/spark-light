@@ -1,2 +1,58 @@
-/* 作品与碎碎念页专属样式。所有选择器都限定在 body[data-page="works"] 下，避免影响其他页面。 */
-body[data-page="works"] .sl-page-head { padding-bottom: 4px; }
+/* 作品与碎碎念页专属样式。所有选择器都限定在 body[data-page="works"] 下，避免影响其他页面。
+   颜色、圆角、字体都用全站变量，换主题时自动跟着变。 */
+body[data-page="works"] .wk-jump { margin-top: 22px; display: flex; gap: 22px; }
+body[data-page="works"] .wk-jump a { min-height: 44px; display: inline-flex; align-items: center; font-size: 14px; letter-spacing: .14em; text-underline-offset: 6px; }
+
+/* 分类筛选 */
+body[data-page="works"] .wk-filters { margin-top: 18px; display: flex; flex-wrap: wrap; gap: 8px; }
+body[data-page="works"] .wk-chip { min-height: 40px; padding: 0 16px; display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--sl-line); border-radius: var(--sl-radius-pill); font-size: 14px; letter-spacing: .08em; transition: background-color .3s var(--sl-ease), color .3s var(--sl-ease); }
+body[data-page="works"] .wk-chip[aria-pressed="true"] { background: var(--sl-ink); color: var(--sl-on-ink); border-color: var(--sl-ink); }
+body[data-page="works"] .wk-n { font-family: var(--sl-font-disp); font-size: 15px; opacity: .7; }
+
+/* 作品网格：手机 2 列，宽屏 3 列 */
+body[data-page="works"] .wk-grid { margin-top: 22px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+@media (min-width: 720px) { body[data-page="works"] .wk-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; } }
+body[data-page="works"] .wk-grid > .sl-empty, body[data-page="works"] .wk-grid > .sl-loading, body[data-page="works"] .wk-grid > .sl-error { grid-column: 1 / -1; }
+body[data-page="works"] .wk-card { position: relative; display: grid; gap: 8px; text-align: left; border-radius: var(--sl-radius-m); }
+body[data-page="works"] .wk-media { position: relative; display: block; aspect-ratio: 4 / 5; overflow: hidden; border-radius: var(--sl-radius-m); background: var(--sl-surface-2); }
+body[data-page="works"] .wk-media img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .6s var(--sl-ease); }
+body[data-page="works"] .wk-missing::after { content: ""; position: absolute; inset: 0; background: repeating-linear-gradient(45deg, transparent 0 10px, var(--sl-line-2) 10px 11px); }
+body[data-page="works"] .wk-cap { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; font-size: 14px; line-height: 1.5; letter-spacing: .06em; }
+body[data-page="works"] .wk-title { overflow-wrap: anywhere; }
+
+/* 有鼠标的设备：悬浮放大，标题浮在图上；键盘聚焦时同样显示 */
+@media (hover: hover) and (pointer: fine) {
+  body[data-page="works"] .wk-card { gap: 0; }
+  body[data-page="works"] .wk-cap { position: absolute; left: 0; right: 0; bottom: 0; padding: 36px 14px 12px; border-radius: 0 0 var(--sl-radius-m) var(--sl-radius-m); color: #fff; background: linear-gradient(to top, rgba(0, 0, 0, .66), transparent); opacity: 0; transition: opacity .35s var(--sl-ease); }
+  body[data-page="works"] .wk-cap .sl-tag { color: #fff; border-color: rgba(255, 255, 255, .6); }
+  body[data-page="works"] .wk-card:hover .wk-media img, body[data-page="works"] .wk-card:focus-visible .wk-media img { transform: scale(1.05); }
+  body[data-page="works"] .wk-card:hover .wk-cap, body[data-page="works"] .wk-card:focus-visible .wk-cap { opacity: 1; }
+}
+
+/* 碎碎念：按时间倒序的短文字，日期在左 */
+body[data-page="works"] .th-list { margin-top: 10px; border-top: 1px solid var(--sl-line); }
+body[data-page="works"] .th-item { display: grid; gap: 8px; padding: 22px 0; border-bottom: 1px solid var(--sl-line-2); }
+@media (min-width: 720px) { body[data-page="works"] .th-item { grid-template-columns: 9em 1fr; gap: 24px; } }
+body[data-page="works"] .th-date { font-family: var(--sl-font-disp); font-style: italic; font-size: 18px; color: var(--sl-mute); letter-spacing: .04em; }
+body[data-page="works"] .th-body { display: grid; gap: 14px; min-width: 0; }
+body[data-page="works"] .th-text { white-space: pre-wrap; overflow-wrap: anywhere; max-width: 36em; }
+body[data-page="works"] .th-img { max-width: min(100%, 520px); height: auto; border-radius: var(--sl-radius-m); }
+
+/* 大图查看 */
+body[data-page="works"] .wk-box-scrim { position: fixed; inset: 0; z-index: var(--sl-z-scrim); background: rgba(0, 0, 0, .78); opacity: 0; visibility: hidden; transition: opacity .35s var(--sl-ease), visibility 0s .35s; }
+body[data-page="works"] .wk-box-scrim.on { opacity: 1; visibility: visible; transition-delay: 0s; }
+body[data-page="works"] .wk-box { position: fixed; inset: 0; z-index: var(--sl-z-sheet); display: grid; grid-template-rows: 1fr auto; padding: calc(var(--sl-sat) + 12px) 12px calc(var(--sl-sab) + 12px); color: #fff; opacity: 0; visibility: hidden; transition: opacity .35s var(--sl-ease), visibility 0s .35s; overflow: auto; }
+body[data-page="works"] .wk-box.on { opacity: 1; visibility: visible; transition-delay: 0s; }
+body[data-page="works"] .wk-box-x { position: absolute; right: 10px; top: calc(var(--sl-sat) + 8px); z-index: 2; background: rgba(0, 0, 0, .45); color: #fff; }
+body[data-page="works"] .wk-box-stage { position: relative; display: grid; place-items: center; min-height: 0; }
+body[data-page="works"] .wk-box-img { max-width: 100%; max-height: calc(100vh - 220px); max-height: calc(100dvh - 220px); object-fit: contain; border-radius: var(--sl-radius-s); }
+body[data-page="works"] .wk-box-nav { position: absolute; top: 50%; translate: 0 -50%; background: rgba(0, 0, 0, .45); color: #fff; }
+body[data-page="works"] .wk-box-prev { left: 0; transform: scaleX(-1); }
+body[data-page="works"] .wk-box-next { right: 0; }
+body[data-page="works"] .wk-box-info { display: grid; gap: 6px; justify-items: center; text-align: center; padding: 14px 8px 0; max-width: 36em; margin: 0 auto; }
+body[data-page="works"] .wk-box-title { margin: 0; font-size: 20px; font-weight: 400; letter-spacing: .08em; }
+body[data-page="works"] .wk-box-meta { margin: 0; font-size: 13px; letter-spacing: .12em; opacity: .8; }
+body[data-page="works"] .wk-box-cap { margin: 0; font-size: 15px; line-height: 1.7; opacity: .92; }
+body[data-page="works"] .wk-box-act { margin-top: 6px; }
+body[data-page="works"] .wk-box .sl-btn--ghost { color: #fff; border-color: rgba(255, 255, 255, .6); }
+body[data-page="works"] .wk-box [hidden] { display: none; }

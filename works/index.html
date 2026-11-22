@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="zh-CN" data-root="../">
+<html lang="zh-CN" data-root="../" data-page="works">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -23,10 +23,20 @@
   <header class="sl-page-head">
     <h1 class="sl-page-title" id="page-title">作品与碎碎念</h1>
     <p class="sl-lede" id="page-lede"></p>
+    <nav class="wk-jump" aria-label="本页内容"><a href="#works">作品</a><a href="#thoughts">碎碎念</a></nav>
   </header>
-  <div id="page-body">
-    <p class="sl-empty">这一页还在搭建中，暂时没有内容。</p>
-  </div>
+
+  <section class="sl-section" id="works" aria-labelledby="works-title">
+    <h2 class="sl-h2" id="works-title">作品</h2>
+    <div class="wk-filters" id="wk-filters" role="group" aria-label="作品分类"></div>
+    <div class="wk-grid" id="wk-grid"><p class="sl-loading">正在读取作品</p></div>
+  </section>
+
+  <section class="sl-section" id="thoughts" aria-labelledby="thoughts-title">
+    <h2 class="sl-h2" id="thoughts-title">碎碎念</h2>
+    <div id="th-root"><p class="sl-loading">正在读取</p></div>
+  </section>
+
   <footer class="sl-foot">Spark Light</footer>
 </main>
 <script type="module" src="../core/boot.js"></script>
