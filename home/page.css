@@ -1,7 +1,0 @@
-/* 主界面专属样式。所有选择器都限定在 body[data-page="home"] 下。
-   阶段 1 只是最小版本，开屏星空、字卡等在阶段 2 移植。 */
-body[data-page="home"] .sl-hero { padding-top: clamp(56px, 14vw, 128px); }
-body[data-page="home"] .sl-hero-owner { font-size: 14px; letter-spacing: .3em; color: var(--sl-mute); }
-body[data-page="home"] .sl-hero-title { display: grid; margin-top: 14px; font-size: clamp(76px, 23vw, 210px); line-height: .88; }
-body[data-page="home"] .sl-hero-title span:nth-child(2) { padding-left: .42em; }
-body[data-page="home"] .sl-tagline { margin-top: 30px; max-width: 28em; }
