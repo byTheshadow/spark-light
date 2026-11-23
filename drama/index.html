@@ -20,16 +20,59 @@
 <body data-page="drama">
 <a class="sl-fallback" href="../">Spark Light 主界面</a>
 <main id="main" class="sl-main">
-  <header class="sl-page-head">
-    <h1 class="sl-page-title" id="page-title">AI 漫剧</h1>
+  <header class="sl-page-head drp-head">
+    <h1 class="sl-page-title"><span id="page-title">AI 漫剧</span><small class="drp-h1-sub">Spark Light 放映厅</small></h1>
     <p class="sl-lede" id="page-lede"></p>
-    <p class="sl-ai-note">本页内容由 AI 生成。</p>
+    <p class="sl-ai-note drp-note"><span class="drp-note-star" aria-hidden="true"></span>本页内容由 AI 生成</p>
   </header>
-  <section class="sl-section" aria-label="漫剧列表">
-    <div id="dr-root"><p class="sl-loading">正在读取漫剧</p></div>
+
+  <section class="drp-hall" id="drp-hall" aria-label="漫剧放映">
+    <!-- 银幕：显示当前选中的这一部 -->
+    <div class="drp-screen-wrap" id="drp-screen-wrap">
+      <div class="drp-screen" id="drp-screen">
+        <div class="drp-layer" id="drp-layer-a" aria-hidden="true"></div>
+        <div class="drp-layer" id="drp-layer-b" aria-hidden="true"></div>
+        <div class="drp-cap"><h2 id="drp-screen-title"></h2><span id="drp-screen-kind"></span></div>
+      </div>
+    </div>
+
+    <!-- 类型筛选：只在同时有视频和长图时才出现 -->
+    <div class="drp-tabs" role="tablist" aria-label="按类型筛选" id="drp-tabs" hidden></div>
+
+    <!-- 胶片 -->
+    <div class="drp-strip-wrap">
+      <div class="drp-strip" id="drp-strip" tabindex="0" role="listbox" aria-label="胶片，左右拖动或用方向键挑选作品"></div>
+      <div class="drp-gate" aria-hidden="true"></div>
+    </div>
+    <p class="drp-hint" id="drp-hint"></p>
+
+    <!-- 当前这一部的介绍与操作 -->
+    <div class="drp-now" aria-live="polite">
+      <p class="drp-now-meta"><span id="drp-n-kind"></span><i id="drp-n-sep1"></i><span id="drp-n-ep"></span><i id="drp-n-sep2"></i><span id="drp-n-date"></span></p>
+      <p class="drp-now-sum" id="drp-sum"></p>
+      <div class="drp-now-act">
+        <button class="sl-btn drp-play" type="button" id="drp-play"><span id="drp-play-text">开始放映</span></button>
+        <a class="sl-btn sl-btn--ghost" id="drp-out" href="#" target="_blank" rel="noopener noreferrer" hidden>在 B 站打开</a>
+      </div>
+    </div>
   </section>
+
   <footer class="sl-foot">Spark Light</footer>
 </main>
+
+<!-- 关灯与放映窗：只有点开才创建播放器或加载图片，关闭即释放 -->
+<div class="drp-lights" id="drp-lights" aria-hidden="true"></div>
+<div class="drp-theater" id="drp-theater" role="dialog" aria-modal="true" aria-labelledby="drp-th-title">
+  <div class="drp-beam" id="drp-beam" aria-hidden="true"></div>
+  <div class="drp-lens" aria-hidden="true"></div>
+  <div class="drp-thbar">
+    <h2 class="drp-th-title" id="drp-th-title"></h2>
+    <span class="drp-th-count" id="drp-th-count" aria-live="polite"></span>
+    <button class="drp-th-x" type="button" id="drp-close">退出放映</button>
+  </div>
+  <div class="drp-pscreen" id="drp-pscreen"><div class="drp-pin" id="drp-pin"></div></div>
+</div>
+
 <script type="module" src="../core/boot.js"></script>
 <script type="module" src="page.js"></script>
 </body>

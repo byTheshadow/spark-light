@@ -1,18 +1,167 @@
-/* 小游戏页（游戏列表）专属样式。所有选择器都限定在 body[data-page="games"] 下，避免影响其他页面。 */
-body[data-page="games"] .sl-page-head { padding-bottom: 4px; }
-body[data-page="games"] .gm-intro { max-width: 36em; margin-bottom: 18px; color: var(--sl-ink-2); }
+/* 小游戏页（游戏列表）专属样式：一台方块游戏机。
+   所有选择器都限定在 body[data-page="games"] 之下，不影响其他页面，也不影响各游戏的独立页面。 */
 
-body[data-page="games"] .gm-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 22px; }
-@media (min-width: 720px) { body[data-page="games"] .gm-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 26px 22px; } }
-body[data-page="games"] .gm-card { position: relative; display: grid; gap: 12px; text-decoration: none; border-radius: var(--sl-radius-m); }
-body[data-page="games"] .gm-media { position: relative; display: block; aspect-ratio: 4 / 3; overflow: hidden; border-radius: var(--sl-radius-m); background: var(--sl-surface-2); }
-body[data-page="games"] .gm-media img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .6s var(--sl-ease); }
-body[data-page="games"] .gm-nocover::after { content: ""; position: absolute; inset: 0; background: repeating-linear-gradient(45deg, transparent 0 10px, var(--sl-line-2) 10px 11px); }
-body[data-page="games"] .gm-cover-ph { position: absolute; inset: 0; z-index: 1; display: grid; place-items: center; font-size: 14px; letter-spacing: .2em; color: var(--sl-mute); }
-body[data-page="games"] .gm-card--soon .gm-media { border: 1px dashed var(--sl-line); background: transparent; }
-body[data-page="games"] .gm-info { display: grid; gap: 4px; }
-body[data-page="games"] .gm-title { font-size: 21px; letter-spacing: .08em; line-height: 1.4; overflow-wrap: anywhere; }
-body[data-page="games"] .gm-sum { font-size: 14px; color: var(--sl-ink-2); line-height: 1.7; overflow-wrap: anywhere; }
-body[data-page="games"] .gm-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
-body[data-page="games"] .gm-go { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; font-size: 14px; letter-spacing: .16em; }
-@media (hover: hover) and (pointer: fine) { body[data-page="games"] a.gm-card:hover .gm-media img { transform: scale(1.04); } }
+body[data-page="games"] { --gmp-violet: #7d6ce1; }
+body[data-page="games"] .sl-main { max-width: 1000px; padding-left: clamp(16px, 3.6vw, 40px); padding-right: clamp(16px, 3.6vw, 40px); }
+
+/* ===== 页头 ===== */
+body[data-page="games"] .gmp-head { display: grid; gap: 10px; padding-top: var(--sl-gap-head); padding-bottom: clamp(18px, 3.6vw, 26px); }
+body[data-page="games"] .sl-page-title { font-size: clamp(34px, 9vw, 56px); letter-spacing: .08em; line-height: 1.15; }
+body[data-page="games"] .gmp-h1-sub { display: block; margin-top: 6px; font-family: var(--sl-font-disp); font-style: italic; font-weight: 400; font-size: .42em; letter-spacing: .02em; color: var(--sl-mute); }
+body[data-page="games"] .sl-lede { margin: 0; max-width: 32em; font-size: 15px; }
+body[data-page="games"] .gmp-intro { margin: 0; max-width: 32em; font-size: 15px; line-height: 1.85; color: var(--sl-ink-2); }
+body[data-page="games"] .gmp-intro[hidden] { display: none; }
+
+/* ===== 机台布局 ===== */
+body[data-page="games"] .gmp-arcade { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; grid-template-areas: "top" "board" "ctrl"; }
+body[data-page="games"] .gmp-top { grid-area: top; display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; padding: 0 4px; }
+body[data-page="games"] .gmp-top[hidden] { display: none; }
+body[data-page="games"] .gmp-boardwrap { grid-area: board; }
+body[data-page="games"] .gmp-ctrl { grid-area: ctrl; display: grid; gap: 12px; justify-items: center; }
+
+body[data-page="games"] .gmp-tally { margin: 0; display: flex; gap: 20px; font-size: 13px; letter-spacing: .1em; color: var(--sl-mute); }
+body[data-page="games"] .gmp-tally b { font-family: var(--sl-font-disp); font-weight: 400; font-size: 26px; color: var(--sl-ink); margin-left: 6px; line-height: 1; }
+body[data-page="games"] .gmp-next { display: flex; align-items: center; gap: 12px; }
+body[data-page="games"] .gmp-next-mini { display: grid; grid-template-columns: repeat(3, 9px); grid-template-rows: repeat(2, 9px); gap: 2px; }
+body[data-page="games"] .gmp-next-mini i { border-radius: 1px; box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .45); }
+body[data-page="games"] .gmp-next-mini i.e { box-shadow: none; }
+body[data-page="games"] .gmp-next-t { display: grid; line-height: 1.45; text-align: right; }
+body[data-page="games"] .gmp-next-t span { font-size: 12px; letter-spacing: .12em; color: var(--sl-mute); }
+body[data-page="games"] .gmp-next-t b { font-weight: 400; font-size: 14px; letter-spacing: .06em; }
+
+/* ===== 棋盘：纸面加星点网格 ===== */
+body[data-page="games"] .gmp-board {
+  --cell: 36px;
+  position: relative; isolation: isolate;
+  width: 100%; aspect-ratio: var(--cols, 10) / var(--rows, 11);
+  border-radius: 4px;
+  background:
+    radial-gradient(circle at 0 0, rgba(0, 0, 0, .22) 0 .9px, transparent 1.3px) 0 0 / var(--cell) var(--cell),
+    linear-gradient(#fdfdfd, #f6f6f8);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, .12), 0 30px 60px -44px rgba(20, 16, 60, .45);
+  -webkit-user-select: none; user-select: none;
+}
+body[data-page="games"] .gmp-board::before { content: ""; position: absolute; inset: -9px; border: 1px solid rgba(0, 0, 0, .08); border-radius: 8px; pointer-events: none; }
+body[data-page="games"] .gmp-clip { position: absolute; inset: 0; border-radius: inherit; }
+body[data-page="games"] .gmp-clip.dropping { overflow: hidden; }
+
+/* 方块：位置和大小都按格子换算，棋盘一缩放整体跟着缩放 */
+body[data-page="games"] .gmp-piece {
+  position: absolute; z-index: 2;
+  left: calc(var(--cell) * var(--c)); top: calc(var(--cell) * var(--r));
+  width: calc(var(--cell) * var(--w)); height: calc(var(--cell) * var(--h));
+  padding: 0; border: 0; background: none; cursor: grab; touch-action: none;
+  transition: transform .6s cubic-bezier(.3, 1.35, .5, 1);
+}
+body[data-page="games"] .gmp-piece.dragging { transition: none; cursor: grabbing; z-index: 6; }
+body[data-page="games"] .gmp-tile {
+  position: absolute;
+  left: calc(var(--cell) * var(--x) + 1.5px); top: calc(var(--cell) * var(--y) + 1.5px);
+  width: calc(var(--cell) - 3px); height: calc(var(--cell) - 3px);
+  border-radius: 2px; box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .34);
+}
+body[data-page="games"] .gmp-piece.dragging .gmp-tile { box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .34), 0 10px 18px -10px rgba(0, 0, 0, .35); }
+
+/* 空位的几种纸面质感 */
+body[data-page="games"] .look-line .gmp-tile { background: rgba(255, 255, 255, .75); }
+body[data-page="games"] .look-hatch .gmp-tile { background: repeating-linear-gradient(135deg, rgba(0, 0, 0, .3) 0 .8px, transparent .8px 5px), rgba(255, 255, 255, .6); }
+body[data-page="games"] .look-grey .gmp-tile { box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .12); background: #e7e7ec; }
+body[data-page="games"] .look-dot .gmp-tile { background: radial-gradient(circle, rgba(0, 0, 0, .32) 0 .8px, transparent 1.2px) 0 0 / 5px 5px, rgba(255, 255, 255, .7); }
+/* 游戏方块：墨色 */
+body[data-page="games"] .is-game .gmp-tile { box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .1); background: #000; }
+
+body[data-page="games"] .gmp-piece::after {
+  content: ""; position: absolute; inset: -5px; border: 1px solid var(--gmp-violet); border-radius: 4px;
+  opacity: 0; transition: opacity .3s var(--sl-ease); pointer-events: none;
+}
+body[data-page="games"] .gmp-piece:focus-visible { outline: none; }
+body[data-page="games"] .gmp-piece:focus-visible::after { opacity: 1; }
+@media (hover: hover) and (pointer: fine) {
+  body[data-page="games"] .is-game:hover::after { opacity: .7; }
+}
+
+/* 方块里的内容：标题、状态、星点，字号跟着格子走 */
+body[data-page="games"] .gmp-face { position: absolute; inset: 0; z-index: 1; overflow: hidden; pointer-events: none; color: #fff; border-radius: 2px; text-align: left; }
+body[data-page="games"] .gmp-face img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: .5; }
+body[data-page="games"] .gmp-face::after { content: ""; position: absolute; inset: 0; background: linear-gradient(155deg, rgba(0, 0, 0, .1), rgba(0, 0, 0, .55)); pointer-events: none; }
+body[data-page="games"] .gmp-face-title {
+  position: absolute; left: calc(var(--cell) * .22); right: calc(var(--cell) * .72); top: calc(var(--cell) * .2); z-index: 2;
+  font-size: max(16px, calc(var(--cell) * .46)); letter-spacing: .14em; line-height: 1.3;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; overflow-wrap: anywhere;
+}
+/* 没有封面时，用标题的第一个字做一枚描边水印，让方块不至于空着（内容仍来自数据，不编造画面） */
+body[data-page="games"] .gmp-face-mark {
+  position: absolute; right: calc(var(--cell) * .18); bottom: calc(var(--cell) * .06); z-index: 1;
+  font-family: var(--sl-font-body); font-size: calc(var(--cell) * 1.45); line-height: .9;
+  color: transparent; -webkit-text-stroke: 1px rgba(255, 255, 255, .22); opacity: .8;
+}
+body[data-page="games"] .gmp-face-state {
+  position: absolute; left: calc(var(--cell) * .22); bottom: calc(var(--cell) * .2); z-index: 2;
+  padding: 0 calc(var(--cell) * .16); border-radius: 999px; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .4);
+  font-size: max(10px, calc(var(--cell) * .25)); letter-spacing: .12em; line-height: 1.7; opacity: .85; white-space: nowrap;
+}
+body[data-page="games"] .gmp-face-star {
+  position: absolute; right: calc(var(--cell) * .26); top: calc(var(--cell) * .26); z-index: 2;
+  width: calc(var(--cell) * .32); height: calc(var(--cell) * .32);
+  background: linear-gradient(135deg, #d8d2ff, #a597ff 58%, #74c9bc);
+  -webkit-mask: var(--sl-star) center / contain no-repeat; mask: var(--sl-star) center / contain no-repeat;
+  animation: gmp-twinkle 3.6s ease-in-out infinite;
+}
+@keyframes gmp-twinkle { 0%, 100% { opacity: .35; transform: scale(.8); } 50% { opacity: 1; transform: scale(1); } }
+
+/* 点到空位时冒出来的小提示 */
+body[data-page="games"] .gmp-tip {
+  position: absolute; z-index: 8; padding: 4px 12px; border-radius: 999px; white-space: nowrap;
+  font-size: 12px; letter-spacing: .1em; color: #fff; background: #000;
+  transform: translate(-50%, -6px); opacity: 0; transition: opacity .25s var(--sl-ease), transform .3s var(--sl-ease); pointer-events: none;
+}
+body[data-page="games"] .gmp-tip.on { opacity: 1; transform: translate(-50%, -12px); }
+
+/* ===== 控制 ===== */
+body[data-page="games"] .gmp-hint { margin: 0; text-align: center; font-size: 13px; letter-spacing: .1em; line-height: 1.8; color: var(--sl-mute); }
+body[data-page="games"] .gmp-replay { min-height: 44px; padding: 0 18px; font-size: 13px; letter-spacing: .14em; }
+body[data-page="games"] .gmp-replay svg { width: 15px; height: 15px; transform: rotate(90deg); }
+
+/* ===== 预览窗（星盘面板里的一块屏幕） ===== */
+body[data-page="games"] .gmp-pv { padding-bottom: calc(22px + var(--sl-sab)); }
+body[data-page="games"] .gmp-pv-screen {
+  position: relative; margin-top: 10px; aspect-ratio: 16 / 10; overflow: hidden; border-radius: 14px;
+  background: linear-gradient(#1b1833, #07060d 75%);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .1);
+}
+body[data-page="games"] .gmp-pv-screen img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+body[data-page="games"] .gmp-pv-screen::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background:
+    radial-gradient(circle at 12% 22%, rgba(255, 255, 255, .9) 0 .8px, transparent 1.4px),
+    radial-gradient(circle at 64% 14%, rgba(255, 255, 255, .7) 0 .7px, transparent 1.2px),
+    radial-gradient(circle at 84% 46%, rgba(255, 255, 255, .8) 0 .8px, transparent 1.4px),
+    radial-gradient(circle at 38% 68%, rgba(255, 255, 255, .55) 0 .6px, transparent 1.1px),
+    radial-gradient(120% 120% at 50% 40%, transparent 55%, rgba(0, 0, 0, .45));
+}
+body[data-page="games"] .gmp-pv-cap { position: absolute; left: 14px; bottom: 12px; z-index: 2; font-size: 12px; letter-spacing: .14em; color: rgba(255, 255, 255, .62); }
+body[data-page="games"] .gmp-pv-meta { display: flex; align-items: center; gap: 8px; margin: 14px 0 0; font-size: 13px; letter-spacing: .14em; color: var(--sl-mute); }
+body[data-page="games"] .gmp-dot { width: 7px; height: 7px; border-radius: 50%; box-shadow: inset 0 0 0 1px var(--sl-mute); }
+body[data-page="games"] .gmp-dot.ready { background: var(--gmp-violet); box-shadow: none; }
+body[data-page="games"] .gmp-pv-sum { margin: 8px 0 0; font-size: 15px; line-height: 1.85; color: var(--sl-ink-2); }
+body[data-page="games"] .gmp-pv-sum.ph { color: var(--sl-mute); font-style: italic; }
+body[data-page="games"] .gmp-pv-tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0 0; }
+body[data-page="games"] .gmp-pv-tags[hidden] { display: none; }
+body[data-page="games"] .gmp-pv-act { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+body[data-page="games"] .gmp-pv-act > [hidden] { display: none; }
+body[data-page="games"] .gmp-pv-act .sl-btn[disabled] { background: var(--sl-surface-2); color: var(--sl-mute); cursor: default; }
+body[data-page="games"] .gmp-pv-track { display: none; }
+
+/* ===== 宽屏：左边棋盘，右边统计与操作 ===== */
+@media (min-width: 860px) {
+  body[data-page="games"] .gmp-arcade {
+    grid-template-columns: minmax(0, 420px) minmax(0, 1fr);
+    grid-template-rows: auto 1fr;
+    grid-template-areas: "board top" "board ctrl";
+    column-gap: 56px; row-gap: 28px; align-items: start;
+  }
+  body[data-page="games"] .gmp-top { flex-direction: column; align-items: flex-start; padding-top: 6px; gap: 22px; }
+  body[data-page="games"] .gmp-next-t { text-align: left; }
+  body[data-page="games"] .gmp-ctrl { justify-items: start; }
+  body[data-page="games"] .gmp-hint { text-align: left; }
+}

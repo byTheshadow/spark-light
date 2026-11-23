@@ -20,16 +20,58 @@
 <body data-page="games">
 <a class="sl-fallback" href="../">Spark Light 主界面</a>
 <main id="main" class="sl-main">
-  <header class="sl-page-head">
-    <h1 class="sl-page-title" id="page-title">小游戏</h1>
+  <header class="sl-page-head gmp-head">
+    <h1 class="sl-page-title"><span id="page-title">小游戏</span><small class="gmp-h1-sub">Spark Light 方块游戏机</small></h1>
     <p class="sl-lede" id="page-lede"></p>
+    <p class="gmp-intro" id="gmp-intro"></p>
   </header>
-  <section class="sl-section" aria-label="小游戏列表">
-    <p class="gm-intro" id="gm-intro"></p>
-    <div id="gm-root"><p class="sl-loading">正在读取小游戏</p></div>
+
+  <section class="gmp-arcade" id="gmp-arcade" aria-label="小游戏">
+    <!-- 机台上沿：统计与“下一块” -->
+    <div class="gmp-top">
+      <p class="gmp-tally" id="gmp-tally"></p>
+      <div class="gmp-next">
+        <div class="gmp-next-mini" id="gmp-next-mini" aria-hidden="true"></div>
+        <div class="gmp-next-t"><span>下一块</span><b>新游戏，构思中</b></div>
+      </div>
+    </div>
+
+    <!-- 棋盘：每个游戏是一个墨色大方块，空位是纸面纹理的小方块 -->
+    <div class="gmp-boardwrap">
+      <div class="gmp-board" id="gmp-board" role="group" aria-label="游戏方块">
+        <div class="gmp-clip" id="gmp-clip"></div>
+        <span class="gmp-tip" id="gmp-tip">空位，留给下一个游戏</span>
+      </div>
+    </div>
+
+    <!-- 机台控制器 -->
+    <div class="gmp-ctrl">
+      <p class="gmp-hint" id="gmp-hint">点黑色方块看游戏预览，每块都可以拖一拖</p>
+      <button class="sl-btn sl-btn--ghost gmp-replay" type="button" id="gmp-replay">重新落下</button>
+    </div>
   </section>
+
   <footer class="sl-foot">Spark Light</footer>
 </main>
+
+<!-- 游戏预览：沿用全站弹层的星盘面板 -->
+<div class="sl-scrim" id="gmp-scrim"></div>
+<div class="sl-sheet gmp-pv" id="gmp-pv" role="dialog" aria-modal="true" aria-labelledby="gmp-pv-title">
+  <div class="sl-sheet-grip"></div>
+  <div class="sl-sheet-head">
+    <h2 class="sl-sheet-title" id="gmp-pv-title"></h2>
+    <button class="sl-iconbtn" type="button" id="gmp-pv-x" aria-label="关闭"></button>
+  </div>
+  <div class="gmp-pv-screen" id="gmp-pv-screen"></div>
+  <p class="gmp-pv-meta"><span class="gmp-dot" id="gmp-pv-dot"></span><span id="gmp-pv-state"></span></p>
+  <p class="gmp-pv-sum" id="gmp-pv-sum"></p>
+  <p class="gmp-pv-tags" id="gmp-pv-tags" hidden></p>
+  <div class="gmp-pv-act">
+    <button class="sl-btn" type="button" id="gmp-pv-play"><span id="gmp-pv-play-text">开始游戏</span></button>
+    <button class="sl-btn sl-btn--ghost" type="button" id="gmp-pv-close">关闭</button>
+  </div>
+</div>
+
 <script type="module" src="../core/boot.js"></script>
 <script type="module" src="page.js"></script>
 </body>
