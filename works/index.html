@@ -19,21 +19,26 @@
 </head>
 <body data-page="works">
 <a class="sl-fallback" href="../">Spark Light 主界面</a>
-<main id="main" class="sl-main">
-  <header class="sl-page-head">
+<main id="main" class="sl-main wkp">
+  <header class="sl-page-head wk-head">
+    <p class="wk-en" aria-hidden="true">works &amp; notes</p>
     <h1 class="sl-page-title" id="page-title">作品与碎碎念</h1>
     <p class="sl-lede" id="page-lede"></p>
     <nav class="wk-jump" aria-label="本页内容"><a href="#works">作品</a><a href="#thoughts">碎碎念</a></nav>
+    <span class="wk-mark" id="wk-mark" aria-hidden="true">works</span>
   </header>
 
-  <section class="sl-section" id="works" aria-labelledby="works-title">
+  <section class="sl-section wk-sec" id="works" aria-labelledby="works-title">
     <h2 class="sl-h2" id="works-title">作品</h2>
-    <div class="wk-filters" id="wk-filters" role="group" aria-label="作品分类"></div>
-    <div class="wk-grid" id="wk-grid"><p class="sl-loading">正在读取作品</p></div>
+    <div class="wk-shelf" id="wk-shelf" role="group" aria-label="按分类查看"></div>
+    <div class="wk-note" id="wk-note" aria-live="polite"></div>
+    <div class="wk-ctrl" id="wk-ctrl" hidden></div>
+    <div class="wk-wall" id="wk-wall"><p class="sl-loading">正在读取作品</p></div>
   </section>
 
-  <section class="sl-section" id="thoughts" aria-labelledby="thoughts-title">
+  <section class="sl-section wk-sec" id="thoughts" aria-labelledby="thoughts-title">
     <h2 class="sl-h2" id="thoughts-title">碎碎念</h2>
+    <p class="sl-lede wk-th-lede">随手记下的话，按日期从新到旧。</p>
     <div id="th-root"><p class="sl-loading">正在读取</p></div>
   </section>
 

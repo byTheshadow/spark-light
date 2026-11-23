@@ -1,0 +1,11 @@
+{
+  "_说明": "返图与反馈页的数据。lines 是留言可选的项目（id 要和价目里的分类一致或自己定，name 是显示的名字）；items 是已经审核通过、客人授权公开的留言。只登记已获客人授权的内容。图片放在 assets/feedback/ 里。写法见 data/README.md。",
+  "backend": { "enabled": false },
+  "lines": [
+    { "id": "divination", "name": "占卜" },
+    { "id": "vibecoding", "name": "网站定制" },
+    { "id": "tuning",     "name": "调频" },
+    { "id": "ai",         "name": "AI 创作" }
+  ],
+  "items": []
+}
