@@ -27,15 +27,22 @@ const fmtDate = (d) => {
 const coverSrc = (it) => (!it.cover ? null : isUrl(it.cover) ? it.cover.trim() : root + 'assets/covers/' + encodeURIComponent(String(it.cover)));
 const pageSrc = (it, p) => (isUrl(p) ? String(p).trim() : root + 'assets/drama/' + encodeURIComponent(String(it.id || '')) + '/' + encodeURIComponent(String(p)));
 
-/* 每部作品一套配色：没有封面时用它铺底，同时决定银幕下面的柔光 */
-const PALETTE = [
-  ['#2e2860', '#0d0c1c', '#7d6ce1', '125,108,225'],
-  ['#43304a', '#120d16', '#c47aa2', '196,122,162'],
-  ['#15393f', '#061214', '#3fa597', '63,165,151'],
-  ['#3a3320', '#12100a', '#c8ae6a', '200,174,106'],
-  ['#1f2c4a', '#0a1020', '#5c8cdc', '92,140,220'],
-  ['#2a1f2e', '#100a14', '#9b7fc9', '155,127,201']
+/* 每部作品一套配色与一张线条插画（来自站主的参考稿）。插画是没有封面时的占位画面，属装饰，
+   页面上同时标“封面待补”；一旦登记了封面，一律用封面。 */
+const MOTIFS = [
+  { id: 'moon', p1: '#2e2860', p2: '#0d0c1c', glow: '#7d6ce1', tint: '125,108,225' },
+  { id: 'card', p1: '#43304a', p2: '#120d16', glow: '#c47aa2', tint: '196,122,162' },
+  { id: 'tower', p1: '#15393f', p2: '#061214', glow: '#3fa597', tint: '63,165,151' },
+  { id: 'crane', p1: '#efedf8', p2: '#b4acd9', glow: '#a597ff', tint: '165,151,255' }
 ];
+
+/* 写死的可信 SVG 片段，只放进空节点，数据不会进到这里 */
+const MOTIF_SVG = {
+  moon: '<path d="M122 14A17 17 0 1 0 122 46 13.5 13.5 0 1 1 122 14z" fill="rgba(255,255,255,.92)"/><g stroke="rgba(255,255,255,.3)" stroke-width=".6"><path d="M20 70h120M36 75h88M52 80h56"/></g><rect x="62" y="44" width="34" height="22" rx="1.5" fill="none" stroke="rgba(255,255,255,.75)" stroke-width=".9"/><path d="M62 45l17 11 17-11" fill="none" stroke="rgba(255,255,255,.75)" stroke-width=".9"/><g fill="#fff"><circle cx="30" cy="18" r=".7"/><circle cx="48" cy="30" r=".5"/><circle cx="142" cy="58" r=".6"/><circle cx="98" cy="12" r=".5"/></g>',
+  card: '<g transform="rotate(-9 80 45)"><rect x="62" y="16" width="36" height="54" rx="3" fill="rgba(255,255,255,.08)" stroke="rgba(255,255,255,.8)" stroke-width=".9"/><rect x="66" y="20" width="28" height="46" rx="1.5" fill="none" stroke="rgba(255,255,255,.35)" stroke-width=".5"/><path d="M80 31c.4 4 2.6 6.2 7 7.6-4.4 1.4-6.6 3.6-7 7.6-.4-4-2.6-6.2-7-7.6 4.4-1.4 6.6-3.6 7-7.6z" fill="#f1c8dc"/><text x="80" y="61" text-anchor="middle" font-family="Instrument Serif, serif" font-style="italic" font-size="7" fill="rgba(255,255,255,.85)">VII</text></g><g fill="#fff"><circle cx="122" cy="16" r=".8"/><circle cx="34" cy="70" r=".6"/><circle cx="40" cy="22" r=".5"/></g>',
+  tower: '<path d="M80 34L160 14v44z" fill="rgba(255,255,255,.12)"/><path d="M74 36h12l4 40H70z" fill="rgba(255,255,255,.88)"/><path d="M72 50h16M71 62h18" stroke="#15393f" stroke-width="2.6"/><rect x="75" y="26" width="10" height="10" fill="#ffe9b8"/><path d="M73 26l7-6 7 6z" fill="rgba(255,255,255,.88)"/><g stroke="rgba(255,255,255,.3)" stroke-width=".7" fill="none"><path d="M0 80q10-3 20 0t20 0 20 0 20 0 20 0 20 0 20 0 20 0"/><path d="M0 85q10-3 20 0t20 0 20 0 20 0 20 0 20 0 20 0 20 0"/></g>',
+  crane: '<path d="M30 70Q80 10 136 24" fill="none" stroke="rgba(40,30,90,.35)" stroke-width=".7" stroke-dasharray="2 3"/><path d="M76 40l26-19-7 22 14 4-19 5-5 16-5-14-23-2z" fill="#fff" stroke="#2a2356" stroke-width=".8" stroke-linejoin="round"/><path d="M76 40l19 12" stroke="#2a2356" stroke-width=".6"/><circle cx="128" cy="16" r="7" fill="none" stroke="rgba(40,30,90,.4)" stroke-width=".7"/>'
+};
 
 function normalize(raw) {
   const it = Object.assign({}, raw);
@@ -66,25 +73,28 @@ const makePlaceholder = () => ({
 });
 const KIND = { video: '视频', images: '长图' };
 
-/* ---------- 画面：有封面用封面，没有就用同色系渐层加描边编号 ---------- */
+/* ---------- 画面：有封面用封面，没有就用参考稿里的线条插画打底 ---------- */
 function leaderArt() {
   const ring = h('div', { class: 'drp-leader-ring' }, h('b', null, '0'));
   return h('div', { class: 'drp-leader' }, ring, h('small', null, '待上线'));
 }
 
-function art(it, no) {
+function art(it) {
   if (!it.kind) return leaderArt();
   const box = h('span', { class: 'drp-art' });
   box.style.background = 'linear-gradient(168deg,' + it.c1 + ',' + it.c2 + ')';
-  box.appendChild(h('span', { class: 'drp-art-no' }, no));
-  box.appendChild(h('span', { class: 'drp-art-star' }));
-  box.appendChild(h('span', { class: 'drp-art-star drp-art-star2' }));
   if (it.src) {
     const im = h('img', { alt: '', decoding: 'async', referrerpolicy: 'no-referrer' });
     im.addEventListener('error', () => { console.warn('[Spark Light] 找不到封面：' + it.src); im.remove(); });
     im.src = it.src;
     box.appendChild(im);
   } else {
+    const svg = doc.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('viewBox', '0 0 160 90');
+    svg.setAttribute('preserveAspectRatio', 'xMidYMid slice');
+    svg.setAttribute('aria-hidden', 'true');
+    svg.innerHTML = MOTIF_SVG[it.motif] || MOTIF_SVG.moon;   /* 写死的常量，不含数据 */
+    box.appendChild(svg);
     box.appendChild(h('span', { class: 'drp-art-ph' }, '封面待补'));
   }
   return box;
@@ -104,7 +114,7 @@ let front = 0;
 /* ---------- 胶片 ---------- */
 function frameEl(it, i) {
   const f = h('button', { class: 'drp-frame', type: 'button', role: 'option', tabindex: '-1', 'aria-selected': 'false' },
-    h('span', { class: 'drp-frame-img' }, art(it, pad2(i + 1))),
+    h('span', { class: 'drp-frame-img' }, art(it)),
     h('span', { class: 'drp-frame-no' }, pad2(i + 1)));
   f.setAttribute('aria-label', (it.kind ? KIND[it.kind] + '，' : '') + (it.title || '未命名'));
   f.addEventListener('click', () => {
@@ -192,7 +202,7 @@ function setActive(i, silent) {
   /* 画面像被拉过片门：新的从一侧滑进来，旧的往另一侧滑出去 */
   const back = 1 - front, nl = layers[back], ol = layers[front];
   clear(nl);
-  nl.appendChild(art(it, pad2(i + 1)));
+  nl.appendChild(art(it));
   nl.style.zIndex = '1';
   ol.style.zIndex = '0';
   if (!silent && !isSimple()) {
@@ -233,16 +243,26 @@ function setActive(i, silent) {
   if (it.outUrl) { out.href = it.outUrl; out.hidden = false; } else { out.removeAttribute('href'); out.hidden = true; }
 }
 
-/* ---------- 类型筛选：只有同时有视频和长图时才出现 ---------- */
+/* ---------- 类型筛选：与参考稿一致，三档常显；没有作品的档位置灰 -------- */
 function buildTabs() {
-  const hasVideo = state.all.some((i) => i.kind === 'video');
-  const hasImages = state.all.some((i) => i.kind === 'images');
   clear(tabsBox);
-  if (!(hasVideo && hasImages)) { tabsBox.hidden = true; return; }
+  if (!state.all.length) { tabsBox.hidden = true; return; }
   tabsBox.hidden = false;
+  const counts = {
+    all: state.all.length,
+    video: state.all.filter((i) => i.kind === 'video').length,
+    images: state.all.filter((i) => i.kind === 'images').length
+  };
   [['all', '全部'], ['video', '视频'], ['images', '长图']].forEach(([id, label]) => {
-    const b = h('button', { type: 'button', role: 'tab', 'aria-selected': id === state.filter ? 'true' : 'false', 'data-f': id }, label);
+    const n = counts[id];
+    const b = h('button', {
+      type: 'button', role: 'tab', 'data-f': id,
+      'aria-selected': id === state.filter ? 'true' : 'false',
+      'aria-disabled': n ? null : 'true'
+    });
+    b.textContent = label;
     b.addEventListener('click', () => {
+      if (!n) return;
       Array.from(tabsBox.children).forEach((x) => x.setAttribute('aria-selected', x === b ? 'true' : 'false'));
       state.filter = id;
       state.list = id === 'all' ? state.all.slice() : state.all.filter((it) => it.kind === id);
@@ -528,8 +548,9 @@ async function main() {
   state.empty = raw.length === 0;
   state.all = raw.map((x, i) => {
     const it = normalize(x);
-    const p = PALETTE[i % PALETTE.length];
-    it.c1 = p[0]; it.c2 = p[1]; it.glow = p[2]; it.tint = p[3];
+    const m = MOTIFS[i % MOTIFS.length];
+    it.motif = m.id;
+    it.c1 = m.p1; it.c2 = m.p2; it.glow = m.glow; it.tint = m.tint;
     return it;
   });
   state.list = state.empty ? [makePlaceholder()] : state.all.slice();

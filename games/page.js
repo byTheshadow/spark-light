@@ -15,6 +15,21 @@ const $ = (id) => document.getElementById(id);
 const PATH_OK = /^games\/play\/[A-Za-z0-9_-]+\/$/;
 const coverSrc = (it) => (!it.cover ? null : /^https?:\/\//i.test(String(it.cover)) ? String(it.cover).trim() : root + 'assets/covers/' + encodeURIComponent(String(it.cover)));
 
+/* 方块里的白色线条插画（来自站主参考稿）。抓坏猫用那只猫，其它游戏用一张同风格的空板方块图。
+   都是写死的可信 SVG 常量，只放进空节点，数据不会进到这里。 */
+const ART_CAT = '<svg viewBox="0 0 100 70" preserveAspectRatio="xMidYMax meet" aria-hidden="true"><g fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="M76 70c5-7 12-9 14-18s-5-12-3-18"/><path d="M22 70c0-19 10-31 28-31s28 12 28 31"/><path d="M29 47l-4-19 13 11M71 47l4-19-13 11"/><path d="M33 61l-14-2M33 64l-14 1M67 61l14-2M67 64l14 1" stroke-width=".6" opacity=".7"/><path d="M47 62l3 2 3-2" stroke-width=".8"/></g><g fill="#f4e9a6"><ellipse class="eye" cx="41" cy="54" rx="3.6" ry="2.8"/><ellipse class="eye" cx="59" cy="54" rx="3.6" ry="2.8"/></g><g fill="#000"><rect x="40.4" y="52" width="1.3" height="4.4" rx=".6"/><rect x="58.4" y="52" width="1.3" height="4.4" rx=".6"/></g></svg>';
+const ART_BLOCKS = '<svg viewBox="0 0 100 70" preserveAspectRatio="xMidYMax meet" aria-hidden="true"><g fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="M50 18v-5M46 13h8"/><rect x="25" y="25" width="18" height="18" rx="2"/><rect x="47" y="25" width="18" height="18" rx="2" fill="rgba(255,255,255,.12)"/><rect x="36" y="47" width="18" height="18" rx="2"/><path d="M20 66h60" stroke-width=".6" opacity=".5"/></g><path d="M76 15l2 5 5 2-5 2-2 5-2-5-5-2 5-2z" fill="#fff" opacity=".9"/></svg>';
+const ART_BY_ID = { 'catch-bad-cat': ART_CAT };
+const artSvg = (g) => {
+  const wrap = document.createElement('span');
+  wrap.innerHTML = ART_BY_ID[g.id] || ART_BLOCKS;
+  return wrap.firstElementChild;
+};
+
+/* 预览窗里的示意画面（参考稿）：夜空、月亮、城市剪影，一只猫走过去。
+   没有封面时用它，旁边写明“示意画面”。 */
+const PV_SCENE = '<svg viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><circle cx="252" cy="52" r="20" fill="#f4f1e6"/><circle cx="244" cy="46" r="18" fill="#141127"/><g fill="#fff"><circle cx="40" cy="30" r=".9"/><circle cx="96" cy="60" r=".7"/><circle cx="150" cy="22" r="1"/><circle cx="204" cy="92" r=".6"/><circle cx="292" cy="120" r=".8"/></g><path d="M0 150h60v-18h36v18h50v-30l24-16 24 16v30h40v-22h50v22h36v50H0z" fill="#000"/><rect x="182" y="132" width="8" height="10" fill="#f4e9a6" opacity=".8"/><g class="walker"><g transform="translate(0 126)"><path d="M6 10c4-6 16-7 24-4l4-6 2 7c3 2 4 5 3 8H8c-3 0-4-3-2-5z" fill="#000" stroke="#000"/><path d="M2 10c-4-2-6-8-2-12" fill="none" stroke="#000" stroke-width="2" stroke-linecap="round"/><rect class="leg" x="11" y="14" width="2.4" height="9" fill="#000"/><rect class="leg b" x="27" y="14" width="2.4" height="9" fill="#000"/><circle cx="33" cy="8" r="1.3" fill="#f4e9a6"/></g></g></svg>';
+
 /* ---------- 棋盘尺寸 ---------- */
 const COLS = 10;          /* 棋盘宽度，单位是格子 */
 const UNIT = 4;           /* 每个游戏方块的边长 */
@@ -115,15 +130,17 @@ function pieceEl(p) {
     const g = p.game;
     const face = h('span', { class: 'gmp-face' });
     if (g.src) {
+      face.classList.add('has-cover');
       const im = h('img', { alt: '', loading: 'lazy', decoding: 'async', referrerpolicy: 'no-referrer' });
       im.addEventListener('error', () => { console.warn('[Spark Light] 找不到封面：' + g.src); im.remove(); });
       im.src = g.src;
       face.appendChild(im);
+    } else {
+      face.appendChild(artSvg(g));
     }
     face.appendChild(h('span', { class: 'gmp-face-title' }, g.title || '未命名'));
     face.appendChild(h('span', { class: 'gmp-face-state' }, g.ready ? '可以玩' : '制作中'));
     face.appendChild(h('span', { class: 'gmp-face-star' }));
-    if (!g.src && g.title) face.appendChild(h('span', { class: 'gmp-face-mark', 'aria-hidden': 'true' }, g.title.charAt(0)));
     el.appendChild(face);
     el.setAttribute('aria-label', (g.title || '未命名') + '，' + (g.ready ? '可以玩' : '制作中') + '，打开预览');
   } else {
@@ -253,8 +270,12 @@ function openPreview(g, opener) {
     const im = h('img', { alt: '', decoding: 'async', referrerpolicy: 'no-referrer', src: g.src });
     im.addEventListener('error', () => im.remove());
     pvScreen.appendChild(im);
+  } else {
+    const wrap = document.createElement('span');
+    wrap.innerHTML = PV_SCENE;
+    pvScreen.appendChild(wrap.firstElementChild);
   }
-  pvScreen.appendChild(h('span', { class: 'gmp-pv-cap' }, g.src ? '预览画面' : '游戏画面待补'));
+  pvScreen.appendChild(h('span', { class: 'gmp-pv-cap' }, g.src ? '预览画面' : '示意画面，正式版换成游戏截图'));
 
   clear(pvSum);
   if (g.summary) { pvSum.className = 'gmp-pv-sum'; pvSum.textContent = g.summary; }
@@ -354,7 +375,11 @@ async function main() {
   const data = await loadData('games');
   const intro = $('gmp-intro');
   if (typeof data.intro === 'string' && data.intro.trim()) intro.textContent = data.intro;
-  else intro.hidden = true;
+  else {
+    /* 没有简介时退回导航里的一句话，避免页头空着 */
+    intro.hidden = true;
+    $('page-lede').hidden = false;
+  }
 
   const games = (Array.isArray(data.items) ? data.items : [])
     .filter((i) => i && typeof i === 'object' && i.id)

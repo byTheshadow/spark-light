@@ -8,10 +8,10 @@ body[data-page="drama"] {
   --drp-violet: #7d6ce1;    /* 银幕底下的柔光 */
   --drp-fw: 118px;          /* 胶片单格宽度，宽屏时在下面的媒体查询里加大 */
 }
-body[data-page="drama"] .sl-main { max-width: 920px; padding-left: clamp(16px, 3.6vw, 40px); padding-right: clamp(16px, 3.6vw, 40px); }
+body[data-page="drama"] .sl-main { max-width: 920px; padding-left: 14px; padding-right: 14px; }
 
 /* ===== 页头 ===== */
-body[data-page="drama"] .drp-head { display: grid; gap: 10px; justify-items: start; padding-top: var(--sl-gap-head); padding-bottom: clamp(16px, 3.4vw, 24px); }
+body[data-page="drama"] .drp-head { display: grid; gap: 10px; justify-items: start; padding: clamp(24px, 6vw, 44px) 4px clamp(20px, 4vw, 30px); }
 body[data-page="drama"] .sl-page-title { font-size: clamp(34px, 9vw, 56px); letter-spacing: .08em; line-height: 1.15; }
 body[data-page="drama"] .drp-h1-sub { display: block; margin-top: 6px; font-family: var(--sl-font-disp); font-style: italic; font-weight: 400; font-size: .42em; letter-spacing: .02em; color: var(--sl-mute); }
 body[data-page="drama"] .sl-lede { margin: 0; max-width: 30em; font-size: 15px; }
@@ -57,25 +57,13 @@ body[data-page="drama"] .drp-cap {
 body[data-page="drama"] .drp-cap h2 { margin: 0; font-weight: 400; font-size: clamp(19px, 5vw, 28px); letter-spacing: .1em; line-height: 1.35; text-shadow: 0 0 18px rgba(255, 255, 255, .35); }
 body[data-page="drama"] .drp-cap span { font-size: 12px; letter-spacing: .2em; opacity: .75; }
 
-/* 画面：有封面用封面，没有就用同色系的渐层加一个描边编号，不编造画面 */
+/* 画面：有封面用封面；没有封面时用参考稿里的线条插画打底，右上角标“封面待补” */
 body[data-page="drama"] .drp-art { position: absolute; inset: 0; overflow: hidden; }
 body[data-page="drama"] .drp-art img { display: block; width: 100%; height: 100%; object-fit: cover; }
-body[data-page="drama"] .drp-art-no {
-  position: absolute; left: 6%; top: 7%; z-index: 1;
-  font-family: var(--sl-font-disp); font-size: clamp(52px, 16vw, 150px); line-height: .8; letter-spacing: -.03em;
-  color: transparent; -webkit-text-stroke: 1px rgba(255, 255, 255, .45);
-}
-body[data-page="drama"] .drp-art-star {
-  position: absolute; right: 7%; top: 12%; z-index: 1; width: 16px; height: 16px;
-  background: linear-gradient(135deg, #fff, #cfc8ff);
-  -webkit-mask: var(--sl-star) center / contain no-repeat; mask: var(--sl-star) center / contain no-repeat;
-  animation: drp-twinkle 3.6s ease-in-out infinite;
-}
-body[data-page="drama"] .drp-art-star2 { right: 13%; top: 26%; width: 9px; height: 9px; animation-duration: 5.2s; animation-delay: -1.6s; }
-@keyframes drp-twinkle { 0%, 100% { opacity: .3; transform: scale(.8); } 50% { opacity: 1; transform: scale(1); } }
+body[data-page="drama"] .drp-art svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
 body[data-page="drama"] .drp-art-ph {
-  position: absolute; right: 12px; top: 12px; z-index: 2; padding: 1px 9px; border-radius: var(--sl-radius-pill);
-  font-size: 11px; letter-spacing: .16em; color: rgba(255, 255, 255, .8); background: rgba(255, 255, 255, .14);
+  position: absolute; right: 12px; top: 12px; z-index: 2; padding: 1px 10px; border-radius: var(--sl-radius-pill);
+  font-size: 11px; letter-spacing: .16em; color: #fff; background: rgba(255, 255, 255, .16);
 }
 
 /* 待上线：片头倒数圈里写一个 0，像还没装片的放映机 */
@@ -99,6 +87,7 @@ body[data-page="drama"] .drp-tabs button { position: relative; min-height: 40px;
 body[data-page="drama"] .drp-tabs button::after { content: ""; position: absolute; left: 50%; right: 50%; bottom: 6px; height: 1px; background: var(--sl-ink); transition: left .35s var(--sl-ease), right .35s var(--sl-ease); }
 body[data-page="drama"] .drp-tabs button[aria-selected="true"] { color: var(--sl-ink); }
 body[data-page="drama"] .drp-tabs button[aria-selected="true"]::after { left: 0; right: 0; }
+body[data-page="drama"] .drp-tabs button[aria-disabled="true"] { opacity: .32; cursor: default; }
 
 /* ===== 胶片 ===== */
 body[data-page="drama"] .drp-strip-wrap { position: relative; margin: 30px calc(50% - 50vw) 0; }
@@ -128,10 +117,7 @@ body[data-page="drama"] .drp-frame-img {
   transition: opacity .45s var(--sl-ease), filter .45s var(--sl-ease);
 }
 body[data-page="drama"] .drp-frame.is-on .drp-frame-img { opacity: 1; filter: none; }
-/* 胶片格很小，编号和“封面待补”都按格子的尺寸缩小 */
-body[data-page="drama"] .drp-frame .drp-art-no { font-size: 42px; -webkit-text-stroke-color: rgba(255, 255, 255, .5); }
-body[data-page="drama"] .drp-frame .drp-art-star { width: 10px; height: 10px; }
-body[data-page="drama"] .drp-frame .drp-art-star2 { width: 6px; height: 6px; }
+/* 胶片格很小，“封面待补”不在格子里显示 */
 body[data-page="drama"] .drp-frame .drp-art-ph { display: none; }
 body[data-page="drama"] .drp-frame .drp-leader b { font-size: 30px; }
 body[data-page="drama"] .drp-frame .drp-leader small { display: none; }
@@ -188,8 +174,7 @@ body[data-page="drama"] .drp-pscreen {
   position: fixed; z-index: 2; overflow: hidden; border-radius: 3px; background: #000;
   transform-origin: 0 0; box-shadow: 0 0 0 1px rgba(255, 255, 255, .06), 0 0 140px -30px var(--drp-glow, var(--drp-violet));
 }
-body[data-page="drama"] .drp-pscreen.flying { transition: transform .9s var(--sl-ease); }
-body[data-page="drama"] .drp-pscreen.reading { overflow-y: auto; overscroll-behavior: contain; background: #0d0c12; }
+body[data-page="drama"] .drp-pscreen.flying { transition: transform .9s var(--sl-ease); }body[data-page="drama"] .drp-pscreen.reading { overflow-y: auto; overscroll-behavior: contain; background: #0d0c12; }
 body[data-page="drama"] .drp-pscreen::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: #fff; opacity: 0; }
 body[data-page="drama"] .drp-theater.lit .drp-pscreen:not(.reading)::after { animation: drp-flicker 4s steps(1) infinite; }
 @keyframes drp-flicker {
@@ -239,5 +224,10 @@ body[data-page="drama"] .drp-th-x svg { width: 14px; height: 14px; }
   body[data-page="drama"] { --drp-fw: 150px; }
   body[data-page="drama"] .drp-strip-wrap { margin-left: 0; margin-right: 0; margin-top: 36px; }
   body[data-page="drama"] .drp-tabs { margin-top: 36px; }
-  body[data-page="drama"] .drp-art-no { font-size: 170px; }
+}
+
+/* ===== 页脚：与参考稿一致，居中的斜体署名 ===== */
+body[data-page="drama"] .sl-foot {
+  margin-top: 48px; padding: 48px 0 0; border-top: 0; text-align: center;
+  font-family: var(--sl-font-disp); font-style: italic; font-size: 18px; letter-spacing: 0; color: var(--sl-mute);
 }
