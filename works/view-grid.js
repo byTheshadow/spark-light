@@ -6,7 +6,7 @@ import { clamp, isSimple } from '../core/raf.js';
 const FINE = !!(window.matchMedia && matchMedia('(hover:hover) and (pointer:fine)').matches);
 
 function card(w, idx, small, ctx) {
-  const b = h('button', { class: 'wk', type: 'button', 'aria-label': (w.title || '未命名') + (w.catName ? '，' + w.catName : '') + (w.ai ? '，AI 生成' : '') + (w.dateText ? '，' + w.dateText : '') + '，查看大图' });
+  const b = h('button', { class: 'wk' + (w.ai && !w._aiUnveiled ? ' wk-ai-masked' : ''), type: 'button', 'aria-label': (w.title || '未命名') + (w.catName ? '，' + w.catName : '') + (w.ai ? '，AI 生成' : '') + (w.dateText ? '，' + w.dateText : '') + '，查看大图' });
   b.style.setProperty('--tint', w.tint);
   const inn = h('span', { class: 'wk-in' });
   const im = h('span', { class: 'wk-img' });
@@ -17,6 +17,7 @@ function card(w, idx, small, ctx) {
   img.addEventListener('error', () => { console.warn('[Spark Light] 找不到图片：' + w.src); img.remove(); im.classList.add('wk-missing'); b.classList.add('dev'); });
   img.src = w.src;
   im.appendChild(img);
+  if (w.ai) im.appendChild(h('span', { class: 'wk-ai-veil' }, h('span', null, 'AI 作品 · 轻触显示')));
   inn.appendChild(im);
   if (w.ai) inn.appendChild(h('span', { class: 'wk-ai' }, '由 AI 生成'));
   inn.appendChild(h('span', { class: 'wk-shine' }));
@@ -24,7 +25,14 @@ function card(w, idx, small, ctx) {
   if (w.catName && (!small || ctx.showCat)) cap.appendChild(h('span', { class: 'wk-c' }, h('i'), h('span', null, w.catName)));
   inn.appendChild(cap);
   b.appendChild(inn);
-  b.addEventListener('click', () => ctx.open(idx, b));
+  b.addEventListener('click', () => {
+    if (b.classList.contains('wk-ai-masked')) {
+      w._aiUnveiled = true;
+      b.classList.remove('wk-ai-masked');
+      return;
+    }
+    ctx.open(idx, b);
+  });
   if (FINE && !isSimple()) {
     b.addEventListener('pointermove', (e) => {
       const r = b.getBoundingClientRect(), x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;

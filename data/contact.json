@@ -1,5 +1,12 @@
 {
   "_说明": "联系方式与下单渠道，站主提供后填入。channels 里每一项的写法见 data/README.md。没有渠道时，页面显示占位。",
-  "channels": [],
+  "channels": [
+    {
+      "label": "可走平台",
+      "value": "雨季不再来",
+      "copy": true,
+      "note": "排单状态以主界面显示为准，也可以私聊询问或咨询网页客服"
+    }
+  ],
   "orderForm": { "enabled": null, "note": "是否需要在线下单表单，待站主确定" }
 }

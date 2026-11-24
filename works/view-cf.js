@@ -20,7 +20,7 @@ export function createCF(list, ctx) {
   const S = { n, pos: isSimple() ? 0 : -2.6, tgt: 0, vel: 0, act: -1, pd: null, man: false, dragged: false, sd: false, H: 360, A: 300, B: 100, px: 200, dead: false };
 
   const items = list.map((w, i) => {
-    const b = h('button', { class: 'cf-it', type: 'button', tabindex: '-1', 'aria-label': (w.title || '未命名') + (w.catName ? '，' + w.catName : '') });
+    const b = h('button', { class: 'cf-it' + (w.ai && !w._aiUnveiled ? ' wk-ai-masked' : ''), type: 'button', tabindex: '-1', 'aria-label': (w.title || '未命名') + (w.catName ? '，' + w.catName : '') });
     b.style.setProperty('--tint', w.tint);
     const setAr = () => b.style.setProperty('--ar', clamp(w.ar, .68, 1.5).toFixed(3));
     setAr();
@@ -28,10 +28,17 @@ export function createCF(list, ctx) {
     img.addEventListener('load', () => { if (img.naturalWidth && img.naturalHeight) { w.ar = img.naturalWidth / img.naturalHeight; setAr(); } });
     img.addEventListener('error', () => { console.warn('[Spark Light] 找不到图片：' + w.src); img.remove(); f.classList.add('wk-missing'); });
     img.src = w.src;
-    const f = h('span', { class: 'cf-f' }, img, h('span', { class: 'cf-gl' }), w.ai ? h('span', { class: 'wk-ai' }, '由 AI 生成') : null);
+    const f = h('span', { class: 'cf-f' }, img, h('span', { class: 'cf-gl' }), w.ai ? h('span', { class: 'wk-ai' }, '由 AI 生成') : null, w.ai ? h('span', { class: 'wk-ai-veil' }, h('span', null, 'AI 作品 · 轻触显示')) : null);
     b.appendChild(f);
     b.addEventListener('click', () => {
       if (S.dragged) return;
+      if (b.classList.contains('wk-ai-masked')) {
+        w._aiUnveiled = true;
+        b.classList.remove('wk-ai-masked');
+        buzz(6);
+        if (i !== S.act) go(i);
+        return;
+      }
       if (i === S.act && Math.abs(S.pos - i) < .35) ctx.open(i, b); else go(i);
     });
     ring.appendChild(b);

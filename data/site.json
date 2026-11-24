@@ -3,8 +3,9 @@
   "name": "Spark Light",
   "owner": "Shadow",
   "ownerLine": "Shadow 的个人服务站",
-  "tagline": null,
-  "intro": null,
+  "tagline": "火花照见微光，影中读取答案。",
+  "taglineEn": "Sparks reveal the glimmer; answers are read in the shadows.",
+  "intro": "Spark Light 是 Shadow 的个人服务站。这里有占卜、Vibecoding 网站与小游戏定制、灵摆调频、AI 生图与漫剧等服务，可走平台：雨季不再来",
   "chapters": [
     { "id": "cover",  "title": "封面",     "en": "cover" },
     { "id": "bench",  "title": "今日字卡", "en": "workbench" },

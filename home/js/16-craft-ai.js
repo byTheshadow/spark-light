@@ -67,10 +67,9 @@
   var segB=$$('.seg button');
   function setMode(m){if(m===mode)return;mode=m;segB.forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.m===m))});comic.classList.toggle('single',m==='still');buzz(6);reset()}
   segB.forEach(function(b){b.addEventListener('click',function(){setMode(b.dataset.m)})});
-  // 进入前的提示
+  // 进入前的提示（每次进页面默认遮挡，必须手指/鼠标点击才显示，避免不喜欢的访客误看）
   (function(){var v=$('#aiVeil'),pl=$('#aiPlate');function pass(){v.classList.add('off');pl.classList.remove('veiled')}
-    if(store('sl.ai')==='ok')pass();
-    $('#veilOk').addEventListener('click',function(){store('sl.ai','ok');pass();buzz(10);setTimeout(function(){segB[1].focus({preventScroll:true})},300)});
+    $('#veilOk').addEventListener('click',function(){pass();buzz(10);setTimeout(function(){segB[1].focus({preventScroll:true})},300)});
     $('#veilNo').addEventListener('click',function(){go('price')});
   })();
 })();

@@ -19,6 +19,7 @@ var Contact=(function(){var msg='';
   pos.forEach(function(p,i){s+='<path class="st" id="ns'+i+'" d="'+STAR4(p[0],p[1],6,1.4)+'"/>'});mini.innerHTML=s;
   function body(n){return n.b||'「'+n.t+'」的具体条款待站主提供。正式版会在这里逐条写清楚，下单前请先读一读。'}
   list.innerHTML=DATA.notice.map(function(n,i){return '<div class="nt"><button type="button" class="nt-h" aria-expanded="false"><span class="lab">'+(i+1)+'</span><span>'+n.t+'</span><span class="nt-pm"></span></button><div class="nt-b"><div><p>'+body(n)+'</p></div></div></div>'}).join('');
+  if(window.SLAiMosaic)window.SLAiMosaic(list);
   function prog(){$('#ntProg').textContent='已读 '+read.size+' / '+N+(read.size===N?'，星座连上了':'')}
   prog();
   $$('.nt',list).forEach(function(nt,i){nt.querySelector('.nt-h').addEventListener('click',function(){var on=!nt.classList.contains('on');nt.classList.toggle('on',on);this.setAttribute('aria-expanded',String(on));

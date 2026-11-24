@@ -12,10 +12,10 @@ const SCRIPTS = ['01-util', '02-loop', '03-tilt', '04-bg', '05-ripple', '06-kine
 
 /* 价目卡的动画与配色属于主题皮肤，文字与价格来自 data/services.json */
 const META = {
-  divination: { id: 'div', title: '占卜', en: 'divination', tint: 'rgba(200,190,255,.6)', fx: { 'ln-tarot-1q': 'shuffle', 'fortune-single': 'spread', 'past-life': 'cycle', 'oc-entertainment': 'dream', 'cards-random': 'pocket' } },
-  vibecoding: { id: 'code', title: '网站定制', en: 'vibecoding', tint: 'rgba(175,225,218,.7)', fx: { website: 'build', rush: 'rush' } },
-  tuning: { id: 'tune', title: '灵摆调频', en: 'pendulum', tint: 'rgba(191,230,225,.55)', pendFx: 'pend' },
-  ai: { id: 'ai', title: 'AI 映画', en: 'ai reels', tint: 'rgba(241,206,222,.8)', pendFx: 'film' }
+  divination: { id: 'div', title: '占卜', en: 'divination', tint: 'rgba(200,190,255,.6)', fx: { 'ln-tarot-1q': 'shuffle', 'single-question': 'shuffle', 'fortune-single': 'spread', 'fortune-item': 'spread', 'past-life': 'cycle', 'parallel-world': 'cycle', 'oc-entertainment': 'dream', 'dream-char': 'dream', 'future-letter': 'pocket', 'cards-random': 'pocket', 'word-card': 'pocket' } },
+  vibecoding: { id: 'code', title: '网站定制', en: 'vibecoding', tint: 'rgba(175,225,218,.7)', fx: { website: 'build', rush: 'rush', minigame: 'build' } },
+  tuning: { id: 'tune', title: '灵摆调频', en: 'pendulum', tint: 'rgba(191,230,225,.55)', pendFx: 'pend', fx: { 'tuning-single': 'pend', 'tuning-7times': 'pend' } },
+  ai: { id: 'ai', title: 'AI 映画', en: 'ai reels', tint: 'rgba(241,206,222,.8)', pendFx: 'film', fx: { 'ai-image': 'film' } }
 };
 
 function buildData(d) {
@@ -54,15 +54,75 @@ function buildData(d) {
   };
 }
 
+/* 为包含 AI 相关词的段落加点击解封马赛克（不替访客自动解封，须手指/鼠标点击才显示） */
+function applyAiMosaic(host) {
+  if (!host) return;
+  const walker = document.createTreeWalker(host, NodeFilter.SHOW_TEXT, null);
+  const nodes = [];
+  let n;
+  while ((n = walker.nextNode())) {
+    if (n.parentElement && !n.parentElement.closest('.sl-ai-mosaic') && /(?:AI|Midjourney|NovelAI|生图|漫剧)/.test(n.nodeValue)) nodes.push(n);
+  }
+  const RE = /((?:AI\s*(?:生图|漫剧|绘画|创作|映画|作品)(?:与(?:生图|漫剧))?|Midjourney（MJ）与\s*NovelAI|Midjourney|NovelAI))/g;
+  nodes.forEach((tn) => {
+    const text = tn.nodeValue;
+    if (!RE.test(text)) return;
+    RE.lastIndex = 0;
+    const frag = document.createDocumentFragment();
+    let last = 0, m;
+    while ((m = RE.exec(text)) !== null) {
+      if (m.index > last) frag.appendChild(document.createTextNode(text.slice(last, m.index)));
+      const mask = document.createElement('span');
+      mask.className = 'sl-ai-mosaic';
+      mask.setAttribute('role', 'button');
+      mask.setAttribute('tabindex', '0');
+      mask.setAttribute('title', '含 AI 相关内容，点击显示');
+      mask.setAttribute('aria-label', '含 AI 相关内容，点击显示');
+      const inner = document.createElement('span');
+      inner.className = 'sl-ai-mosaic-in';
+      inner.textContent = m[0];
+      mask.appendChild(inner);
+      const toggle = (e) => { e.stopPropagation(); mask.classList.toggle('is-open'); };
+      mask.addEventListener('click', toggle);
+      mask.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(e); } });
+      frag.appendChild(mask);
+      last = RE.lastIndex;
+    }
+    if (last < text.length) frag.appendChild(document.createTextNode(text.slice(last)));
+    if (tn.parentNode) tn.parentNode.replaceChild(frag, tn);
+  });
+}
+window.SLAiMosaic = applyAiMosaic;
+
 function fillText(d) {
   const intro = document.getElementById('covIntro');
   if (d.site.tagline) intro.textContent = d.site.tagline; else { const ph = document.createElement('span'); ph.className = 'ph'; ph.textContent = '一句话介绍，待站主提供。'; intro.appendChild(ph); }
+  const covEn = document.getElementById('covEn');
+  if (covEn && d.site.taglineEn) { covEn.textContent = d.site.taglineEn; covEn.hidden = false; }
+  const covMore = document.getElementById('covMore'), covMoreBtn = document.getElementById('covMoreBtn'), covMoreLbl = document.getElementById('covMoreLbl'), covMoreTxt = document.getElementById('covMoreTxt');
+  if (covMore && covMoreBtn && covMoreTxt && d.site.intro) {
+    covMoreTxt.textContent = d.site.intro;
+    applyAiMosaic(covMoreTxt);
+    covMore.hidden = false;
+    covMoreBtn.addEventListener('click', () => {
+      const open = covMore.classList.toggle('on');
+      covMoreBtn.setAttribute('aria-expanded', String(open));
+      if (covMoreLbl) covMoreLbl.textContent = open ? '收起站点介绍' : '展开站点介绍';
+    });
+  }
   if (d.site.ownerLine) document.getElementById('covSub').textContent = d.site.ownerLine;
   const order = ['divination', 'vibecoding', 'tuning', 'ai'];
   order.forEach((id, i) => {
     const c = (d.crafts.crafts || []).find((x) => x.id === id) || {};
     const p = document.querySelector('[data-craft="' + i + '"]');
-    if (p) { if (c.desc) p.textContent = c.desc; else { const ph = document.createElement('span'); ph.className = 'ph'; ph.textContent = '业务介绍待站主提供'; p.appendChild(ph); } }
+    if (p) {
+      if (c.desc) {
+        p.textContent = c.desc;
+        if (id === 'ai') { p.removeAttribute('data-kin'); applyAiMosaic(p); }
+      } else {
+        const ph = document.createElement('span'); ph.className = 'ph'; ph.textContent = '业务介绍待站主提供'; p.appendChild(ph);
+      }
+    }
     const ul = document.querySelector('[data-craft-tags="' + i + '"]');
     if (ul) { (c.tags || []).forEach((t) => { const li = document.createElement('li'); li.textContent = t; ul.appendChild(li); }); if (!(c.tags || []).length) ul.hidden = true; }
   });

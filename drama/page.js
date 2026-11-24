@@ -538,7 +538,14 @@ const Show = (function () {
   return { open };
 })();
 
-function startShow(it) { Show.open(it); }
+function startShow(it) {
+  if (screen && screen.classList.contains('drp-ai-masked')) {
+    screen.classList.remove('drp-ai-masked');
+  }
+  Show.open(it);
+}
+const aiVeil = $('drp-ai-veil');
+if (aiVeil) aiVeil.addEventListener('click', () => { if (screen) screen.classList.remove('drp-ai-masked'); });
 $('drp-play').addEventListener('click', () => startShow(state.list[state.active]));
 
 /* ---------- 启动 ---------- */
