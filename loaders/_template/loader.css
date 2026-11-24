@@ -1,0 +1,34 @@
+/* 加载页模板的样式。所有选择器都在 .slx-load 之下。 */
+
+.slx-tpl {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #020202;
+  color: #f2f2f0;
+}
+.slx-tpl-mid { width: min(420px, 80vw); text-align: center; }
+.slx-tpl-name {
+  margin: 0 0 18px;
+  font-family: var(--sl-font-disp);
+  font-size: 26px;
+  letter-spacing: .3em;
+  text-indent: .3em;
+}
+.slx-tpl-bar {
+  position: relative;
+  height: 1px;
+  background: rgba(255, 255, 255, .2);
+  overflow: hidden;
+}
+.slx-tpl-bar i {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 1px;
+  width: calc(var(--p, 0) * 100%);
+  background: #fff;
+  transition: width .3s linear;
+}

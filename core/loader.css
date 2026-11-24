@@ -1,0 +1,27 @@
+/* core/loader.css
+   加载页（进站时的开屏）的容器与交接层。
+   具体长什么样在 loaders/<id>/loader.css 里；这里只有“盖子”本身，很小，
+   每个页面都在 <head> 里同步引入，保证脚本还没到时就已经有一层黑，不会先闪一下内容。
+
+   规则（docs/启动包-v5.md）：只在进站时出现、点一下或 Esc 跳过、出错就不显示。 */
+
+:root { --sl-z-loader: 200; }
+
+.slx-load {
+  position: fixed;
+  inset: 0;
+  z-index: var(--sl-z-loader);
+  background: #020202;
+  overflow: hidden;
+  opacity: 1;
+  transition: opacity .34s var(--sl-ease), visibility 0s .34s;
+}
+
+/* 交接：先淡出，再卸载 */
+.slx-load--out { opacity: 0; visibility: hidden; }
+
+/* 简化动效下不做淡出 */
+html[data-motion="simple"] .slx-load { transition-duration: .001ms; }
+
+/* 加载页自己的根节点铺满整层 */
+.slx-load > * { position: absolute; inset: 0; }
