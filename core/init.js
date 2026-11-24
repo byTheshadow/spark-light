@@ -21,4 +21,6 @@
   var rm = !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
   var simple = pref === 'simple' ? true : pref === 'full' ? false : rm;
   d.setAttribute('data-motion', simple ? 'simple' : 'full');
+  /* 外壳形态由主题决定（pill / bar），在这里先写上去，避免内容先按旧边距排版再跳一下 */
+  d.setAttribute('data-chrome', pick && pick.chrome ? pick.chrome : 'bar');
 })();

@@ -104,6 +104,11 @@ function statusText(st) {
 export function mountShell() {
   const pageId = doc.body.getAttribute('data-page') || 'home';
   const noHeader = doc.body.getAttribute('data-shell-header') === 'off'; // 主界面自带顶栏与悬浮球导航
+  /* 外壳形态由主题声明（themes/registry.js 的 chrome）。主界面永远用它自己那一套。 */
+  const themeId = html.getAttribute('data-theme');
+  const theme = (window.SL_THEMES || []).filter((t) => t.id === themeId)[0];
+  const chromeKind = noHeader ? 'home' : ((theme && theme.chrome) === 'pill' ? 'pill' : 'bar');
+  const isPill = chromeKind === 'pill';
 
   const brandPage = h('span', { class: 'sl-brand-page' });
   const menuBtn = h('button', { class: 'sl-iconbtn', type: 'button', 'aria-haspopup': 'dialog', 'aria-label': '打开导航与设置' }, icon('menu'));
@@ -118,8 +123,110 @@ export function mountShell() {
   const bar = h('div', { class: 'sl-orderbar', role: 'region', 'aria-label': '排单状态与下单入口' }, statusBtn, orderBtn);
 
   const skip = h('a', { class: 'sl-skip', href: '#main' }, '跳到正文');
-  if (noHeader) doc.body.prepend(skip); else doc.body.prepend(skip, head);
-  doc.body.appendChild(bar);
+
+  /* ---------- 顶部胶囊（主题 chrome: 'pill'）---------- */
+  let pillBtn = null, navPanel = null, chromeWrap = null;
+  let panelOpen = false, hoverT = 0, closeT = 0;
+  if (isPill) {
+    pillBtn = h('button', {
+      class: 'sl-pill-btn', type: 'button', 'aria-expanded': 'false', 'aria-haspopup': 'true',
+      'aria-controls': 'sl-nav-panel', 'aria-label': '打开导航'
+    },
+      h('span', { class: 'sl-pill-brand' }, 'Spark Light'),
+      h('span', { class: 'sl-pill-star', 'aria-hidden': 'true' }));
+    navPanel = h('nav', { class: 'sl-nav-panel', id: 'sl-nav-panel', 'aria-label': '页面导航' });
+    chromeWrap = h('div', { class: 'sl-chrome' }, h('div', { class: 'sl-nav-veil', 'aria-hidden': 'true' }), pillBtn, navPanel);
+  }
+
+  const hoverable = () => !!(window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches);
+  function openPanel() {
+    if (!isPill || panelOpen) return;
+    panelOpen = true;
+    clearTimeout(closeT);
+    navPanel.classList.add('on');
+    const veil = chromeWrap.querySelector('.sl-nav-veil');
+    if (veil) veil.classList.add('on');
+    pillBtn.setAttribute('aria-expanded', 'true');
+    doc.addEventListener('keydown', onPanelKey);
+  }
+  function closePanel(restoreFocus) {
+    if (!isPill || !panelOpen) return;
+    panelOpen = false;
+    clearTimeout(hoverT); clearTimeout(closeT);
+    navPanel.classList.remove('on');
+    const veil = chromeWrap.querySelector('.sl-nav-veil');
+    if (veil) veil.classList.remove('on');
+    pillBtn.setAttribute('aria-expanded', 'false');
+    doc.removeEventListener('keydown', onPanelKey);
+    if (restoreFocus) { try { pillBtn.focus({ preventScroll: true }); } catch (e) { /* 忽略 */ } }
+  }
+  function onPanelKey(e) {
+    if (e.key === 'Escape') { e.preventDefault(); closePanel(true); return; }
+    if (e.key !== 'Tab') return;
+    const f = [pillBtn].concat(Array.from(navPanel.querySelectorAll('a[href],button:not([disabled])')));
+    if (!f.length) return;
+    const first = f[0], last = f[f.length - 1];
+    if (e.shiftKey && doc.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && doc.activeElement === last) { e.preventDefault(); first.focus(); }
+  }
+
+  /* 面板内容来自 data/site.json 的 nav；当前页高亮。 */
+  function fillPanel(site) {
+    const nav = (Array.isArray(site.nav) ? site.nav : []).filter((n) => n && n.id);
+    clear(navPanel);
+    navPanel.appendChild(h('div', { class: 'sl-panel-head', 'aria-hidden': 'true' }, h('b', null, '去哪'), h('em', null, 'menu')));
+    const dots = h('div', { class: 'sl-panel-dots', 'aria-hidden': 'true' },
+      h('i', { class: 'sl-panel-cs s1' }), h('i', { class: 'sl-panel-cs s2' }),
+      h('i', { class: 'sl-panel-dot d1' }), h('i', { class: 'sl-panel-dot d2' }),
+      h('i', { class: 'sl-panel-dot d3' }), h('i', { class: 'sl-panel-dot d4' }));
+    navPanel.appendChild(dots);
+    const cur = pageId;
+    nav.forEach((n) => {
+      const here = n.id === cur;
+      const row = h('a', {
+        class: 'sl-panel-row', href: root + (n.path || ''), 'aria-current': here ? 'page' : null
+      },
+        here ? h('span', { class: 'sl-panel-star', 'aria-hidden': 'true' }) : null,
+        h('span', { class: 'sl-panel-t' }, h('span', null, n.title || n.id), n.desc ? h('small', null, n.desc) : null),
+        here ? null : h('i', { class: 'sl-panel-chev', 'aria-hidden': 'true' }));
+      row.addEventListener('click', () => closePanel(false));
+      navPanel.appendChild(row);
+    });
+    navPanel.append(
+      h('div', { class: 'sl-panel-div', 'aria-hidden': 'true' }, h('i')),
+      h('button', { class: 'sl-panel-row', type: 'button', onclick: () => { closePanel(false); navSheet.open(pillBtn); } },
+        h('span', { class: 'sl-panel-t' }, h('span', null, '更多与设置'), h('small', null, '简化动效、主题、主界面各章')),
+        h('i', { class: 'sl-panel-chev', 'aria-hidden': 'true' })));
+  }
+
+  if (noHeader) {
+    doc.body.prepend(skip);
+    doc.body.appendChild(bar);
+  } else if (isPill) {
+    statusBtn.classList.add('sl-dock-state');
+    orderBtn.classList.add('sl-dock-order');
+    pillBtn.addEventListener('click', () => { if (panelOpen) closePanel(true); else openPanel(); });
+    chromeWrap.addEventListener('pointerenter', () => {
+      if (!hoverable()) return;
+      clearTimeout(closeT); clearTimeout(hoverT);
+      hoverT = setTimeout(openPanel, 120);
+    });
+    chromeWrap.addEventListener('pointerleave', () => {
+      if (!hoverable()) return;
+      clearTimeout(hoverT);
+      closeT = setTimeout(() => closePanel(false), 220);
+    });
+    doc.addEventListener('pointerdown', (e) => {
+      if (panelOpen && !chromeWrap.contains(e.target)) closePanel(false);
+    }, true);
+    chromeWrap.querySelector('.sl-nav-veil').addEventListener('click', () => closePanel(false));
+    window.addEventListener('pagehide', () => closePanel(false));
+    doc.body.prepend(skip, chromeWrap);
+    doc.body.appendChild(h('div', { class: 'sl-dock' }, statusBtn, orderBtn));
+  } else {
+    doc.body.prepend(skip, head);
+    doc.body.appendChild(bar);
+  }
 
   /* 导航与设置 */
   const navSheet = makeSheet('导航与设置', async (body, close) => {
@@ -206,6 +313,7 @@ export function mountShell() {
   loadData('site').then((site) => {
     const n = site.nav.find((x) => x.id === pageId);
     if (n && pageId !== 'home') brandPage.textContent = n.title;
+    if (isPill) fillPanel(site);
   }).catch(() => {});
 
   html.setAttribute('data-shell', '1');

@@ -164,3 +164,26 @@ html[data-theme="t1-starfield"] .sl-toast::before, html[data-theme="t1-starfield
   -webkit-mask: var(--sl-star) center / contain no-repeat; mask: var(--sl-star) center / contain no-repeat;
   animation: sl-twinkle 1.8s ease-in-out infinite;
 }
+
+/* ===== 四、顶部胶囊与导航面板 =====
+   胶囊沿用全站的玻璃质感；展开的面板用“星盘面板”的底与边光，再加一点星点做装饰。
+   其它主题不写这一段，面板就是干净的白色。 */
+html[data-theme="t1-starfield"] .sl-pill-star { background: var(--sl-star-fill); }
+html[data-theme="t1-starfield"] .sl-nav-panel { background: var(--sl-pop-bg); box-shadow: var(--sl-pop-rim), var(--sl-pop-glow); }
+html[data-theme="t1-starfield"] .sl-nav-panel::before {
+  content: ""; position: absolute; left: 0; right: 0; top: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(150, 140, 225, .55), transparent);
+}
+html[data-theme="t1-starfield"] .sl-nav-panel.on { animation: sl-rim 1s ease-out; }
+html[data-theme="t1-starfield"] .sl-panel-row[aria-current="page"] { background: linear-gradient(90deg, rgba(207, 200, 255, .4), transparent 86%); }
+@media (hover: hover) and (pointer: fine) {
+  html[data-theme="t1-starfield"] .sl-panel-row:hover { background: linear-gradient(90deg, rgba(207, 200, 255, .3), transparent 82%); }
+}
+html[data-theme="t1-starfield"] .sl-panel-cs { background: var(--sl-star-fill); animation: sl-twinkle 3.4s ease-in-out infinite; }
+html[data-theme="t1-starfield"] .sl-panel-cs.s1 { right: 16px; top: 14px; width: 15px; height: 15px; opacity: .75; }
+html[data-theme="t1-starfield"] .sl-panel-cs.s2 { right: 40px; top: 26px; width: 9px; height: 9px; opacity: .6; animation-duration: 4.7s; animation-delay: -1.8s; }
+html[data-theme="t1-starfield"] .sl-panel-dot { background: var(--sl-star-fill); opacity: .55; }
+html[data-theme="t1-starfield"] .sl-panel-dot.d1 { left: 14%; top: 22%; }
+html[data-theme="t1-starfield"] .sl-panel-dot.d2 { right: 22%; top: 38%; width: 3px; height: 3px; }
+html[data-theme="t1-starfield"] .sl-panel-dot.d3 { left: 30%; bottom: 26%; width: 4px; height: 4px; }
+html[data-theme="t1-starfield"] .sl-panel-dot.d4 { right: 14%; bottom: 14%; }

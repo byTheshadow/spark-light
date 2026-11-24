@@ -35,6 +35,7 @@
   --sl-z-bg: -1;
   --sl-z-head: 40;
   --sl-z-bar: 45;
+  --sl-z-chrome: 60;      /* 顶部胶囊与导航面板：高于顶栏与底栏，低于弹层 */
   --sl-z-grain: 60;
   --sl-z-scrim: 70;
   --sl-z-sheet: 80;
@@ -253,3 +254,88 @@ html[data-motion="simple"] .sl-fallback { animation-delay: 3s !important; }
 .sl-chip { min-height: 40px; padding: 0 16px; display: inline-flex; align-items: center; border: 1px solid var(--sl-line); border-radius: var(--sl-radius-pill); font-size: 14px; letter-spacing: .08em; text-decoration: none; transition: background-color .3s var(--sl-ease), color .3s var(--sl-ease), transform .3s var(--sl-ease); }
 .sl-chip:hover { background: var(--sl-ink); color: var(--sl-on-ink); border-color: var(--sl-ink); }
 .sl-chip:active { transform: scale(.96); }
+
+/* ---------- 外壳形态二：顶部正中胶囊 + 展开面板 + 底部浮动按钮 ----------
+   由主题的 chrome: 'pill' 启用（core/init.js 写 data-chrome，core/shell.js 按它搭结构）。
+   主界面自带顶栏与悬浮球，不用这一套，所以下面的边距规则排除主界面。 */
+html[data-chrome="pill"] body:not([data-page="home"]) {
+  padding-top: calc(70px + var(--sl-sat));
+  padding-bottom: calc(var(--sl-bar-h) + var(--sl-sab) + 24px);
+}
+.sl-chrome {
+  position: fixed; left: 0; right: 0; top: calc(12px + var(--sl-sat)); z-index: var(--sl-z-chrome);
+  display: flex; justify-content: center; pointer-events: none;
+}
+.sl-chrome > * { pointer-events: auto; }
+.sl-pill-btn {
+  height: 46px; padding: 0 10px 0 18px; display: inline-flex; align-items: center; gap: 10px;
+  border-radius: var(--sl-radius-pill); background: var(--sl-glass-bg);
+  -webkit-backdrop-filter: blur(18px) saturate(1.3); backdrop-filter: blur(18px) saturate(1.3);
+  box-shadow: inset 0 0 0 1px var(--sl-line), 0 18px 40px -24px rgba(0, 0, 0, .55);
+  transition: transform .35s var(--sl-ease), box-shadow .35s var(--sl-ease);
+}
+.sl-pill-btn[aria-expanded="true"] { transform: scale(1.02); }
+.sl-pill-brand { font-family: var(--sl-font-disp); font-style: italic; font-size: 17px; line-height: 1; letter-spacing: .01em; white-space: nowrap; }
+.sl-pill-star {
+  flex: none; width: 20px; height: 20px;
+  background: var(--sl-star-fill, linear-gradient(135deg, #d8d2ff, #a597ff 58%, #74c9bc));
+  -webkit-mask: var(--sl-star) center / contain no-repeat; mask: var(--sl-star) center / contain no-repeat;
+  animation: sl-star-spin 16s linear infinite;
+}
+.sl-pill-btn[aria-expanded="true"] .sl-pill-star { animation-duration: 3.2s; }
+@keyframes sl-star-spin { to { transform: rotate(360deg); } }
+
+/* 展开面板 */
+.sl-nav-panel {
+  position: absolute; top: calc(100% + 8px); left: 50%;
+  width: min(358px, calc(100vw - 24px)); padding: 8px; border-radius: 24px;
+  background: var(--sl-surface);
+  box-shadow: 0 0 0 1px var(--sl-line), 0 34px 64px -34px rgba(0, 0, 0, .45);
+  transform: translateX(-50%) translateY(-10px) scale(.97); opacity: 0; visibility: hidden;
+  transition: opacity .3s var(--sl-ease), transform .32s var(--sl-ease), visibility 0s .32s;
+}
+.sl-nav-panel.on { transform: translateX(-50%); opacity: 1; visibility: visible; transition-delay: 0s; }
+.sl-nav-veil {
+  position: fixed; inset: 0; z-index: -1; background: rgba(12, 10, 24, .14);
+  -webkit-backdrop-filter: blur(2px); backdrop-filter: blur(2px);
+  opacity: 0; visibility: hidden; transition: opacity .3s var(--sl-ease), visibility 0s .3s;
+}
+.sl-nav-veil.on { opacity: 1; visibility: visible; transition-delay: 0s; }
+.sl-panel-head { display: flex; align-items: baseline; justify-content: space-between; padding: 6px 12px 8px; }
+.sl-panel-head b { font-size: 11px; font-weight: 400; letter-spacing: .26em; color: var(--sl-mute); }
+.sl-panel-head em { font-family: var(--sl-font-disp); font-style: italic; font-size: 12px; color: var(--sl-faint); }
+.sl-panel-row {
+  display: flex; align-items: center; gap: 10px; width: 100%; padding: 10px 12px; border-radius: 14px;
+  text-align: left; text-decoration: none;
+  transition: background-color .3s var(--sl-ease), padding-left .35s var(--sl-ease);
+}
+.sl-panel-t { flex: 1; min-width: 0; }
+.sl-panel-t > span { display: block; font-size: 15px; letter-spacing: .04em; }
+.sl-panel-t > small { display: block; margin-top: 2px; font-size: 12px; letter-spacing: .06em; line-height: 1.6; color: var(--sl-mute); }
+.sl-panel-chev { flex: none; width: 9px; height: 9px; border-right: 1.5px solid var(--sl-ink); border-top: 1.5px solid var(--sl-ink); transform: rotate(45deg); opacity: .35; transition: transform .35s var(--sl-ease), opacity .3s; }
+.sl-panel-star { flex: none; width: 10px; height: 10px; background: var(--sl-star-fill, linear-gradient(135deg, #d8d2ff, #a597ff 58%, #74c9bc)); -webkit-mask: var(--sl-star) center / contain no-repeat; mask: var(--sl-star) center / contain no-repeat; }
+.sl-panel-row[aria-current="page"] { background: var(--sl-line-2); }
+.sl-panel-div { display: flex; align-items: center; gap: 10px; margin: 4px 16px; }
+.sl-panel-div::before, .sl-panel-div::after { content: ""; flex: 1; height: 1px; background: var(--sl-line-2); }
+.sl-panel-div i { width: 6px; height: 6px; border: 1px solid var(--sl-faint); transform: rotate(45deg); }
+.sl-panel-dots { position: absolute; inset: 0; pointer-events: none; }
+.sl-panel-cs { position: absolute; width: 13px; height: 13px; background: var(--sl-star-fill, linear-gradient(135deg, #d8d2ff, #a597ff 58%, #74c9bc)); -webkit-mask: var(--sl-star) center / contain no-repeat; mask: var(--sl-star) center / contain no-repeat; opacity: .7; }
+.sl-panel-dot { position: absolute; width: 5px; height: 5px; background: none; -webkit-mask: var(--sl-star) center / contain no-repeat; mask: var(--sl-star) center / contain no-repeat; }
+@media (hover: hover) and (pointer: fine) {
+  .sl-panel-row:hover { background: var(--sl-line-2); padding-left: 16px; }
+  .sl-panel-row:hover .sl-panel-chev { opacity: .7; transform: translateX(2px) rotate(45deg); }
+}
+
+/* 底部浮动：排单状态 + 下单 */
+.sl-dock { position: fixed; left: 0; right: 0; bottom: 0; z-index: var(--sl-z-bar); display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 0 14px calc(18px + var(--sl-sab)); pointer-events: none; }
+.sl-dock > * { pointer-events: auto; }
+.sl-dock .sl-dock-state {
+  min-height: 42px; height: 42px; padding: 0 16px; border-radius: var(--sl-radius-pill);
+  background: var(--sl-glass-bg); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px);
+  box-shadow: inset 0 0 0 1px var(--sl-line); font-size: 12px; letter-spacing: .1em; color: var(--sl-mute);
+}
+.sl-dock .sl-dock-order {
+  min-height: 46px; height: 46px; padding: 0 20px; font-size: 14px; letter-spacing: .12em;
+  /* 深色封面（返图页、主界面）上也要看得出边界，所以加一圈极淡的白边 */
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, .18), 0 14px 30px -14px rgba(0, 0, 0, .55);
+}
