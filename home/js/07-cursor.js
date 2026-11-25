@@ -13,7 +13,7 @@ if(FINE){(function(){
 
 document.addEventListener('pointerdown',function(e){
   var b=e.target&&e.target.closest&&e.target.closest('.btn,.cl,.chip,.prow,.tab,.mi,.row,.rbtn,.nt-h');if(!b||b.disabled)return;
-  var r=b.getBoundingClientRect(),d=Math.hypot(r.width,r.height)*2,s=document.createElement('span');s.className='ink';
+  var r=b.getBoundingClientRect(),d=Math.min(180,Math.hypot(r.width,r.height)*2),s=document.createElement('span');s.className='ink';
   s.style.cssText='width:'+d+'px;height:'+d+'px;left:'+(e.clientX-r.left-d/2)+'px;top:'+(e.clientY-r.top-d/2)+'px';b.appendChild(s);setTimeout(function(){s.remove()},800);buzz(4);
 },{passive:true});
 

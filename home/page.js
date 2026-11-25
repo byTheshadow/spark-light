@@ -94,6 +94,39 @@ function applyAiMosaic(host) {
 }
 window.SLAiMosaic = applyAiMosaic;
 
+/* 为重点词句自动加上星光流光高亮（轻触可触发星光迸发） */
+function applyHighlights(host) {
+  if (!host) return;
+  const walker = document.createTreeWalker(host, NodeFilter.SHOW_TEXT, null);
+  const nodes = [];
+  let n;
+  while ((n = walker.nextNode())) {
+    if (n.parentElement && !n.parentElement.closest('.sl-ai-mosaic,.sl-hl')) nodes.push(n);
+  }
+  const HL_RE = /(全部由人工完成，没有\s*AI\s*参与|全部由人工完成|没有\s*AI\s*参与|可提供抽牌图片|录制洗牌视频|随机抽取，也可以指定卡牌|可指定卡牌类型，也可随机抽取|底价\s*100r\s*起|定金尾款制，定金\s*50r|定金尾款制|定金\s*50r|底价\s*50r\s*起|底价\s*50r|加收\s*30\s*至\s*50r|暂不接定制小手机|通过灵摆链接「高我」|减少阻滞性的负面能量|增加有利于事情发展的积极频率|财富、健康、学业|没有画师垫图|可商用\s*p\s*值|免费重新生图\s*2\s*次|无水印原图|如实标注|占卜类订单不接受退款|非特殊情况不退款|每日限量接单|bug\s*免费修复|\d+\s*r(?:\s*-\s*\d+\s*r)?(?:\s*起)?)/g;
+  nodes.forEach((tn) => {
+    const text = tn.nodeValue;
+    if (!HL_RE.test(text)) return;
+    HL_RE.lastIndex = 0;
+    const frag = document.createDocumentFragment();
+    let last = 0, m;
+    while ((m = HL_RE.exec(text)) !== null) {
+      if (m.index > last) frag.appendChild(document.createTextNode(text.slice(last, m.index)));
+      const hl = document.createElement('span');
+      hl.className = 'sl-hl';
+      hl.textContent = m[0];
+      hl.addEventListener('click', (e) => {
+        if (window.SLSpark) window.SLSpark.burst(e.clientX, e.clientY, { n: 10 });
+      });
+      frag.appendChild(hl);
+      last = HL_RE.lastIndex;
+    }
+    if (last < text.length) frag.appendChild(document.createTextNode(text.slice(last)));
+    if (tn.parentNode) tn.parentNode.replaceChild(frag, tn);
+  });
+}
+window.SLHighlight = applyHighlights;
+
 function fillText(d) {
   const intro = document.getElementById('covIntro');
   if (d.site.tagline) intro.textContent = d.site.tagline; else { const ph = document.createElement('span'); ph.className = 'ph'; ph.textContent = '一句话介绍，待站主提供。'; intro.appendChild(ph); }
@@ -103,6 +136,7 @@ function fillText(d) {
   if (covMore && covMoreBtn && covMoreTxt && d.site.intro) {
     covMoreTxt.textContent = d.site.intro;
     applyAiMosaic(covMoreTxt);
+    applyHighlights(covMoreTxt);
     covMore.hidden = false;
     covMoreBtn.addEventListener('click', () => {
       const open = covMore.classList.toggle('on');
@@ -118,7 +152,9 @@ function fillText(d) {
     if (p) {
       if (c.desc) {
         p.textContent = c.desc;
-        if (id === 'ai') { p.removeAttribute('data-kin'); applyAiMosaic(p); }
+        p.removeAttribute('data-kin');
+        if (id === 'ai') applyAiMosaic(p);
+        applyHighlights(p);
       } else {
         const ph = document.createElement('span'); ph.className = 'ph'; ph.textContent = '业务介绍待站主提供'; p.appendChild(ph);
       }

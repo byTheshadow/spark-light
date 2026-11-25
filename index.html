@@ -79,7 +79,7 @@
   <header class="ch-head rv">
     <span class="ch-no" aria-hidden="true">01</span>
     <div class="ch-tw"><p class="ch-en">the workbench</p><h2 class="ch-title" id="t1" data-kin>今日字卡</h2></div>
-    <p class="ch-lede" data-kin>洗一洗桌上的字卡，凭直觉抽一张。它会变成一枚小书签，夹进今天的书里。</p>
+    <p class="ch-lede" data-kin>在开始正式的体验之前，你可以先在这里试试抽一张今日字卡——洗一洗牌，凭直觉挑一张夹进今天的书里。</p>
   </header>
   <div class="bench rv">
     <div class="desk" id="desk">
@@ -110,7 +110,7 @@
       <span class="desk-tag" id="deskTag" data-depth=".15"></span>
     </div>
     <div class="bench-ctl">
-      <p class="bench-st" id="benchSt">牌已经放在桌上了。</p>
+      <p class=" bench-st" id="benchSt">在开始正式的体验之前，你可以先在这里试试抽一张今日字卡。</p>
       <button type="button" class="btn" id="drawBtn"><span>抽一张</span></button>
     </div>
   </div>
@@ -144,6 +144,27 @@
         <div class="diff" style="background:radial-gradient(circle,rgba(200,190,255,.9),rgba(191,230,225,.45) 45%,transparent 70%)"></div>
         <div class="ent-wrap" data-depth=".45">
           <div class="ent" id="ent" role="button" tabindex="0" aria-label="一对纠缠的水晶球：拖动其中一颗搅动雾气，轻触观测" data-noripple><canvas id="entCv"></canvas></div>
+          <div class="ast-bridge" aria-hidden="true">
+            <svg viewBox="0 0 360 52" fill="none" stroke="currentColor" stroke-linecap="round">
+              <path class="ast-line" d="M18 26H116M244 26H342" stroke-width=".7" opacity=".32"/>
+              <path class="ast-const" d="M74 34L98 18L128 30L154 14L180 26L206 14L232 30L262 18L286 34" stroke-width=".85" stroke-dasharray="2 3" opacity=".55"/>
+              <circle cx="180" cy="26" r="16" stroke-width=".75" opacity=".4"/>
+              <circle cx="180" cy="26" r="22" stroke-width=".55" stroke-dasharray="1.5 3" opacity=".35"/>
+              <path d="M167 26c4.5-6 21.5-6 26 0-4.5 6-21.5 6-26 0z" stroke-width=".85" opacity=".65"/>
+              <circle cx="180" cy="26" r="2.8" fill="currentColor" opacity=".75"/>
+              <path class="ast-star s1" d="M98 12l1.3 4.7 4.7 1.3-4.7 1.3-1.3 4.7-1.3-4.7-4.7-1.3 4.7-1.3z" fill="currentColor" stroke="none"/>
+              <path class="ast-star s2" d="M154 9l1 3.8 3.8 1-3.8 1-1 3.8-1-3.8-3.8-1 3.8-1z" fill="currentColor" stroke="none"/>
+              <path class="ast-star s3" d="M206 9l1 3.8 3.8 1-3.8 1-1 3.8-1-3.8-3.8-1 3.8-1z" fill="currentColor" stroke="none"/>
+              <path class="ast-star s4" d="M262 12l1.3 4.7 4.7 1.3-4.7 1.3-1.3 4.7-1.3-4.7-4.7-1.3 4.7-1.3z" fill="currentColor" stroke="none"/>
+              <path d="M48 21a6 6 0 1 0 0 10 4.8 4.8 0 1 1 0-10z" fill="currentColor" stroke="none" opacity=".45"/>
+              <path d="M312 21a6 6 0 1 1 0 10 4.8 4.8 0 1 0 0-10z" fill="currentColor" stroke="none" opacity=".45"/>
+              <circle cx="74" cy="34" r="1.6" fill="currentColor" opacity=".5"/>
+              <circle cx="128" cy="30" r="1.8" fill="currentColor" opacity=".6"/>
+              <circle cx="232" cy="30" r="1.8" fill="currentColor" opacity=".6"/>
+              <circle cx="286" cy="34" r="1.6" fill="currentColor" opacity=".5"/>
+            </svg>
+            <span class="ast-sub">ASTRA · VERITAS · UMBRA</span>
+          </div>
           <p class="ent-cap" id="entCap" aria-live="polite"><b id="capN"></b><span><span id="capE" style="font-family:var(--disp);font-style:italic"></span>，<span id="capK"></span></span></p>
         </div>
         <p class="hint lab">拨动一颗，另一颗会反着转。轻触观测，两颗同时坍缩成答案。仅供娱乐</p>
@@ -315,28 +336,79 @@
       <div class="env-act"><p class="lab" id="envHint" style="margin:0">有一封信，正在路上</p></div>
     </div>
     <div class="spread" id="spread">
-      <article class="sp-page sp-l" aria-label="营业须知">
-        <div class="sp-h"><span class="lab">i</span><h3>营业须知</h3><em>notice</em></div>
-        <p class="sp-greet" id="spGreet">见字如面。这封信是马车连夜送来的。下单之前，请先把下面这几条读一读；全部读完，上面这组星星会连成一线。</p>
-        <svg class="const-mini" id="constMini" viewBox="0 0 300 64" aria-hidden="true"></svg>
-        <p class="lab" id="ntProg" style="margin:0 0 4px"></p>
-        <div id="ntList"></div>
-      </article>
-      <article class="sp-page sp-r" aria-label="时间安排">
-        <div class="sp-h"><span class="lab">ii</span><h3>时间安排</h3><em id="calMonth"></em></div>
-        <div class="st-row"><span class="post-state"><i class="beacon"></i><b id="pState"></b></span><span class="lab" id="pStateEn"></span><span class="slots-w"><span id="slots"></span><span id="slotTxt"></span></span></div>
-        <div class="cal" id="cal" role="grid" aria-label="本月日程"></div>
-        <div class="legend"><span><i class="lo"></i>可约</span><span><i class="lf"></i>已满</span><span><i class="lr"></i>休息</span><span class="ph" id="calNote"></span></div>
-        <dl class="kv">
-          <dt class="lab">最近可排</dt><dd id="nextTxt" class="ph">待站主提供</dd>
-          <dt class="lab">回复时间</dt><dd id="replyTxt" class="ph">待站主提供</dd>
-          <dt class="lab">交付周期</dt><dd id="delivTxt" class="ph">待站主提供</dd>
-        </dl>
-        <p class="sp-sign">Shadow<span class="lab" id="spDate"></span></p>
-      </article>
+      <div class="grim-box">
+        <div class="grim-head">
+          <div class="grim-title"><span class="lab">i–ii</span><h3>星盘契约与时间安排</h3></div>
+          <span class="lab" id="ntProg">已点亮 1 / 5 颗契约星</span>
+        </div>
+        <p class="sp-greet" id="spGreet">见字如面。这封信是马车连夜送来的。轻触星盘上的五颗主星或下方星轨翻阅营业须知，轻触中心月相盘查看档期；五颗星全部点亮，星轨便会连成一线。</p>
+        <div class="grim-layout">
+          <!-- 左侧（手机为上方紧凑区）：旋转星盘与快捷星轨拨片 -->
+          <div class="astro-col">
+            <div class="astro-wheel-wrap">
+              <svg class="zenith-ptr" viewBox="0 0 12 12" aria-hidden="true"><path d="M6 12L1 3h10z" fill="#fff"/></svg>
+              <svg class="astro-svg" viewBox="0 0 200 200" aria-label="契约星盘">
+                <g class="ring-spin-cw" fill="none" stroke="rgba(255,255,255,.24)">
+                  <circle cx="100" cy="100" r="95" stroke-width=".6"/>
+                  <circle cx="100" cy="100" r="89" stroke-width=".6" stroke-dasharray="1.5 4"/>
+                  <path d="M100 3 v7 M100 190 v7 M3 100 h7 M190 100 h7" stroke-width="1"/>
+                  <path d="M31 31 l5 5 M169 31 l-5 5 M31 169 l5 -5 M169 169 l-5 -5" stroke-width=".8"/>
+                </g>
+                <g class="ring-spin-ccw" fill="none" stroke="rgba(207,200,255,.22)">
+                  <circle cx="100" cy="100" r="81" stroke-width=".5" stroke-dasharray="6 4 1 4"/>
+                  <rect x="46" y="46" width="108" height="108" stroke-width=".4" opacity=".45" transform="rotate(45 100 100)"/>
+                </g>
+                <g id="astroRotor" class="astro-rotor">
+                  <circle cx="100" cy="100" r="70" fill="none" stroke="rgba(207,200,255,.4)" stroke-width=".9"/>
+                  <polygon points="100,30 166.6,78.4 141.1,156.6 58.9,156.6 33.4,78.4" fill="none" stroke="rgba(207,200,255,.26)" stroke-width=".8" stroke-dasharray="2 3"/>
+                  <polygon id="astroStarPoly" points="100,30 141.1,156.6 33.4,78.4 166.6,78.4 58.9,156.6" fill="none" stroke="rgba(191,230,225,.24)" stroke-width=".75"/>
+                  <g id="astroNodes"></g>
+                </g>
+              </svg>
+              <button type="button" class="astro-center-btn" id="astroCalBtn" aria-label="查看时间安排与本月档期">
+                <small>schedule</small>
+                <span>时间档期</span>
+              </button>
+            </div>
+            <div class="quick-pills" id="astroPills" role="tablist" aria-label="营业须知与时间档期切换"></div>
+          </div>
+
+          <!-- 右侧（手机为下方）：无内部滚动框的显影羊皮信笺 -->
+          <div class="grim-parchment">
+            <div class="gp-top">
+              <h4 id="gpTitle">营业须知</h4>
+              <em class="lab" id="gpEn">Astrolabe Pact</em>
+            </div>
+
+            <!-- 营业须知单章视图 -->
+            <div class="gp-body" id="gpNoticePane">
+              <div id="ntList"></div>
+            </div>
+
+            <!-- 时间安排与本月档期视图（由中心月相盘或「档期」胶囊切出，保留全部原有 ID） -->
+            <div class="gp-body" id="gpCalPane" hidden>
+              <div class="st-row"><span class="post-state"><i class="beacon"></i><b id="pState"></b></span><span class="lab" id="pStateEn"></span><span class="slots-w"><span id="slots"></span><span id="slotTxt"></span></span><em class="lab" id="calMonth" style="margin-left:auto"></em></div>
+              <div class="cal" id="cal" role="grid" aria-label="本月日程"></div>
+              <div class="legend"><span><i class="lo"></i>可约</span><span><i class="lf"></i>已满</span><span><i class="lr"></i>休息</span><span class="ph" id="calNote"></span></div>
+              <dl class="kv">
+                <dt class="lab">最近可排</dt><dd id="nextTxt" class="ph">以主界面排单状态为准，可私聊或咨询客服</dd>
+                <dt class="lab">网站工期</dt><dd id="replyTxt" class="ph">基本在 1 到 2 周内（加急可协商）</dd>
+                <dt class="lab">可走平台</dt><dd id="delivTxt" class="ph">雨季不再来</dd>
+              </dl>
+              <p class="sp-sign">Shadow<span class="lab" id="spDate"></span></p>
+            </div>
+
+            <div class="gp-nav">
+              <button type="button" class="gp-btn ghost" id="gpPrev">← 上一章</button>
+              <span class="lab" id="gpIdx">1 / 6</span>
+              <button type="button" class="gp-btn" id="gpNext">转动星盘 · 下一章 →</button>
+            </div>
+          </div>
+        </div>
+        <svg class="const-mini" id="constMini" viewBox="0 0 300 64" aria-hidden="true" style="display:none"></svg>
+      </div>
     </div>
     <div class="sp-act" id="spAct">
-      <p class="sp-swipe lab">左右滑动，翻到另一页</p>
       <button type="button" class="btn" id="bookBtn"><span>复制预约消息</span></button>
       <button type="button" class="btn ghost" id="foldBtn"><span>把信收起来</span></button>
     </div>

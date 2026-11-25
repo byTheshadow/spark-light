@@ -317,4 +317,45 @@ export function mountShell() {
   }).catch(() => {});
 
   html.setAttribute('data-shell', '1');
+
+  /* ---------- 进站 AI 内容马赛克遮挡提示弹窗（每次会话首次进入时弹出） ---------- */
+  try {
+    if (!sessionStorage.getItem('sl.ai_notice.shown')) {
+      const showAiNotice = () => {
+        if (sessionStorage.getItem('sl.ai_notice.shown')) return;
+        sessionStorage.setItem('sl.ai_notice.shown', '1');
+        const aiNoticeSheet = makeSheet('入站温馨提示', (body, close) => {
+          clear(body);
+          const demo = h('span', { class: 'sl-ai-mosaic', role: 'button', tabindex: '0', title: '点击试一试解封' },
+            h('span', { class: 'sl-ai-mosaic-in' }, 'AI 生图 / 漫剧'));
+          demo.addEventListener('click', (e) => { e.stopPropagation(); demo.classList.toggle('is-open'); });
+          body.append(
+            h('p', { style: 'font-size:15px;line-height:1.9;color:var(--sl-ink-2);margin-bottom:12px' },
+              '网站内含有 ',
+              h('strong', { class: 'sl-hl' }, 'AI 生图 / 漫剧'),
+              ' 相关内容。为了防止老师触雷，站内相关文字与画面均已采用',
+              h('strong', { class: 'sl-hl' }, '马赛克进行遮挡'),
+              '。'),
+            h('p', { style: 'font-size:14px;line-height:1.85;color:var(--sl-mute);margin-bottom:18px' },
+              '如需查看，只需用手指或鼠标轻触马赛克区域（例如：',
+              demo,
+              ' ），就会自动显现文字与画面。祝你有一段愉快的体验。'),
+            h('button', { class: 'sl-btn', type: 'button', style: 'width:100%', onclick: close }, '我知道了，开始探索')
+          );
+        });
+        aiNoticeSheet.open();
+      };
+      if (html.getAttribute('data-loader') === 'on') {
+        const obs = new MutationObserver(() => {
+          if (html.getAttribute('data-loader') === 'done') {
+            obs.disconnect();
+            setTimeout(showAiNotice, 260);
+          }
+        });
+        obs.observe(html, { attributes: true, attributeFilter: ['data-loader'] });
+      } else {
+        setTimeout(showAiNotice, 360);
+      }
+    }
+  } catch (e) { /* 隐私模式忽略 */ }
 }

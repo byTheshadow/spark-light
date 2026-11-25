@@ -249,6 +249,43 @@ html[data-motion="simple"] .sl-fallback { animation-delay: 3s !important; }
 .sl-spark-layer { position: fixed; inset: 0; z-index: 120; pointer-events: none; overflow: hidden; }
 .sl-spark { position: absolute; left: 0; top: 0; will-change: transform, opacity; -webkit-mask: var(--sl-star) center / contain no-repeat; mask: var(--sl-star) center / contain no-repeat; }
 
+/* ---------- 全站通用：AI 点击解封马赛克 & 重点微光高亮 ---------- */
+.sl-ai-mosaic {
+  position: relative; display: inline-block; padding: 0 5px; margin: 0 2px; border-radius: 4px; cursor: pointer; vertical-align: baseline;
+  line-height: 1.45;
+  background-color: rgba(150, 140, 225, .18);
+  background-image: repeating-conic-gradient(rgba(120, 110, 190, .28) 0% 25%, transparent 0% 50%);
+  background-size: 6px 6px; box-shadow: inset 0 0 0 1px rgba(150, 140, 225, .38);
+  transition: background .35s, box-shadow .35s, transform .25s var(--sl-ease);
+}
+.sl-ai-mosaic:hover { box-shadow: inset 0 0 0 1px rgba(125, 108, 225, .65), 0 0 12px -2px rgba(150, 140, 225, .45); }
+.sl-ai-mosaic:active { transform: scale(.96); }
+.sl-ai-mosaic-in { filter: blur(5px); opacity: .18; transition: filter .35s var(--sl-ease), opacity .35s; pointer-events: none; user-select: none; -webkit-user-select: none; }
+.sl-ai-mosaic.is-open { background: rgba(150, 140, 225, .12); box-shadow: inset 0 0 0 1px rgba(150, 140, 225, .26); }
+.sl-ai-mosaic.is-open .sl-ai-mosaic-in { filter: none; opacity: 1; user-select: auto; -webkit-user-select: auto; }
+
+/* 重点词：星轨流光高亮（控制紧凑垂直高度，避免上下行碰到一起，轻触可互动迸发微光） */
+.sl-hl {
+  position: relative; display: inline; padding: 1px 6px 2px; margin: 0 2px; border-radius: 5px;
+  font-weight: 600; color: #362c7a; cursor: pointer;
+  line-height: 1.4; -webkit-box-decoration-break: clone; box-decoration-break: clone;
+  background: linear-gradient(110deg, rgba(207, 200, 255, .38) 0%, rgba(191, 230, 225, .48) 45%, rgba(241, 216, 226, .42) 75%, rgba(207, 200, 255, .38) 100%);
+  background-size: 240% 100%;
+  box-shadow: inset 0 -1.5px 0 rgba(130, 112, 235, .55);
+  animation: sl-hl-shimmer 5.5s linear infinite;
+  transition: box-shadow .3s, color .3s;
+}
+.sl-hl::after {
+  content: ""; display: inline-block; width: 6.5px; height: 6.5px; margin-left: 3px; vertical-align: middle;
+  background: linear-gradient(135deg, #9a88ff, #5ec2b3);
+  -webkit-mask: var(--sl-star) center / contain no-repeat; mask: var(--sl-star) center / contain no-repeat;
+  animation: sl-hl-star 2.8s ease-in-out infinite;
+}
+.sl-hl:hover { color: #1f165c; box-shadow: inset 0 -2px 0 rgba(120, 100, 240, .85), 0 2px 10px -2px rgba(140, 125, 245, .55); }
+.sl-hl:active { transform: scale(.95); }
+@keyframes sl-hl-shimmer { from { background-position: 0% 0; } to { background-position: -240% 0; } }
+@keyframes sl-hl-star { 0%, 100% { opacity: .45; transform: scale(.75) rotate(0deg); } 50% { opacity: 1; transform: scale(1.2) rotate(22deg); } }
+
 /* ---------- 小标签链接（弹层里的快捷入口）---------- */
 .sl-chips { display: flex; flex-wrap: wrap; gap: 8px; }
 .sl-chip { min-height: 40px; padding: 0 16px; display: inline-flex; align-items: center; border: 1px solid var(--sl-line); border-radius: var(--sl-radius-pill); font-size: 14px; letter-spacing: .08em; text-decoration: none; transition: background-color .3s var(--sl-ease), color .3s var(--sl-ease), transform .3s var(--sl-ease); }

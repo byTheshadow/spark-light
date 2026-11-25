@@ -25,6 +25,7 @@ Bench=(function(){
   function live(){return order.filter(function(c){return !c.hidden})}
   function stack(){var L=live();L.forEach(function(c,k){c.style.zIndex=k;put(c,k*.5,-k*1.3,(k-L.length/2)*.7,1,0)})}
   stack();
+  st.textContent='在开始正式的体验之前，你可以先在这里试试抽一张今日字卡。';
   function setSt(t){st.textContent=t}
   var benchW=$('#bench .bench');function focus(on){if(simple)on=false;benchW.classList.toggle('focusing',on)}
   new IntersectionObserver(function(es){if(!es[0].isIntersecting)focus(false)},{threshold:.25}).observe(benchW);

@@ -477,7 +477,7 @@ function showMsg(idx) {
   });
 }
 
-/* 状态行按时间推进，不等真实进度（真实进度可能 0.6 秒就走完了） */
+/* 状态行按时间推进，配合 2.4–3 秒的加载时长 */
 function scheduleMsgs() {
   let i = 0;
   function tick() {
@@ -485,9 +485,9 @@ function scheduleMsgs() {
     if (i > 4) return;
     showMsg(i);
     i += 1;
-    later(tick, 280);
+    later(tick, 440);
   }
-  later(tick, 360);
+  later(tick, 320);
 }
 /* ---------------- 画布 ---------------- */
 let SPR = null;

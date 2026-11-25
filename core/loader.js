@@ -11,8 +11,8 @@
 
 import { isSimple, createLoop } from './raf.js';
 
-const MIN_MS = 600;        /* 最短停留：再快也要让人看见 */
-const MAX_MS = 1200;       /* 进度封顶：再慢也不等 */
+const MIN_MS = 2400;       /* 最短停留：保持 2.4–3 秒，让访客能看清星盘与文案，随时可点一下跳过 */
+const MAX_MS = 3000;       /* 进度封顶：3 秒推满 */
 const FINISH_MS = 900;     /* 收尾动画的预算 */
 const FADE_MS = 320;       /* 淡出时长 */
 const CSS_WAIT_MS = 500;   /* 加载页样式最多等这么久 */
@@ -87,7 +87,7 @@ async function run(host) {
 
     if (!allReady) target = Math.min(0.9, target + dt * 0.12);
     if (elapsed >= MAX_MS) { allReady = true; target = 1; }
-    if (elapsed < MIN_MS) target = Math.min(target, 0.95);
+    if (elapsed < MIN_MS) target = Math.min(target, 0.08 + (elapsed / MIN_MS) * 0.87);
 
     p += (target - p) * Math.min(1, dt * 9);
     /* 收尾段改用线性推进：指数逼近在低帧率下要多等半秒 */
