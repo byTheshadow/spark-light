@@ -318,43 +318,94 @@ export function mountShell() {
 
   html.setAttribute('data-shell', '1');
 
-  /* ---------- 进站 AI 内容马赛克遮挡提示弹窗（每次会话首次进入时弹出） ---------- */
+  /* ---------- 进站 AI 内容马赛克遮挡提示弹窗（每次会话首次进入且加载页完成后，在屏幕正中弹出） ---------- */
   try {
     if (!sessionStorage.getItem('sl.ai_notice.shown')) {
       const showAiNotice = () => {
         if (sessionStorage.getItem('sl.ai_notice.shown')) return;
         sessionStorage.setItem('sl.ai_notice.shown', '1');
-        const aiNoticeSheet = makeSheet('入站温馨提示', (body, close) => {
-          clear(body);
-          const demo = h('span', { class: 'sl-ai-mosaic', role: 'button', tabindex: '0', title: '点击试一试解封' },
-            h('span', { class: 'sl-ai-mosaic-in' }, 'AI 生图 / 漫剧'));
-          demo.addEventListener('click', (e) => { e.stopPropagation(); demo.classList.toggle('is-open'); });
-          body.append(
-            h('p', { style: 'font-size:15px;line-height:1.9;color:var(--sl-ink-2);margin-bottom:12px' },
-              '网站内含有 ',
-              h('strong', { class: 'sl-hl' }, 'AI 生图 / 漫剧'),
-              ' 相关内容。为了防止老师触雷，站内相关文字与画面均已采用',
-              h('strong', { class: 'sl-hl' }, '马赛克进行遮挡'),
-              '。'),
-            h('p', { style: 'font-size:14px;line-height:1.85;color:var(--sl-mute);margin-bottom:18px' },
-              '如需查看，只需用手指或鼠标轻触马赛克区域（例如：',
-              demo,
-              ' ），就会自动显现文字与画面。祝你有一段愉快的体验。'),
-            h('button', { class: 'sl-btn', type: 'button', style: 'width:100%', onclick: close }, '我知道了，开始探索')
-          );
+
+        const scrim = h('div', { class: 'sl-ai-modal-scrim' });
+        const titleId = 'sl-ai-modal-t';
+        const closeBtn = h('button', { class: 'sl-ai-modal-x', type: 'button', 'aria-label': '关闭' }, icon('close'));
+        const okBtn = h('button', { class: 'sl-btn sl-ai-modal-btn', type: 'button' }, '我知道了，开始探索');
+        const demo = h('span', { class: 'sl-ai-mosaic', role: 'button', tabindex: '0', title: '点击试一试解封' },
+          h('span', { class: 'sl-ai-mosaic-in' }, 'AI 生图 / 漫剧'));
+        demo.addEventListener('click', (e) => { e.stopPropagation(); demo.classList.toggle('is-open'); });
+        demo.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); demo.classList.toggle('is-open'); } });
+
+        const emblem = h('div', { class: 'sl-ai-modal-emblem', 'aria-hidden': 'true' });
+        emblem.innerHTML = '<svg viewBox="0 0 88 88" fill="none" stroke="currentColor">' +
+          '<circle cx="44" cy="44" r="39" stroke-width=".75" stroke-dasharray="2 3.5" opacity=".45"/>' +
+          '<circle cx="44" cy="44" r="31" stroke-width=".85" opacity=".32"/>' +
+          '<path d="M44 8L46.4 20.6L59 23L46.4 25.4L44 38L41.6 25.4L29 23L41.6 20.6Z" fill="currentColor" stroke="none" opacity=".16" transform="translate(0,21)"/>' +
+          '<path d="M23 44c9.5-11.5 32.5-11.5 42 0-9.5 11.5-32.5 11.5-42 0z" stroke-width="1.25"/>' +
+          '<circle cx="44" cy="44" r="7.5" stroke-width="1.15"/>' +
+          '<path d="M44 38.5c.4 3.4 2.1 5.1 5.5 5.5-3.4.4-5.1 2.1-5.5 5.5-.4-3.4-2.1-5.1-5.5-5.5 3.4-.4 5.1-2.1 5.5-5.5z" fill="currentColor" stroke="none"/>' +
+          '<circle cx="44" cy="5" r="1.8" fill="currentColor" stroke="none" opacity=".65"/>' +
+          '<circle cx="44" cy="83" r="1.8" fill="currentColor" stroke="none" opacity=".65"/>' +
+          '<circle cx="5" cy="44" r="1.8" fill="currentColor" stroke="none" opacity=".65"/>' +
+          '<circle cx="83" cy="44" r="1.8" fill="currentColor" stroke="none" opacity=".65"/>' +
+          '</svg>';
+
+        const modal = h('div', { class: 'sl-ai-modal', role: 'dialog', 'aria-modal': 'true', 'aria-labelledby': titleId, tabindex: '-1' },
+          closeBtn,
+          emblem,
+          h('p', { class: 'sl-ai-modal-sub' }, 'ASTRA · CONTENT NOTICE'),
+          h('h2', { class: 'sl-ai-modal-title', id: titleId }, '入站温馨提示'),
+          h('div', { class: 'sl-ai-modal-div', 'aria-hidden': 'true' }, h('i')),
+          h('p', { class: 'sl-ai-modal-p' },
+            '站内部分板块含有 ',
+            h('strong', { class: 'sl-hl' }, 'AI 生图 / 漫剧'),
+            ' 相关内容。为防止老师触雷，相关文字与画面均已默认采用',
+            h('strong', { class: 'sl-hl' }, '马赛克遮挡'),
+            '。'),
+          h('div', { class: 'sl-ai-modal-demo' },
+            h('span', { class: 'sl-ai-modal-demo-lbl' }, '轻触右侧马赛克即可试玩解封：'),
+            demo),
+          okBtn
+        );
+
+        let isOpen = true;
+        function close() {
+          if (!isOpen) return;
+          isOpen = false;
+          scrim.classList.remove('on');
+          modal.classList.remove('on');
+          doc.body.classList.remove('sl-lock');
+          doc.removeEventListener('keydown', onKey);
+          setTimeout(() => { scrim.remove(); modal.remove(); }, 420);
+        }
+        function onKey(e) {
+          if (e.key === 'Escape') { e.preventDefault(); close(); }
+        }
+        scrim.addEventListener('click', close);
+        closeBtn.addEventListener('click', close);
+        okBtn.addEventListener('click', close);
+        doc.body.append(scrim, modal);
+        doc.body.classList.add('sl-lock');
+        doc.addEventListener('keydown', onKey);
+        requestAnimationFrame(() => {
+          scrim.classList.add('on');
+          modal.classList.add('on');
+          if (window.SLSpark) window.SLSpark.burst(window.innerWidth / 2, window.innerHeight / 2, { n: 14 });
+          setTimeout(() => okBtn.focus(), 60);
         });
-        aiNoticeSheet.open();
       };
-      if (html.getAttribute('data-loader') === 'on') {
+
+      const waitLoaderThenShow = () => {
+        const st = html.getAttribute('data-loader');
+        if (st === 'done' || st === 'skip' || (!st && !doc.getElementById('slxLoad'))) {
+          setTimeout(showAiNotice, 220);
+          return true;
+        }
+        return false;
+      };
+      if (!waitLoaderThenShow()) {
         const obs = new MutationObserver(() => {
-          if (html.getAttribute('data-loader') === 'done') {
-            obs.disconnect();
-            setTimeout(showAiNotice, 260);
-          }
+          if (waitLoaderThenShow()) obs.disconnect();
         });
         obs.observe(html, { attributes: true, attributeFilter: ['data-loader'] });
-      } else {
-        setTimeout(showAiNotice, 360);
       }
     }
   } catch (e) { /* 隐私模式忽略 */ }

@@ -94,7 +94,7 @@ function applyAiMosaic(host) {
 }
 window.SLAiMosaic = applyAiMosaic;
 
-/* 为重点词句自动加上星光流光高亮（轻触可触发星光迸发） */
+/* 为重点词句自动加上星光流光高亮（只保留最核心的定心丸与关键红线，每段控制在 1～2 处，避免满屏紫块显拥挤） */
 function applyHighlights(host) {
   if (!host) return;
   const walker = document.createTreeWalker(host, NodeFilter.SHOW_TEXT, null);
@@ -103,7 +103,7 @@ function applyHighlights(host) {
   while ((n = walker.nextNode())) {
     if (n.parentElement && !n.parentElement.closest('.sl-ai-mosaic,.sl-hl')) nodes.push(n);
   }
-  const HL_RE = /(全部由人工完成，没有\s*AI\s*参与|全部由人工完成|没有\s*AI\s*参与|可提供抽牌图片|录制洗牌视频|随机抽取，也可以指定卡牌|可指定卡牌类型，也可随机抽取|底价\s*100r\s*起|定金尾款制，定金\s*50r|定金尾款制|定金\s*50r|底价\s*50r\s*起|底价\s*50r|加收\s*30\s*至\s*50r|暂不接定制小手机|通过灵摆链接「高我」|减少阻滞性的负面能量|增加有利于事情发展的积极频率|财富、健康、学业|没有画师垫图|可商用\s*p\s*值|免费重新生图\s*2\s*次|无水印原图|如实标注|占卜类订单不接受退款|非特殊情况不退款|每日限量接单|bug\s*免费修复|\d+\s*r(?:\s*-\s*\d+\s*r)?(?:\s*起)?)/g;
+  const HL_RE = /(全部由人工完成，没有\s*AI\s*参与|底价\s*100r\s*起|定金尾款制|通过灵摆链接「高我」|免费重新生图\s*2\s*次|占卜类订单不接受退款|bug\s*免费修复)/g;
   nodes.forEach((tn) => {
     const text = tn.nodeValue;
     if (!HL_RE.test(text)) return;

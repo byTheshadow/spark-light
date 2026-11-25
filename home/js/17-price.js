@@ -41,7 +41,6 @@ var Price=(function(){
     rules.innerHTML=(d.sub&&!d.pending?'<p class="pc-rules-lead">'+d.sub+'</p>':'')+(d.rules?d.rules.map(function(r){return '<p>'+r+'</p>'}).join(''):'');
     if(d.id==='ai'&&window.SLAiMosaic)window.SLAiMosaic(rules);
     if(window.SLHighlight)window.SLHighlight(rules);
-    $$('.pc-name small',row).forEach(function(sm){if(window.SLHighlight)window.SLHighlight(sm)});
     $$('.pc',row).forEach(function(c){playIO.observe(c)});
     $$('[data-v]',row).forEach(function(n,k){var v=+n.dataset.v,t0=performance.now()+k*80;if(simple){n.textContent=v;return}(function st(now){var q=clamp((now-t0)/800,0,1);n.textContent=Math.round(v*easeOut(q));if(q<1)requestAnimationFrame(st)})(t0)});
     $$('button.pc',row).forEach(function(b){b.addEventListener('click',function(){if(b.classList.contains('pc-ai-masked')){b.classList.remove('pc-ai-masked');buzz(6);return}openDetail(b,d)})});
