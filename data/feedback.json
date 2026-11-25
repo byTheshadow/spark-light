@@ -1,8 +1,8 @@
 {
   "_说明": "返图与反馈页的数据。backend.endpoint 填 Cloudflare Worker 二合一守门员的网址（与 data/rui.json 的 endpoint 填同一个地址），填好后把 enabled 改为 true 即可开启拨号口令（20261124）与留言提交。lines 是留言可选的项目；items 是静态写死的公开留言（也可以直接用你自己的图床 https:// 链接），会自动和云端审核通过的留言合并展示。",
   "backend": {
-    "enabled": false,
-    "endpoint": ""
+    "enabled": true,
+    "endpoint": "https://spark-light-api.loud23for.workers.dev"
   },
   "lines": [
     { "id": "divination", "name": "占卜" },

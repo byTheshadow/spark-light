@@ -3,7 +3,7 @@
   "name": "RUI",
   "title": "驻站灵魂侍从",
   "subtitle": "SPIRIT CONCIERGE · SPARK LIGHT",
-  "endpoint": "",
+  "endpoint": "https://spark-light-api.loud23for.workers.dev",
   "dailyLimit": 10,
   "maxInputChars": 100,
   "cooldownSec": 5,
