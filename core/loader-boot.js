@@ -6,9 +6,18 @@
   var html = document.documentElement;
   var KEY = 'sl.loader.seen';
 
-  /* 同一个标签页里已经出现过，就不再出现（站内跳转不重播） */
+  /* 每次进入/刷新页面都显示加载页；只有从站内其他页面点击链接跳转过来时才跳过，避免切页面时闪黑屏 */
   try {
-    if (sessionStorage.getItem(KEY) === '1') { html.setAttribute('data-loader', 'skip'); return; }
+    var navEntries = performance.getEntriesByType && performance.getEntriesByType('navigation');
+    var navType = (navEntries && navEntries[0] && navEntries[0].type) || '';
+    var sameOriginRef = false;
+    try {
+      sameOriginRef = !!(document.referrer && new URL(document.referrer).origin === location.origin);
+    } catch (e) {}
+    if (navType === 'navigate' && sameOriginRef && sessionStorage.getItem(KEY) === '1') {
+      html.setAttribute('data-loader', 'skip');
+      return;
+    }
   } catch (e) { /* 隐私模式下不可用，照常显示 */ }
 
   html.setAttribute('data-loader', 'on');
@@ -23,7 +32,7 @@
 
   window.__SL_LOADER_VEIL = veil;
 
-  /* 兜底：脚本出错或一直没接手，最多 6 秒自己消失，绝不把站卡住 */
+  /* 兜底：脚本出错或一直没接手，最多 9 秒自己消失，绝不把站卡住 */
   window.__SL_LOADER_GUARD = window.setTimeout(function () {
     if (window.__SL_LOADER_DONE) return;
     veil.classList.add('slx-load--out');
@@ -33,5 +42,5 @@
     html.removeAttribute('data-loading');
     html.setAttribute('data-loader', 'done');
     try { sessionStorage.setItem(KEY, '1'); } catch (e) { /* 忽略 */ }
-  }, 6000);
+  }, 9000);
 })();

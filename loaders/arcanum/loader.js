@@ -477,7 +477,7 @@ function showMsg(idx) {
   });
 }
 
-/* 状态行按时间推进，配合 2.4–3 秒的加载时长 */
+/* 状态行按时间推进，配合 3.8–4.5 秒的从容加载时长 */
 function scheduleMsgs() {
   let i = 0;
   function tick() {
@@ -485,9 +485,9 @@ function scheduleMsgs() {
     if (i > 4) return;
     showMsg(i);
     i += 1;
-    later(tick, 440);
+    later(tick, 680);
   }
-  later(tick, 320);
+  later(tick, 340);
 }
 /* ---------------- 画布 ---------------- */
 let SPR = null;
@@ -769,8 +769,8 @@ export function finish() {
   root.classList.add('done');
   showMsg(5);
   spawnWaves();
-  later(function () { if (root) showMsg(COPY.msgs.length); }, 300);
-  later(function () { if (api) api.done(); }, 520);
+  later(function () { if (root) showMsg(COPY.msgs.length); }, 380);
+  later(function () { if (api) api.done(); }, 1250);
 }
 
 /** core 在淡出前后调用：停掉一切，不留计时器与监听 */

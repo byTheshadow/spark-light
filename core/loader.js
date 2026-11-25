@@ -11,10 +11,10 @@
 
 import { isSimple, createLoop } from './raf.js';
 
-const MIN_MS = 2400;       /* 最短停留：保持 2.4–3 秒，让访客能看清星盘与文案，随时可点一下跳过 */
-const MAX_MS = 3000;       /* 进度封顶：3 秒推满 */
-const FINISH_MS = 900;     /* 收尾动画的预算 */
-const FADE_MS = 320;       /* 淡出时长 */
+const MIN_MS = 3800;       /* 最短停留：约 3.8–4.4 秒推进 + 1.35 秒揭牌收尾，整段约 5.2 秒，从容展示星盘与揭牌，随时可点一下跳过 */
+const MAX_MS = 4500;       /* 进度封顶：4.5 秒推满 */
+const FINISH_MS = 1400;    /* 收尾动画的预算（让第十七张星辰牌翻转与冲击波完整播完） */
+const FADE_MS = 420;       /* 淡出时长 */
 const CSS_WAIT_MS = 500;   /* 加载页样式最多等这么久 */
 const SEEN_KEY = 'sl.loader.seen';
 const LAST_KEY = 'sl.loader.last';

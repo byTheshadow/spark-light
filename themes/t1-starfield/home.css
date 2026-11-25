@@ -276,9 +276,9 @@ svg{display:block}
 .tab .lab{font-size:15px}
 .tab.on{color:var(--ink)}
 .tab-ind{position:absolute;left:0;bottom:-1px;height:1.5px;width:0;background:var(--ink);transition:transform .6s var(--ease),width .6s var(--ease)}
-.rail{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior-x:contain;align-items:flex-start}
+.rail{display:flex;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior-x:contain;align-items:flex-start;transition:height .45s var(--ease)}
 .rail::-webkit-scrollbar{display:none}
-.plate{position:relative;flex:0 0 100%;min-width:0;scroll-snap-align:start;scroll-snap-stop:always;display:grid;grid-template-columns:minmax(0,.82fr) minmax(0,1.18fr);gap:clamp(16px,4vw,60px);align-items:center;padding:clamp(8px,1.5vh,18px) 2px 4px;min-height:min(54svh,520px)}
+.plate{position:relative;flex:0 0 100%;min-width:0;scroll-snap-align:start;scroll-snap-stop:always;display:grid;grid-template-columns:minmax(0,.82fr) minmax(0,1.18fr);gap:clamp(16px,4vw,60px);align-items:center;padding:clamp(8px,1.5vh,18px) 2px 6px}
 .pl-text{position:relative;z-index:1}
 .pl-text>*{opacity:0;transform:translateY(22px);transition:opacity .9s var(--ease),transform 1s var(--ease)}
 .plate.cur .pl-text>*{opacity:1;transform:none}
@@ -290,10 +290,10 @@ svg{display:block}
 .pl-tags{list-style:none;margin:18px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
 .pl-tags li{font-size:12.5px;letter-spacing:.12em;padding:3px 12px;border-radius:999px;box-shadow:inset 0 0 0 1px var(--line)}
 .pl-go{margin-top:18px}
-.stage{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:min(48svh,440px);padding-bottom:28px}
+.stage{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:min(46svh,420px);padding-bottom:28px}
 .diff{position:absolute;left:50%;top:46%;width:90%;max-width:540px;aspect-ratio:1;translate:-50% -50%;border-radius:50%;filter:blur(46px);opacity:.8;pointer-events:none}
 .hint{position:absolute;left:0;right:0;bottom:0;margin:0;text-align:center}
-.rail-ctl{display:flex;align-items:center;gap:16px;margin-top:8px}
+.rail-ctl{display:flex;align-items:center;gap:16px;margin-top:10px}
 .rail-ctl .lab b{font-weight:400;color:var(--ink)}
 .rail-bar{flex:1;height:1px;background:var(--line);position:relative;overflow:hidden}
 .rail-bar i{position:absolute;left:0;top:0;height:1px;width:25%;background:var(--ink);transition:transform .6s var(--ease)}
@@ -301,20 +301,21 @@ svg{display:block}
 .rbtn:hover{background:var(--ink);color:#fff}
 .rbtn svg{width:18px;height:10px}
 @media (max-width:820px){
-  .plate{grid-template-columns:1fr;min-height:0;align-items:start;gap:0;padding-top:4px}
-  .stage{min-height:0;padding:2px 0 4px;order:-1}
-  .stage .hint{position:static;margin-top:2px;line-height:1.5}
+  .plate{grid-template-columns:1fr;min-height:0;align-items:start;gap:12px;padding:12px 2px 6px}
+  .stage{min-height:0;padding:10px 0 14px;order:-1}
+  .stage .hint{position:static;margin-top:10px;line-height:1.5}
   .pl-no{display:none}
-  .pl-en{margin-top:2px;font-size:19px}
-  .pl-title{font-size:28px;margin-bottom:6px}
-  .ent{aspect-ratio:1.95}
-  .ast-bridge{margin:-10px auto 0}
+  .pl-en{margin-top:0;font-size:20px}
+  .pl-title{font-size:28px;margin-bottom:8px}
+  .ent{aspect-ratio:1.78}
+  .ast-bridge{margin:-6px auto 0}
   .ent-cap{min-height:0;max-height:0;margin:0;overflow:hidden;transition:opacity .6s var(--ease),transform .6s var(--ease),filter .6s,max-height .45s var(--ease),margin .45s var(--ease)}
-  .ent-cap.on{max-height:80px;margin:6px 0 2px}
-  .sigil{width:min(78vw,340px);aspect-ratio:1.35}
-  .pend-wrap{width:min(82vw,360px)}
-  .pend{aspect-ratio:1/.82}
-  .comic-wrap{width:min(76vw,310px);gap:10px}
+  .ent-cap.on{max-height:80px;margin:8px 0 2px}
+  .code-stage{padding:16px 0 18px}
+  .sigil{width:min(88vw,390px);aspect-ratio:1.18}
+  .pend-wrap{width:min(88vw,400px)}
+  .pend{aspect-ratio:1/.9}
+  .comic-wrap{width:min(80vw,330px);gap:12px}
 }
 
 /* 占卜：纠缠的一对水晶球 */
