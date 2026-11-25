@@ -2,6 +2,8 @@
    颜色、圆角、字体来自全站 --sl-* 变量；封面是固定的夜空配色，换主题时可在 .fbp 的 --night 变量里调整。 */
 
 body[data-page="feedback"]{padding-top:0}
+/* 胶囊外壳规则 html[data-chrome="pill"] body:not([data-page="home"]) 优先级更高，会给 body 加 70px 上边距而露出底色；这里用同等优先级盖回去，让深色封面顶到屏幕最上沿 */
+html[data-chrome="pill"] body[data-page="feedback"]{padding-top:0}
 .fbp{
   --paper:var(--sl-bg); --paper-2:var(--sl-surface-2); --card:var(--sl-surface); --ink:var(--sl-ink); --ink-2:var(--sl-ink-2);
   --mute:var(--sl-mute); --faint:var(--sl-faint); --line:var(--sl-line); --line-2:var(--sl-line-2);

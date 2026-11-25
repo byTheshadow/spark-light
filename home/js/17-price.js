@@ -1,7 +1,11 @@
 /* home/js/17-price.js —— 由原型拆分而来。经典脚本，按文件名顺序加载，共享同一页面作用域。 */
 'use strict';
 /* ============ 价目星牌 ============ */
-function bookMsg(lines){var L=['你好 Shadow，我想预约 Spark Light：'];if(lines&&lines.length)L=L.concat(lines);else L.push('项目：（写下想约的项目）');L.push('时间：（写下期望的时间）','想法：（简单说说你的想法）','（我已读过营业须知）');return L.join('\n')}
+/* 预约消息的统一版式：标题、编号、日期、分隔线、结尾致辞。分隔线只用普通字符（= 和 -），不用会被渲染成彩色的符号。小票机（22-receipt.js）的文字版也用它。 */
+function bookNo(){var d=new Date(),p=function(n){return String(n).padStart(2,'0')};return 'SL-'+p(d.getMonth()+1)+p(d.getDate())+'-'+String(Math.floor(Math.random()*10000)).padStart(4,'0')}
+function bookDate(d){d=d||new Date();var p=function(n){return String(n).padStart(2,'0')};return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate())+' '+p(d.getHours())+':'+p(d.getMinutes())}
+function bookFrame(body,no,date){var EQ='================================',DS='--------------------------------';return [EQ,'      SPARK LIGHT  预约消息',EQ,'编号：'+(no||bookNo()),'日期：'+(date||bookDate()),DS].concat(body,[DS,'* 这条消息由我在 Spark Light 整理','* 麻烦站主看到后回复确认，谢谢',EQ,'   感谢阅读，期待您的回复。',EQ]).join('\n')}
+function bookMsg(lines){var L=['你好 Shadow，我想预约 Spark Light：'];if(lines&&lines.length)L=L.concat(lines);else L.push('项目：（写下想约的项目）');L.push('时间：（写下期望的时间）','想法：（简单说说你的想法）','（我已读过营业须知）');return bookFrame(L)}
 
 var Price=(function(){
   var cats=$('#pcCats'),row=$('#pcRow'),rules=$('#pcRules'),bag=new Map(),cur=-1;

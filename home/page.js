@@ -8,7 +8,7 @@ import { errorBox, root } from '../core/util.js';
 
 const esc = (v) => String(v).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const SCRIPTS = ['01-util', '02-loop', '03-tilt', '04-bg', '05-ripple', '06-kinetic', '07-cursor', '08-intro', '09-cover', '10-parallax', '11-bench', '12-craft-rail',
-  '13-craft-divination', '14-craft-code', '15-craft-pendulum', '16-craft-ai', '17-price', '18-letter', '19-sheets', '20-orb', '21-purify'];
+  '13-craft-divination', '14-craft-code', '15-craft-pendulum', '16-craft-ai', '17-price', '18-letter', '19-sheets', '20-orb', '21-purify', '22-receipt'];
 
 /* 价目卡的动画与配色属于主题皮肤，文字与价格来自 data/services.json */
 const META = {

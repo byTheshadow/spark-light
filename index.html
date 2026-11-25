@@ -410,6 +410,7 @@
     </div>
     <div class="sp-act" id="spAct">
       <button type="button" class="btn" id="bookBtn"><span>复制预约消息</span></button>
+      <button type="button" class="btn ghost" id="slipBtn"><span>打印预约小票</span></button>
       <button type="button" class="btn ghost" id="foldBtn"><span>把信收起来</span></button>
     </div>
   </div>
@@ -462,6 +463,179 @@
   </div>
 </div>
 
+<!-- 预约小票机（全屏面板）：由「打印预约小票」按钮打开，脚本在 home/js/22-receipt.js，样式在 themes/t1-starfield/home.css 末尾 -->
+<div id="rcp" role="dialog" aria-modal="true" aria-labelledby="rc-ttl" inert>
+  <div class="rc-wrap">
+    <div class="rc-top">
+      <div class="rc-ttl"><svg viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="rc-gMark" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#9d90e3"/><stop offset="1" stop-color="#5cc7b7"/></linearGradient></defs><path d="M16 2c1 8 4 12 14 14-10 2-13 6-14 14-1-8-4-12-14-14 10-2 13-6 14-14z" fill="url(#rc-gMark)"/></svg><div><h2 id="rc-ttl">预约小票机</h2><span>小票只是纪念，站主收不到</span></div></div>
+      <button type="button" class="rc-x" id="rc-close" aria-label="关闭预约小票机"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    </div>
+  <nav class="rc-steps" id="rc-steps" aria-label="步骤">
+    <div class="rc-s rc-on" id="rc-step1"><span class="rc-n">1</span>填写信息</div>
+    <span class="rc-line" aria-hidden="true"></span>
+    <div class="rc-s" id="rc-step2"><span class="rc-n">2</span>打印小票</div>
+  </nav>
+
+  <main class="rc-pager" id="rc-pager">
+   <div class="rc-track" id="rc-track">
+    <!-- 第 1 页：预约单 -->
+    <div class="rc-page rc-page-form" id="rc-page1">
+    <section class="rc-pad" aria-labelledby="rc-sheetTitle">
+      <div class="rc-pad-clip" aria-hidden="true"></div>
+      <form class="rc-sheet" id="rc-form" novalidate autocomplete="off">
+        <div class="rc-sheet-head">
+          <h2 id="rc-sheetTitle">预约单<small>RESERVATION SLIP</small></h2>
+          <div class="rc-sheet-no">NO. <span id="rc-sheetNo">打印后生成</span></div>
+        </div>
+
+        <div class="rc-notice" role="note">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="#7a6bd0"/><rect x="11" y="10" width="2" height="7.5" rx="1" fill="#fff"/><circle cx="12" cy="7" r="1.3" fill="#fff"/></svg>
+          <div>
+            <b>小票只是纪念，站主收不到</b>
+            <p>本站不保存、也不发送你填写的任何内容，打印只发生在你自己的屏幕上。想真正预约，请点「复制预约消息」，再主动发给站主。</p>
+          </div>
+        </div>
+
+        <div class="rc-fields">
+          <div class="rc-field" id="rc-fName">
+            <label for="rc-inName"><span>称呼<i class="rc-req">*</i></span></label>
+            <input id="rc-inName" maxlength="20" placeholder="怎么称呼你">
+            <div class="rc-hint" aria-live="polite"></div>
+          </div>
+          <div class="rc-field" id="rc-fTime">
+            <label for="rc-inTime"><span>期望时间</span></label>
+            <input id="rc-inTime" maxlength="30" placeholder="例如 12 月 6 日下午">
+          </div>
+          <div class="rc-field rc-full" id="rc-fItem">
+            <label for="rc-inItem"><span>预约项目<i class="rc-req">*</i></span><em>示例价目</em></label>
+            <select id="rc-inItem"><option value="">请选择一项</option><option value="other">其他（在说明里写清楚）</option></select>
+            <div class="rc-hint" aria-live="polite"></div>
+          </div>
+          <div class="rc-field rc-full" id="rc-fNote">
+            <label for="rc-inNote"><span>预约内容 / 补充说明</span><em id="rc-noteCount">0 / 200</em></label>
+            <textarea id="rc-inNote" maxlength="200" rows="4" placeholder="想做什么、有什么要求，都可以写在这里"></textarea>
+          </div>
+          <div class="rc-field rc-full" id="rc-fContact">
+            <label for="rc-inContact"><span>联系方式</span><em>选填，只印在你的小票上</em></label>
+            <input id="rc-inContact" maxlength="40" placeholder="微信 / 邮箱 / 手机，任选">
+          </div>
+        </div>
+
+        <div class="rc-sheet-foot">
+          <button class="rc-key" type="submit" id="rc-printBtn">
+            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M5.5 7V2.5h9V7"/><rect x="2.5" y="7" width="15" height="7" rx="2"/><path d="M5.5 12h9v5.5h-9z"/></svg>下一步，打印小票</button>
+          <button class="rc-ghost" type="button" id="rc-copyBtn">
+            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><rect x="6.5" y="6.5" width="10" height="11" rx="2"/><path d="M13.5 6.5V4.5a2 2 0 0 0-2-2h-6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h1"/></svg>复制预约消息</button>
+          <button class="rc-ghost" type="button" id="rc-clearBtn">清空</button>
+          <p class="rc-foot-note">带 * 的要填。填好后会翻到下一页打印。</p>
+        </div>
+      </form>
+    </section>
+
+    </div>
+
+    <!-- 第 2 页：小票机 -->
+    <div class="rc-page rc-page-print" id="rc-page2" aria-hidden="true">
+     <div class="rc-print-layout">
+    <section class="rc-machine-col" aria-label="小票机">
+      <div class="rc-device" id="rc-device">
+        <div class="rc-printer" id="rc-printer">
+          <div class="rc-lid">
+            <div class="rc-roll-window" aria-hidden="true"><div class="rc-strip"></div><div class="rc-roll"></div><div class="rc-glass"></div></div>
+            <div class="rc-plate" aria-hidden="true"><b>SPARK LIGHT</b><small>MODEL SL-58</small></div>
+            <div class="rc-vents" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          </div>
+          <div class="rc-face">
+            <div class="rc-panel">
+              <div class="rc-lcd"><div class="rc-lcd-screen">
+                <div class="rc-lcd-text" id="rc-lcdText" role="status" aria-live="polite">READY</div>
+                <div class="rc-lcd-bar" id="rc-lcdBar" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+              </div></div>
+              <div class="rc-leds" aria-hidden="true"><span class="rc-led rc-pwr"></span><span>PWR</span><span class="rc-led rc-data"></span><span>DATA</span></div>
+              <div class="rc-knob-wrap">
+                <button class="rc-knob" type="button" id="rc-feedKnob" aria-label="FEED 旋钮"></button>
+                <span class="rc-knob-label" aria-hidden="true">FEED</span>
+              </div>
+            </div>
+            <div class="rc-slot" aria-hidden="true"></div>
+          </div>
+          <div class="rc-feet" aria-hidden="true"><i></i><i></i></div>
+        </div>
+
+        <div class="rc-paper-window" id="rc-paperWindow">
+          <div class="rc-receipt" id="rc-receipt" aria-label="预约小票">
+            <div class="rc-r-body"><div class="rc-r-frame"><div class="rc-r-inner">
+              <div class="rc-r-head">
+                <div class="rc-r-brand">
+                  <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C8.6 5 11 7.4 16 8 11 8.6 8.6 11 8 16 7.4 11 5 8.6 0 8 5 7.4 7.4 5 8 0z" fill="#e7e7ef"/></svg>
+                  <span>SPARK LIGHT</span>
+                  <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C8.6 5 11 7.4 16 8 11 8.6 8.6 11 8 16 7.4 11 5 8.6 0 8 5 7.4 7.4 5 8 0z" fill="#e7e7ef"/></svg>
+                </div>
+                <div class="rc-r-sub">预约小票</div>
+              </div>
+              <div class="rc-r-meta"><span id="rc-rNo">NO.</span><span id="rc-rDate"></span></div>
+              <div class="rc-r-dash"></div>
+              <div class="rc-r-row"><span class="rc-k">称呼</span><span class="rc-v" id="rc-rName"></span></div>
+              <div class="rc-r-row"><span class="rc-k">项目</span><span class="rc-v" id="rc-rItem"></span></div>
+              <div class="rc-r-row"><span class="rc-k">时间</span><span class="rc-v" id="rc-rTime"></span></div>
+              <div class="rc-r-dash"></div>
+              <div class="rc-r-note-k">补充说明</div>
+              <p class="rc-r-note" id="rc-rNote"></p>
+              <div class="rc-r-dash"></div>
+              <div class="rc-r-row"><span class="rc-k">联系</span><span class="rc-v" id="rc-rContact"></span></div>
+              <div class="rc-r-dash"></div>
+              <div class="rc-r-stamp-row">
+                <svg class="rc-r-stamp" viewBox="0 0 100 100" aria-hidden="true" fill="none" stroke="#dcdce6">
+                  <circle cx="50" cy="50" r="46" stroke-width="1.6"/>
+                  <circle cx="50" cy="50" r="40" stroke-width=".8" stroke-dasharray="2 3"/>
+                  <path d="M50 20 76 65H24z" stroke-width="1.4" stroke-linejoin="round"/>
+                  <path d="M50 80 24 35h52z" stroke-width="1.4" stroke-linejoin="round"/>
+                  <circle cx="50" cy="50" r="5" stroke-width="1.2"/>
+                </svg>
+                <div class="rc-r-stamp-text">纪念小票，不作预约凭证<br>本站不保存、不发送任何内容<br>预约请主动联系站主</div>
+              </div>
+              <svg class="rc-r-barcode" id="rc-rBarcode" preserveAspectRatio="none" aria-hidden="true"></svg>
+              <div class="rc-r-code" id="rc-rCode"></div>
+              <div class="rc-r-dash"></div>
+              <div class="rc-r-last"><span>期待您的来访</span></div>
+            </div></div></div>
+            <div class="rc-r-tear"></div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <div class="rc-side-head">
+      <h3 id="rc-sideTitle" tabindex="-1">正在打印你的小票</h3>
+      <p class="rc-side-sub" id="rc-sideSub">纸会一格一格出来，稍等一下。</p>
+    </div>
+    <div class="rc-side" aria-label="小票操作">
+      <div class="rc-notice" role="note">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="#7a6bd0"/><rect x="11" y="10" width="2" height="7.5" rx="1" fill="#fff"/><circle cx="12" cy="7" r="1.3" fill="#fff"/></svg>
+        <div><b>别忘了联系站主</b><p>小票只留在你这里，站主看不到。想预约，请复制预约消息，主动发给站主。</p></div>
+      </div>
+      <div class="rc-side-actions">
+        <button class="rc-key" type="button" id="rc-saveBtn" disabled>
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3v9m-4-4 4 4 4-4M3.5 14.5v2h13v-2"/></svg>保存为图片</button>
+        <button class="rc-ghost" type="button" id="rc-copyBtn2">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><rect x="6.5" y="6.5" width="10" height="11" rx="2"/><path d="M13.5 6.5V4.5a2 2 0 0 0-2-2h-6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h1"/></svg>复制预约消息</button>
+        <button class="rc-ghost" type="button" id="rc-backBtn">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4.5 6.5 10l5.5 5.5"/></svg>返回修改</button>
+      </div>
+      <details class="rc-textver">
+        <summary>看看文字版预约消息</summary>
+        <pre id="rc-textPreview"></pre>
+      </details>
+    </div>
+     </div>
+    </div>
+   </div>
+  </main>
+  </div>
+  <div class="rc-toast" id="rc-toast" role="status" aria-live="polite"></div>
+</div>
+
 <!-- 抽屉 -->
 <div class="sscrim" id="sscrim"></div>
 <div class="sheet" id="contact" role="dialog" aria-modal="true" aria-labelledby="cTitle">
@@ -471,6 +645,7 @@
   <pre class="msgbox" id="msgbox"></pre>
   <div style="display:flex;gap:10px;flex-wrap:wrap">
     <button type="button" class="btn ghost" id="copyAgain" style="flex:1"><span>再复制一次</span></button>
+    <button type="button" class="btn ghost" id="bookSlip" style="flex:1"><span>打印预约小票</span></button>
     <button type="button" class="btn" id="askRuiInContact" style="flex:1"><span>有疑问？先问问 RUI</span></button>
   </div>
   <div id="channels" style="margin-top:10px"></div>
