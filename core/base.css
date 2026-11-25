@@ -346,6 +346,193 @@ html[data-motion="simple"] .sl-fallback { animation-delay: 3s !important; }
 }
 .sl-ai-modal-btn { width: 100%; min-height: 46px; box-shadow: 0 14px 28px -12px rgba(25, 20, 55, .45); }
 
+/* ---------- 驻站灵魂小助手 RUI（方案 A 黑曜星典风：哑光黑底 + 极细银白铜版六芒星轨） ---------- */
+@keyframes sl-rui-ccw { to { transform: rotate(-360deg); } }
+@keyframes sl-rui-pulse { 0%, 100% { opacity: .45; } 50% { opacity: 1; } }
+.sl-rui-spin-cw { animation: sl-star-spin 28s linear infinite; transform-origin: center; transform-box: fill-box; }
+.sl-rui-spin-ccw { animation: sl-rui-ccw 20s linear infinite; transform-origin: center; transform-box: fill-box; }
+.sl-rui-pulse { animation: sl-rui-pulse 3.4s ease-in-out infinite; }
+
+.sl-rui-fab {
+  position: fixed; left: 16px; bottom: calc(var(--sl-bar-h) + var(--sl-sab) + 14px);
+  z-index: calc(var(--sl-z-chrome) - 1);
+  height: 44px; padding: 0 16px 0 10px; border-radius: var(--sl-radius-pill);
+  display: inline-flex; align-items: center; gap: 10px;
+  background: #0d0d10; color: #f2f2ef;
+  border: 1px solid rgba(255, 255, 255, .22);
+  box-shadow: 0 16px 34px -12px rgba(0, 0, 0, .65);
+  transition: transform .4s cubic-bezier(.34, 1.45, .64, 1), opacity .3s, border-color .3s, box-shadow .35s;
+}
+.sl-rui-fab:hover {
+  transform: translateY(-3px);
+  border-color: rgba(255, 255, 255, .45);
+  box-shadow: 0 20px 38px -12px rgba(0, 0, 0, .78);
+}
+.sl-rui-fab:active { transform: scale(.96); }
+.sl-rui-fab.is-hide { opacity: 0; pointer-events: none; transform: translateY(10px) scale(.92); }
+.sl-rui-fab-sigil { width: 28px; height: 28px; flex: none; overflow: visible; color: #f2f2ef; }
+.sl-rui-fab-txt { position: relative; display: flex; flex-direction: column; align-items: flex-start; line-height: 1.15; text-align: left; }
+.sl-rui-fab-txt b { font-family: var(--sl-font-disp); font-weight: 400; font-style: italic; font-size: 17px; letter-spacing: .06em; color: #f4f4f0; }
+.sl-rui-fab-txt small { font-size: 10px; letter-spacing: .18em; color: rgba(242, 242, 239, .52); }
+
+/* RUI 对话遮罩与窗口（黑曜星典风） */
+.sl-rui-scrim {
+  position: fixed; inset: 0; z-index: calc(var(--sl-z-sheet) + 3);
+  background: rgba(8, 8, 12, .42);
+  -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px);
+  opacity: 0; visibility: hidden;
+  transition: opacity .35s var(--sl-ease), visibility 0s .35s;
+}
+.sl-rui-scrim.on { opacity: 1; visibility: visible; transition-delay: 0s; }
+.sl-rui-panel {
+  position: fixed; left: 16px; bottom: calc(var(--sl-bar-h) + var(--sl-sab) + 14px);
+  z-index: calc(var(--sl-z-sheet) + 4);
+  width: min(386px, calc(100vw - 24px));
+  height: min(540px, calc(100dvh - var(--sl-bar-h) - var(--sl-sab) - 36px));
+  min-height: 350px;
+  display: flex; flex-direction: column; overflow: hidden;
+  border-radius: 18px;
+  background: #0c0c0f; color: #ecece8;
+  border: 1px solid rgba(255, 255, 255, .18);
+  box-shadow: 0 28px 70px -20px rgba(0, 0, 0, .78);
+  transform-origin: 18% 100%;
+  transform: translateY(16px) scale(.94);
+  opacity: 0; visibility: hidden;
+  transition: transform .45s cubic-bezier(.34, 1.4, .64, 1), opacity .32s var(--sl-ease), visibility 0s .45s;
+}
+.sl-rui-panel::before {
+  content: ""; position: absolute; inset: 5px; border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, .07); pointer-events: none; z-index: 2;
+}
+.sl-rui-panel.on { transform: none; opacity: 1; visibility: visible; transition-delay: 0s; }
+@media (max-width: 560px) {
+  .sl-rui-panel {
+    left: 12px; right: 12px; width: auto;
+    bottom: calc(var(--sl-bar-h) + var(--sl-sab) + 10px);
+    height: min(520px, calc(100dvh - var(--sl-bar-h) - var(--sl-sab) - 24px));
+  }
+}
+
+.sl-rui-head {
+  position: relative; z-index: 3; display: flex; align-items: center; gap: 12px;
+  padding: 14px 16px 12px;
+  background: #0c0c0f; color: #f4f4f0;
+  border-bottom: 1px solid rgba(255, 255, 255, .12);
+}
+.sl-rui-avatar { width: 36px; height: 36px; flex: none; color: #f4f4f0; }
+.sl-rui-avatar svg { width: 100%; height: 100%; overflow: visible; }
+.sl-rui-meta { flex: 1; min-width: 0; }
+.sl-rui-title-row { display: flex; align-items: baseline; gap: 10px; }
+.sl-rui-title { font-family: var(--sl-font-disp); font-style: italic; font-size: 22px; font-weight: 400; letter-spacing: .06em; line-height: 1; color: #fff; }
+.sl-rui-role { font-size: 10px; letter-spacing: .18em; padding: 2px 8px; border-radius: 999px; border: 1px solid rgba(255, 255, 255, .24); color: rgba(244, 244, 240, .75); }
+.sl-rui-sub { font-size: 11px; color: rgba(244, 244, 240, .48); letter-spacing: .06em; margin-top: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sl-rui-close {
+  width: 34px; height: 34px; border-radius: 50%; flex: none;
+  display: grid; place-items: center; color: rgba(255, 255, 255, .65);
+  transition: background-color .3s, color .3s, transform .4s cubic-bezier(.34, 1.56, .64, 1);
+}
+.sl-rui-close:hover { background: rgba(255, 255, 255, .1); color: #fff; transform: rotate(90deg); }
+
+.sl-rui-bar {
+  position: relative; z-index: 3;
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  padding: 6px 16px; font-size: 11px; letter-spacing: .06em;
+  background: #121216; border-bottom: 1px solid rgba(255, 255, 255, .08);
+  color: rgba(244, 244, 240, .52);
+}
+.sl-rui-quota { font-family: var(--sl-font-disp); font-style: italic; font-size: 12px; letter-spacing: .12em; color: #e6e6e0; }
+.sl-rui-quota.is-low { color: #e2a4a4; }
+
+.sl-rui-msgs {
+  position: relative; z-index: 3;
+  flex: 1; overflow-y: auto; overscroll-behavior: contain;
+  padding: 14px 14px 10px; display: flex; flex-direction: column; gap: 12px;
+}
+.sl-rui-row { display: flex; align-items: flex-start; gap: 10px; }
+.sl-rui-row.is-user { justify-content: flex-end; }
+.sl-rui-mini-av {
+  width: 20px; height: 20px; flex: none; margin-top: 4px; color: rgba(244, 244, 240, .75);
+}
+.sl-rui-mini-av svg { width: 100%; height: 100%; overflow: visible; }
+.sl-rui-bub {
+  max-width: 86%; padding: 10px 14px; border-radius: 12px;
+  font-size: 13px; line-height: 1.82; letter-spacing: .02em;
+}
+.sl-rui-row.is-rui .sl-rui-bub {
+  border-top-left-radius: 2px;
+  background: #15151a; color: #e8e8e3;
+  border: 1px solid rgba(255, 255, 255, .12);
+}
+.sl-rui-row.is-user .sl-rui-bub {
+  border-top-right-radius: 2px;
+  background: #f2f2ee; color: #0c0c0f;
+}
+.sl-rui-qtag {
+  display: inline-block; margin-bottom: 6px; padding: 1px 7px; border-radius: 2px;
+  font-size: 10px; letter-spacing: .12em; color: rgba(255, 255, 255, .68);
+  border: 1px solid rgba(255, 255, 255, .22);
+}
+.sl-rui-btxt p { margin: 0 0 6px; }
+.sl-rui-btxt p:last-child { margin-bottom: 0; }
+.sl-rui-thinking { color: rgba(244, 244, 240, .55); font-style: italic; }
+
+/* 黑曜底色下的 AI 马赛克块适配 */
+.sl-rui-panel .sl-ai-mosaic {
+  background-color: rgba(255, 255, 255, .14);
+  background-image: repeating-conic-gradient(rgba(255, 255, 255, .24) 0% 25%, transparent 0% 50%);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .3);
+  color: #fff;
+}
+.sl-rui-panel .sl-ai-mosaic.is-open {
+  background: rgba(255, 255, 255, .1);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .22);
+}
+
+.sl-rui-quicks {
+  position: relative; z-index: 3;
+  display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none;
+  padding: 8px 14px; border-top: 1px solid rgba(255, 255, 255, .09);
+  background: #0f0f13;
+}
+.sl-rui-quicks::-webkit-scrollbar { display: none; }
+.sl-rui-qbtn {
+  flex: none; height: 28px; padding: 0 12px; border-radius: 999px;
+  font-size: 11.5px; letter-spacing: .06em; color: #dcdcd6;
+  background: transparent; border: 1px solid rgba(255, 255, 255, .2);
+  transition: background-color .25s, color .25s, border-color .25s, transform .2s;
+}
+.sl-rui-qbtn:hover { background: #f2f2ee; color: #0c0c0f; border-color: #f2f2ee; }
+.sl-rui-qbtn:active { transform: scale(.96); }
+
+.sl-rui-form {
+  position: relative; z-index: 3;
+  display: flex; align-items: center; gap: 8px;
+  padding: 10px 14px 12px; border-top: 1px solid rgba(255, 255, 255, .12);
+  background: #0c0c0f;
+}
+.sl-rui-inwrap {
+  flex: 1; position: relative; display: flex; align-items: center;
+  border-radius: 999px; background: #15151a;
+  border: 1px solid rgba(255, 255, 255, .16);
+  padding: 0 12px;
+  transition: border-color .25s;
+}
+.sl-rui-inwrap:focus-within { border-color: rgba(255, 255, 255, .48); }
+.sl-rui-input {
+  flex: 1; min-width: 0; height: 34px; border: 0; background: transparent;
+  font: inherit; font-size: 12.5px; color: #f4f4f0; outline: none;
+}
+.sl-rui-input::placeholder { color: rgba(244, 244, 240, .38); }
+.sl-rui-chars { flex: none; font-size: 10px; color: rgba(244, 244, 240, .42); margin-left: 6px; font-variant-numeric: tabular-nums; }
+.sl-rui-send {
+  flex: none; height: 34px; min-width: 60px; padding: 0 14px; border-radius: 999px;
+  background: #f2f2ee; color: #0c0c0f; font-size: 12px; font-weight: 500; letter-spacing: .12em;
+  transition: opacity .25s, transform .2s;
+}
+.sl-rui-send:hover:not([disabled]) { opacity: .88; }
+.sl-rui-send:active:not([disabled]) { transform: scale(.96); }
+.sl-rui-send[disabled] { opacity: .38; cursor: not-allowed; }
+
 /* ---------- 小标签链接（弹层里的快捷入口）---------- */
 .sl-chips { display: flex; flex-wrap: wrap; gap: 8px; }
 .sl-chip { min-height: 40px; padding: 0 16px; display: inline-flex; align-items: center; border: 1px solid var(--sl-line); border-radius: var(--sl-radius-pill); font-size: 14px; letter-spacing: .08em; text-decoration: none; transition: background-color .3s var(--sl-ease), color .3s var(--sl-ease), transform .3s var(--sl-ease); }

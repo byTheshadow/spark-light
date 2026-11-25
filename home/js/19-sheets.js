@@ -11,6 +11,8 @@ var Sheets=(function(){var scrim=$('#sscrim'),cur=null;
 var Contact=(function(){var msg='';
   $('#channels').innerHTML=DATA.contact.map(function(c){return '<div class="row"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M4 5h16v11h-8l-4 3.5V16H4z"/></svg></span><span>'+c.label+'<small class="'+(c.v?'':'ph')+'">'+(c.v||'待站主提供')+'</small></span></div>'}).join('');
   $('#copyAgain').addEventListener('click',function(){copy(msg).then(function(){toast('已复制')})});
+  var askRuiBtn=$('#askRuiInContact');
+  if(askRuiBtn)askRuiBtn.addEventListener('click',function(){Sheets.close();if(window.SLRui)window.SLRui.open()});
   return {open:function(m){msg=m;$('#msgbox').textContent=m;copy(m).then(function(){toast('预约消息已复制')});setTimeout(function(){Sheets.open('contact')},simple?0:500)}}})();
 
 (function(){

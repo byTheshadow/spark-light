@@ -1,0 +1,19 @@
+{
+  "_说明": "驻站灵魂小助手 RUI 的配置。endpoint 填云端守门员（如 Cloudflare Worker）的网址；为空时使用站内知识库（data/*.json）加预设回答。dailyLimit 为每位访客每天自由提问的次数上限（点击快捷问题不扣次数）。maxInputChars 为单次提问字数上限，cooldownSec 为两次提问之间的冷却秒数。",
+  "name": "RUI",
+  "title": "驻站灵魂侍从",
+  "subtitle": "SPIRIT CONCIERGE · SPARK LIGHT",
+  "endpoint": "",
+  "dailyLimit": 10,
+  "maxInputChars": 100,
+  "cooldownSec": 5,
+  "greeting": "你好，旅人。我是驻守在 Spark Light 的灵魂 RUI，没有实体，借这一方星轨与微光替站主 Shadow 迎客。无论是占卜、网站与小游戏定制、灵摆调频还是 AI 映画，若你想了解价目、流程或须知，都可以随时问我。",
+  "quickQuestions": [
+    { "id": "divination", "label": "占卜怎么收费？" },
+    { "id": "website", "label": "网站与小游戏定制流程" },
+    { "id": "tuning", "label": "灵摆调频是什么？" },
+    { "id": "ai", "label": "AI 生图价格与规则" },
+    { "id": "status", "label": "现在还能排单吗？怎么下单？" },
+    { "id": "refund", "label": "退款与售后须知" }
+  ]
+}

@@ -469,7 +469,10 @@
   <div class="sh-h"><h2 id="cTitle">预约消息已复制</h2><button type="button" class="x" data-close aria-label="关闭"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
   <p style="margin:0 0 12px;font-size:14px;color:var(--ink-2)">可以先改一改括号里的内容，再发到下面的渠道。</p>
   <pre class="msgbox" id="msgbox"></pre>
-  <button type="button" class="btn ghost" id="copyAgain" style="width:100%"><span>再复制一次</span></button>
+  <div style="display:flex;gap:10px;flex-wrap:wrap">
+    <button type="button" class="btn ghost" id="copyAgain" style="flex:1"><span>再复制一次</span></button>
+    <button type="button" class="btn" id="askRuiInContact" style="flex:1"><span>有疑问？先问问 RUI</span></button>
+  </div>
   <div id="channels" style="margin-top:10px"></div>
 </div>
 <div class="sheet" id="more" role="dialog" aria-modal="true" aria-labelledby="mTitle">

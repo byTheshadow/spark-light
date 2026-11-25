@@ -11,7 +11,8 @@ Orb=(function(){
   function mi(id,n,t,em,i,href){return '<button type="button" class="mi" '+(href?'data-href="'+href+'"':'data-id="'+id+'"')+' style="--i:'+i+'" tabindex="-1"><span class="n">'+n+'</span><span>'+t+'</span><em>'+em+'</em></button>'}
   var mh=IT.map(function(it,i){return mi(it[0],it[1],it[2],it[3],i)}).join('');
   if(PG.length)mh+='<p class="omenu-lab">其他页面</p>'+PG.map(function(p,i){return mi('','·',p.t,'',IT.length+i,p.href)}).join('');
-  mh+=mi('@more','·','更多与设置','more',IT.length+PG.length);
+  mh+=mi('@rui','·','问问灵魂 RUI','spirit',IT.length+PG.length);
+  mh+=mi('@more','·','更多与设置','more',IT.length+PG.length+1);
   m.innerHTML=mh;
   function insets(){var cs=getComputedStyle(root);return [parseFloat(cs.paddingTop)||0,parseFloat(cs.paddingBottom)||0]}
   function place(){var ins=insets();X=pos.side==='r'?innerWidth-S-M:M;Y=clamp(pos.y*innerHeight,ins[0]+64,innerHeight-S-M-ins[1]);o.style.transform='translate('+X+'px,'+Y+'px)'}
@@ -28,7 +29,7 @@ Orb=(function(){
     m.classList.add('on');sc.classList.add('on');$$('.mi',m).forEach(function(b){b.tabIndex=0});buzz(8);if(window.SLSpark)SLSpark.burst(X+S/2,Y+S/2,{n:7})}
   function close(){open=false;o.classList.remove('open');o.setAttribute('aria-expanded','false');m.classList.remove('on');sc.classList.remove('on');$$('.mi',m).forEach(function(b){b.tabIndex=-1})}
   sc.addEventListener('click',close);
-  $$('.mi',m).forEach(function(b){b.addEventListener('click',function(){close();if(b.dataset.href){location.href=b.dataset.href;return}var id=b.dataset.id;if(id==='@notice')Letter.open();else if(id==='@more')Sheets.open('more');else go(id)})});
+  $$('.mi',m).forEach(function(b){b.addEventListener('click',function(){close();if(b.dataset.href){location.href=b.dataset.href;return}var id=b.dataset.id;if(id==='@notice')Letter.open();else if(id==='@rui'){if(window.SLRui)window.SLRui.open()}else if(id==='@more')Sheets.open('more');else go(id)})});
   return {close:close,isOpen:function(){return open},mark:function(id){$$('.mi',m).forEach(function(b){b.classList.toggle('cur',b.dataset.id===id)})}};
 })();
 

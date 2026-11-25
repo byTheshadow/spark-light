@@ -2,6 +2,7 @@
    外壳只依赖 core/ 和 data/，不依赖任何页面的代码；外壳出错也不会影响页面本身。 */
 import { h, clear, icon, store, root, placeholder, errorBox } from './util.js';
 import { loadData } from './data.js';
+import { mountRui } from './rui.js';
 import './spark.js';   /* 弹层打开时的星光迸发，失败只记控制台 */
 
 const doc = document;
@@ -194,6 +195,9 @@ export function mountShell() {
     });
     navPanel.append(
       h('div', { class: 'sl-panel-div', 'aria-hidden': 'true' }, h('i')),
+      h('button', { class: 'sl-panel-row', type: 'button', onclick: () => { closePanel(false); if (window.SLRui) window.SLRui.open(); } },
+        h('span', { class: 'sl-panel-t' }, h('span', null, '问问灵魂侍从 RUI'), h('small', null, '解答价目、流程、排单与营业须知')),
+        h('i', { class: 'sl-panel-chev', 'aria-hidden': 'true' })),
       h('button', { class: 'sl-panel-row', type: 'button', onclick: () => { closePanel(false); navSheet.open(pillBtn); } },
         h('span', { class: 'sl-panel-t' }, h('span', null, '更多与设置'), h('small', null, '简化动效、主题、主界面各章')),
         h('i', { class: 'sl-panel-chev', 'aria-hidden': 'true' })));
@@ -295,7 +299,9 @@ export function mountShell() {
         return h('li', null, h('div', { class: 'sl-row' }, main));
       })));
     } catch (e) { chanSec.appendChild(errorBox('联系方式读取失败', e.message)); }
-    body.appendChild(h('div', { class: 'sl-sheet-sec' }, h('a', { class: 'sl-btn sl-btn--ghost', href: root + '#price', onclick: close }, '先看价目')));
+    body.appendChild(h('div', { class: 'sl-sheet-sec', style: 'display:flex;gap:10px;flex-wrap:wrap' },
+      h('button', { class: 'sl-btn', type: 'button', onclick: () => { close(); if (window.SLRui) window.SLRui.open(); } }, '先问问灵魂侍从 RUI'),
+      h('a', { class: 'sl-btn sl-btn--ghost', href: root + '#price', onclick: close }, '先看价目')));
   });
   /* 页面可以接管“下单与联系”：监听 sl:open-contact 并 preventDefault 即可 */
   const openContact = (from) => { if (doc.dispatchEvent(new CustomEvent('sl:open-contact', { cancelable: true }))) contactSheet.open(from); };
@@ -317,6 +323,7 @@ export function mountShell() {
   }).catch(() => {});
 
   html.setAttribute('data-shell', '1');
+  try { mountRui(); } catch (e) { console.error('[Spark Light] RUI 挂载失败：', e); }
 
   /* ---------- 进站 AI 内容马赛克遮挡提示弹窗（每次会话首次进入且加载页完成后，在屏幕正中弹出） ---------- */
   try {
