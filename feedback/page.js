@@ -51,7 +51,14 @@ function normalizeItems(cfg, lines) {
       if (!knownLine(i.line)) lines.push({ id: String(i.line), name: String(i.line), tint: FALLBACK_TINTS[lines.length % FALLBACK_TINTS.length] });
       return {
         id: String(i.id || 'f' + k), line: String(i.line), date: i.date, name: i.name ? String(i.name) : null, text: i.text ? String(i.text) : null,
-        imgs: (Array.isArray(i.images) ? i.images : []).filter((f) => typeof f === 'string' && f).map((f) => ({ src: root + 'assets/feedback/' + encodeURIComponent(f), ar: 1.3 }))
+        imgs: (Array.isArray(i.images) ? i.images : []).map((f) => {
+          if (f && typeof f === 'object' && typeof f.src === 'string') return { src: f.src, ar: Number(f.ar) || 1.3 };
+          if (typeof f === 'string' && f) {
+            const isUrl = /^(?:https?:|data:|blob:)/i.test(f);
+            return { src: isUrl ? f : (root + 'assets/feedback/' + encodeURIComponent(f)), ar: 1.3 };
+          }
+          return null;
+        }).filter(Boolean)
       };
     });
 }
@@ -70,10 +77,12 @@ function normalizeItems(cfg, lines) {
 
   const cfg = await cfgP;
   const lines = normalizeLines(cfg);
-  const items = normalizeItems(cfg, lines);
+  api = createApi(cfg);
+  const remoteItems = await api.fetchApproved();
+  const mergedCfg = cfg ? Object.assign({}, cfg, { items: remoteItems.concat(Array.isArray(cfg.items) ? cfg.items : []) }) : null;
+  const items = normalizeItems(mergedCfg, lines);
   itemCount = items.length;
   const consentText = await consentP;
-  api = createApi(cfg);
 
   if (api.preview) { $('proto').hidden = false; phone.setMode('预览模式：任意 4 位以上的数字都能接通，不会发出任何内容'); }
   else if (!api.enabled) phone.setMode('留言通道暂未开放');

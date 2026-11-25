@@ -1,6 +1,9 @@
 {
-  "_说明": "返图与反馈页的数据。lines 是留言可选的项目（id 要和价目里的分类一致或自己定，name 是显示的名字）；items 是已经审核通过、客人授权公开的留言。只登记已获客人授权的内容。图片放在 assets/feedback/ 里。写法见 data/README.md。",
-  "backend": { "enabled": false },
+  "_说明": "返图与反馈页的数据。backend.endpoint 填 Cloudflare Worker 二合一守门员的网址（与 data/rui.json 的 endpoint 填同一个地址），填好后把 enabled 改为 true 即可开启拨号口令（20261124）与留言提交。lines 是留言可选的项目；items 是静态写死的公开留言（也可以直接用你自己的图床 https:// 链接），会自动和云端审核通过的留言合并展示。",
+  "backend": {
+    "enabled": false,
+    "endpoint": ""
+  },
   "lines": [
     { "id": "divination", "name": "占卜" },
     { "id": "vibecoding", "name": "网站定制" },
