@@ -1,4 +1,10 @@
 {
   "_说明": "碎碎念，按时间从新到旧显示。每条：date（日期）、text（文字）、image（配图文件名，放在 assets/thoughts/，没有就填 null）。",
-  "items": []
+  "items": [
+    {
+      "date": "2026-11",
+      "text": "这里之后会放一些关于接单、制作过程和近况的碎碎念，等 Shadow 有想说的话再更新。",
+      "image": null
+    }
+  ]
 }

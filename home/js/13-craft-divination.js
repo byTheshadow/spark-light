@@ -72,7 +72,7 @@
     [card.n,card.a].forEach(function(txt,i){var pts=sample(txt),o=O[i];o.P.sort(function(){return Math.random()-.5});var M=Math.min(pts.length,Math.floor(NP*.86));o.P.forEach(function(p,k){if(k<M){p.has=true;p.tx=pts[k][0];p.ty=pts[k][1]}else p.has=false})});
     mode='form';ft=0;flash=1;buzz([10,30,10]);cap.classList.remove('on');
     var c=center(el);Ripple(c.x,c.y,false);
-    setTimeout(function(){$('#capN').innerHTML=card.n+'<i>∞</i>'+card.a;$('#capE').textContent=card.e;$('#capK').textContent=card.k;cap.classList.add('on')},simple?0:1300);
+    setTimeout(function(){$('#capN').innerHTML=card.n+'<i>∞</i>'+card.a;$('#capE').textContent=card.e;$('#capK').textContent='正式占卜时，会结合你的问题与抽牌结果进行解读。';cap.classList.add('on')},simple?0:1300);
   }
   function scatter(){mode='drift';cap.classList.remove('on');O.forEach(function(o){o.P.forEach(function(p){if(p.has){var a=rand(0,6.28);p.vx+=Math.cos(a)*rand(.3,.9);p.vy+=Math.sin(a)*rand(.3,.9)}p.has=false})})}
   function loc(e){var b=cv.getBoundingClientRect();return [e.clientX-b.left,e.clientY-b.top]}

@@ -1,6 +1,6 @@
 {
   "_说明": "排单状态，站主随时可改。state 可填：open（开单中）、paused（暂停接单）、full（已满单）、unset（还没设置）。total 是总名额，taken 是已占名额，不想显示名额就都填 null。note 是一句补充说明，没有就填 null。",
-  "state": "unset",
+  "state": "open",
   "total": null,
   "taken": null,
   "note": null

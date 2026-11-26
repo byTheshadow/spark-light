@@ -6,6 +6,12 @@
       "value": "雨季不再来",
       "copy": true,
       "note": "排单状态以主界面显示为准，也可以私聊询问或咨询网页客服"
+    },
+    {
+      "label": "QQ",
+      "value": "2602266998",
+      "copy": true,
+      "note": null
     }
   ],
   "orderForm": { "enabled": null, "note": "是否需要在线下单表单，待站主确定" }
