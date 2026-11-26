@@ -12,6 +12,8 @@ html[data-theme="t3-arcade"] body[data-page="home"] > .grain,
 html[data-theme="t3-arcade"] body[data-page="home"] > #folio,
 html[data-theme="t3-arcade"] body[data-page="home"] > #reading,
 html[data-theme="t3-arcade"] body[data-page="home"] > #sscrim,
+html[data-theme="t3-arcade"] body[data-page="home"] > #contact,
+html[data-theme="t3-arcade"] body[data-page="home"] > #more,
 html[data-theme="t3-arcade"] body[data-page="home"] > #oscrim,
 html[data-theme="t3-arcade"] body[data-page="home"] > #smoke,
 html[data-theme="t3-arcade"] body[data-page="home"] > .wand,
@@ -34,6 +36,7 @@ html[data-theme="t3-arcade"] #main > #t3-stage { display: block !important; }
   :root[data-theme="t3-arcade"] { --arc-bg:#140f33; --arc-grid:#1c1645; --arc-panel:#231c57; --arc-panel-2:#2b2367; --arc-ink:#f4eeff; --arc-dim:#b7abe8; --arc-line:#07051a; --arc-drop:#07051a; --arc-flame:#ff8a3d; --arc-hi:#ffd23f; --arc-candy:#ff7eb6; --arc-mint:#6ff2c6; --arc-butter:#ffe36e; --arc-shade:#6a5bc8; }
 }
 
+html[data-theme="t3-arcade"] body[data-page="home"] { padding: 0; }
 #t3-stage { min-height: 100svh; background-color: var(--arc-bg); background-image: linear-gradient(var(--arc-grid) 2px, transparent 2px), linear-gradient(90deg, var(--arc-grid) 2px, transparent 2px); background-size: 32px 32px; padding: 0 18px 90px; position: relative; overflow: hidden; }
 #t3-stage [hidden] { display: none !important; }
 #t3-stage::before { content: ""; position: fixed; inset: 0; pointer-events: none; background: repeating-linear-gradient(to bottom, transparent 0 2px, rgba(10,6,30,.05) 2px 4px); z-index: 8; }

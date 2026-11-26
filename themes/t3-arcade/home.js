@@ -83,8 +83,10 @@ function t3RenderRules(host, data) {
 export function mountT3Arcade(data) {
   const main = document.getElementById('main');
   if (!main) return;
-  const old = document.getElementById('t3-stage');
-  if (old) old.remove();
+  /* The original home page is a complete document tree.  Remove it before
+     mounting the arcade world so hidden legacy sections cannot affect height,
+     focus order, scroll anchoring, or future theme styles. */
+  main.replaceChildren();
 
   const cats = t3CategoryData(data);
   const stage = t3el('div');
