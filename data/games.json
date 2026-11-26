@@ -14,11 +14,11 @@
     {
       "id": "make-sushi",
       "title": "捏寿司",
-      "summary": null,
+      "summary": "在深夜寿司屋里捏饭团、放鱼片、炙烧与围海苔，招待一晚又一晚的客人，把小店慢慢经营起来。",
       "cover": null,
-      "tags": [],
+      "tags": ["手机竖屏", "像素经营", "剧情"],
       "path": "games/play/make-sushi/",
-      "status": "soon"
+      "status": "ready"
     }
   ]
 }
