@@ -12,6 +12,29 @@ const t3button = (text, className = '') => {
   return b;
 };
 
+function t3ThemeControl() {
+  const wrap = t3el('div', 't3-theme-nav');
+  const toggle = t3button('THEMES', 't3-theme-toggle');
+  toggle.setAttribute('aria-expanded', 'false');
+  toggle.setAttribute('aria-haspopup', 'true');
+  const menu = t3el('div', 't3-theme-menu');
+  menu.hidden = true;
+  (window.SL_THEMES || []).filter((theme) => theme.status === 'ready').forEach((theme) => {
+    const option = t3button(theme.id === 't1-starfield' ? '返回默认星空' : theme.name, 't3-theme-option');
+    option.addEventListener('click', () => {
+      try { localStorage.setItem('sl.theme', theme.id); } catch (e) { /* 隐私模式下仍继续刷新 */ }
+      location.reload();
+    });
+    menu.append(option);
+  });
+  toggle.addEventListener('click', () => {
+    menu.hidden = !menu.hidden;
+    toggle.setAttribute('aria-expanded', String(!menu.hidden));
+  });
+  wrap.append(toggle, menu);
+  return wrap;
+}
+
 const T3_FLAME_FRAMES = [
   ['......o.......', '.....oo.......', '.....oyo...o..', '....oyyo..oo..', '....oyyoo.oyo.', '...oyyyyooyyo.', '..oyyywwyyyyo.', '.oyywwwwwwyyo.', '.oywwwwwwwwyo.', 'oywwewwwwewyo.', 'oywwewwwwewwyo', 'oywpwwwwwwpwyo', '.oywwweewwwyo.', '.oyywwwwwwyyo.', '..ooyyyyyyoo..', '....oooooo....'],
   ['.......o......', '......oo......', '..o..oyo......', '..oo.oyyo.....', '.oyo.oyyo.....', '.oyyooyyyo....', '..oyyywwyyyyo.', '.oyywwwwwwyyo.', '.oywwwwwwwwyo.', 'oywwewwwwewyo.', 'oywwewwwwewwyo', 'oywpwwwwwwpwyo', '.oywwweewwwyo.', '.oyywwwwwwyyo.', '..ooyyyyyyoo..', '....oooooo....'],
@@ -231,6 +254,7 @@ export function mountT3Arcade(data) {
   const stage = t3el('div');
   stage.id = 't3-stage';
   const shell = t3el('div', 't3-shell');
+  stage.append(t3ThemeControl());
 
   const boot = t3el('section', 't3-boot');
   const bootInner = t3el('div', 't3-boot-inner');

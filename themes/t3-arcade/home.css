@@ -41,6 +41,12 @@ html[data-theme="t3-arcade"] body[data-page="home"] { padding: 0; }
 #t3-stage { min-height: 100svh; background-color: var(--arc-bg); background-image: linear-gradient(var(--arc-grid) 2px, transparent 2px), linear-gradient(90deg, var(--arc-grid) 2px, transparent 2px); background-size: 32px 32px; padding: 0 18px 90px; position: relative; overflow: hidden; }
 #t3-stage [hidden] { display: none !important; }
 #t3-stage::before { content: ""; position: fixed; inset: 0; pointer-events: none; background: repeating-linear-gradient(to bottom, transparent 0 2px, rgba(10,6,30,.05) 2px 4px); z-index: 8; }
+.t3-theme-nav { position: fixed; z-index: 20; top: 16px; right: 18px; display: grid; justify-items: end; gap: 8px; }
+.t3-theme-toggle, .t3-theme-option { border: 3px solid var(--arc-line); background: var(--arc-panel); color: var(--arc-ink); cursor: pointer; font: 400 10px var(--arc-display); box-shadow: 4px 4px 0 var(--arc-drop); }
+.t3-theme-toggle { padding: 10px 12px; color: var(--arc-hi); background: var(--arc-screen); }
+.t3-theme-toggle:hover, .t3-theme-toggle:focus-visible, .t3-theme-option:hover, .t3-theme-option:focus-visible { background: var(--arc-hi); color: var(--arc-screen); outline: none; }
+.t3-theme-menu { display: grid; min-width: 164px; padding: 8px; gap: 6px; border: 3px solid var(--arc-line); background: var(--arc-panel-2); box-shadow: 5px 5px 0 var(--arc-drop); }
+.t3-theme-option { width: 100%; padding: 9px 10px; text-align: left; box-shadow: none; }
 .t3-shell { max-width: 1120px; margin: 0 auto; position: relative; z-index: 1; }
 .t3-boot { min-height: min(620px, 88svh); display: grid; place-items: center; text-align: center; background: var(--arc-screen); color: var(--arc-screen-ink); margin: 0 -18px 48px; padding: 80px 20px; position: relative; overflow: hidden; }
 .t3-boot::after { content: ""; position: absolute; inset: 0; background: radial-gradient(ellipse, transparent 45%, rgba(0,0,0,.55)); pointer-events: none; }
