@@ -1,38 +1,215 @@
-<!doctype html>
-<html lang="zh-CN" data-root="../../../" data-page="game">
+<!DOCTYPE html>
+<html lang="zh-CN">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>抓坏猫 · Spark Light</title>
-<meta name="theme-color" content="#f8f8f9">
-<link rel="icon" href="../../../favicon.svg" type="image/svg+xml">
-<!-- 字体：非阻塞加载，加载不出来时自动使用兜底字体 -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Noto+Serif+SC:wght@300;400;600&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Noto+Serif+SC:wght@300;400;600&display=swap"></noscript>
-<link rel="stylesheet" href="../../../core/base.css">
-<link rel="stylesheet" href="../../../core/loader.css">
-<script src="../../../themes/registry.js"></script>
-<script src="../../../core/init.js"></script>
-<noscript><style>.sl-fallback{opacity:1!important;animation:none!important;pointer-events:auto!important}</style></noscript>
-<link rel="stylesheet" href="game.css">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#0D1620">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>抓坏猫</title>
+<link rel="stylesheet" href="./style.css">
 </head>
-<body data-page="game" data-game="catch-bad-cat">
-<script src="../../../core/loader-boot.js"></script>
-<a class="sl-fallback" href="../../">返回小游戏</a>
-<main id="main" class="sl-main">
-  <header class="sl-page-head">
-    <a class="gp-back" href="../../">返回小游戏</a>
-    <h1 class="sl-page-title" id="page-title">抓坏猫</h1>
+<body>
+
+<a class="back-to-spark" href="../../../" aria-label="返回 Spark Light">返回 Spark Light</a>
+
+<div id="app">
+
+  <header id="hud">
+    <div class="hud-file">
+      <span class="file-tag">案件</span>
+      <span class="file-no" id="levelNo">第 1 号</span>
+      <span class="file-sep"></span>
+      <span class="file-tag">漏网</span>
+      <span class="file-num" id="escapeNum">0</span>
+      <span class="file-tag file-gap">劫狱</span>
+      <span class="file-num" id="leakNum">0/5</span>
+      <span class="file-grow"></span>
+      <span class="file-tag">分数</span>
+      <span class="file-num file-score" id="scoreNum">0</span>
+      <button type="button" class="hud-help" id="btnHelp" aria-label="玩法说明">?</button>
+    </div>
+
+    <div class="warrant">
+      <div class="warrant-head">
+        <span class="warrant-word">通缉</span>
+        <span class="warrant-target" id="targetText">坏猫大王 ×1</span>
+        <span class="warrant-dots" id="targetDots"></span>
+      </div>
+      <div class="warrant-time">
+        <div class="time-bar"><i id="timeFill"></i></div>
+        <span class="time-text" id="timeText">1:30</span>
+        <button type="button" class="hud-snd" id="btnMusic" aria-label="音乐开关">♪</button>
+<button type="button" class="hud-snd" id="btnSfx" aria-label="音效开关">效</button>
+      </div>
+    </div>
   </header>
-  <section class="sl-section" aria-label="游戏区域">
-    <!-- 游戏本体画在这里。game.js 只操作 #game-root 里面的东西 -->
-    <div id="game-root" class="gp-root"><p class="sl-empty">这个游戏还在制作中。</p></div>
+
+  <main id="stage">
+    <canvas id="game"></canvas>
+  </main>
+
+  <nav id="bar" aria-label="道具栏">
+    <button type="button" class="tool empty" id="btnCatnip">
+      <canvas class="ico" id="icoCatnip" width="36" height="36"></canvas>
+      <span class="tool-name" id="nameCatnip">猫薄荷</span>
+      <span class="tool-cnt" id="cntCatnip">0</span>
+    </button>
+    <button type="button" class="tool empty" id="btnNet">
+      <canvas class="ico" id="icoNet" width="36" height="36"></canvas>
+      <span class="tool-name" id="nameNet">大网</span>
+      <span class="tool-cnt" id="cntNet">0</span>
+    </button>
+    <button type="button" class="tool empty" id="btnSlot">
+      <canvas class="ico" id="icoSlot" width="36" height="36"></canvas>
+      <span class="tool-name" id="nameSlot">加格</span>
+      <span class="tool-cnt" id="cntSlot">0</span>
+    </button>
+    <button type="button" class="tool tool-stop" id="btnStop">
+      <canvas class="ico" id="icoStop" width="36" height="36"></canvas>
+      <span class="tool-name" id="nameStop">别捣蛋</span>
+      <span class="tool-cnt" id="cntStop">2</span>
+    </button>
+  </nav>
+
+  <div id="toast" class="toast"></div>
+
+  <section id="overlay" class="overlay">
+
+    <div class="screen" id="screenStart">
+      <p class="brand-sub">夜间巡逻 · 第一班</p>
+      <h1 class="brand">抓坏猫</h1>
+      <div class="brief">
+        <p>戴眼罩的坏猫正从传送带溜过去。</p>
+        <p>点它，它就进押解笼。</p>
+        <p><b>坏小奶猫</b>同颜色凑 3 只，变<b>暴走猫</b>。</p>
+        <p><b>暴走猫</b>凑 3 只，变<b>坏猫大王</b>，当场盖章逮捕。</p>
+        <p>戴<b>蝴蝶结</b>的是乖猫，别点它。</p>
+      </div>
+      <button type="button" class="btn btn-main" id="btnStart">开始抓捕</button>
+      <button type="button" class="btn btn-ghost" id="btnRules">玩法说明</button>
+      <p class="best">最高分 <span id="bestStart">0</span>　累计警务分 <span id="careerStart">0</span></p>
+      <p class="best best-2">警衔 <span id="rankStart">见习鱼干保护者</span></p>
+            <p class="ver" id="verText"></p>
+    </div>
+
+    <div class="screen" id="screenEnd" hidden>
+      <img class="end-art" id="endArt" src="" alt="" hidden>
+      <div class="verdict" id="verdictMark">结案</div>
+      <h2 class="end-title" id="endTitle">全部落网</h2>
+      <p class="end-note" id="endNote">坏猫大王已收押。</p>
+      <dl class="tally" id="tally"></dl>
+      <button type="button" class="btn btn-main" id="btnNext" hidden>下一关</button>
+      <button type="button" class="btn btn-main" id="btnAgain">再抓一次</button>
+      <div class="btn-row">
+        <button type="button" class="btn btn-ghost" id="btnToLevels">选关</button>
+        <button type="button" class="btn btn-ghost" id="btnRules2">玩法说明</button>
+      </div>
+      <p class="best">最高分 <span id="bestEnd">0</span></p>
+    </div>
+
+    <div class="screen screen-levels" id="screenLevels" hidden>
+      <p class="brand-sub">今晚的案件</p>
+      <h2 class="help-title">选择案件</h2>
+      <p class="levels-rank" id="levelsRank"></p>
+      <div class="levels-body" id="levelList"></div>
+      <button type="button" class="btn btn-ghost" id="btnLevelsBack">返回</button>
+    </div>
+
+    <div class="screen screen-help" id="screenHelp" hidden>
+      <p class="brand-sub">值班须知</p>
+      <h2 class="help-title">玩法说明</h2>
+      <div class="help-body" id="helpBody">
+
+        <section class="rule">
+          <h3><i>1</i>认猫</h3>
+          <p>戴<b>眼罩、坏笑</b>的是坏猫，要抓。</p>
+          <p>戴<b class="mint">蝴蝶结、微笑</b>的是乖猫，<b>千万别点</b>：误点要扣分（第 1 关起 15 分，越往后越多），还会愣 0.4 秒，白白浪费时间。</p>
+        </section>
+
+        <section class="rule">
+          <h3><i>2</i>点击抓捕</h3>
+          <p>点坏猫，它飞进底下的押解笼，住进<b>最左边的空格</b>。笼子一共 7 格。</p>
+          <p>头上<b>有 !</b> 的猫可能会<b>扑空</b>，! 越多越警觉，越容易扑空。同一只猫连续扑空 2 次，第 3 次<b class="mint">必中</b>，这时 ! 会变成青色。</p>
+          <p>头上<b>没有 !</b> 的猫不会扑空，点中就是抓到。</p>
+        </section>
+
+                <section class="rule">
+          <h3><i>3</i>三合一</h3>
+          <p><b>坏小奶猫</b>有两种颜色，要<b>同颜色</b>凑够数量才合成；<b>暴走猫</b>不分颜色，凑够数量就合成。要凑几只<b>随关卡变化</b>，前几关是 3 只，后面会涨到 4、5 只，画面中间常驻的提示会告诉你这关要凑几只。</p>
+          <p class="eg"><span>坏小奶猫（同色）</span><em>→</em><span>暴走猫</span></p>
+          <p class="eg"><span>暴走猫</span><em>→</em><span class="gold">坏猫大王</span></p>
+          <p class="no">位置不限，隔着别的猫也算。<br>两种颜色的小奶猫各一只：颜色不同，不合。<br>坏小奶猫 + 暴走猫：等级不同，不合。</p>
+        </section>
+
+        <section class="rule">
+          <h3><i>4</i>连锁</h3>
+          <p>合成之后如果笼里又凑齐 3 只，会立刻再合一次，这叫<b>连锁</b>。合成得分 = 60 × 新等级 × 连锁数，连得越长分越高，音调也越高。</p>
+        </section>
+
+        <section class="rule">
+          <h3><i>5</i>逮捕坏猫大王</h3>
+          <p>3 只暴走猫合出<b>坏猫大王</b>，当场盖章逮捕，不占格子，通缉令上的红点亮一颗。</p>
+          <p>目标 2 只以上的关卡里，每逮捕一只（最后一只除外）<b>加 10 秒</b>。</p>
+        </section>
+
+        <section class="rule">
+          <h3><i>6</i>笼子满了</h3>
+          <p>笼子满了<b>不会判输</b>，只是再点传送带上的猫会被弹回去。</p>
+          <p>这时点笼里的一只猫选中它，<b>再点一次</b>就放走，腾出格子。放走有 30% 的概率，它会拉着<b>相邻</b>的一只同伙一起跑，所以最好挑边上的、旁边没猫的放。</p>
+        </section>
+
+        <section class="rule">
+          <h3><i>7</i>劫狱与别捣蛋</h3>
+                    <p>每有若干只坏猫漏网（乖猫不算），监狱就会拉响警报，<b class="red">笼子闪红灯</b>。所需数量<b>随关卡变少</b>，从 5 只降到 3 只，警报窗口也会变短。顶部「劫狱」显示的就是进度。</p>
+          <p>红灯亮着时按底部的<b>别捣蛋</b>，就能拦住。没拦住，笼里会被劫走<b>一只</b>，还要扣分（起步 20 分，越往后越多）。</p>
+          <p>别捣蛋每局只有 <b>2 次</b>，平时误按不消耗；逮捕一只坏猫大王，回 1 次。笼子是空的就不会劫狱。</p>
+                    <p><b class="red">自己越狱</b>：第 5 关起，笼里的猫会随机一只开始抖动、闪红框，约 1 秒后自己跑掉并扣分。<b>点一下那只猫</b>可以安抚，合成或放走它也行。</p>
+        </section>
+        
+
+        <section class="rule">
+          <h3><i>8</i>三个道具</h3>
+          <p>每次合成有 12% 概率掉落一个道具，连锁到 3 必掉。每种最多存 2 个，存满的就不再掉。</p>
+          <p><b>猫薄荷</b>：传送带上所有猫停 4 秒，期间不出新猫，倒计时照走。</p>
+          <p><b>大网</b>：一键抓走传送带上<b>数量最多</b>那种颜色的坏小奶猫，一定抓中。笼子空位不够，就抓到装满为止，剩下的继续走。</p>
+          <p><b>加格</b>：笼子临时多 1 格，持续 20 秒。到期时那格里如果还有猫，要放走一只，或者合成腾出位置。</p>
+        </section>
+
+        <section class="rule">
+          <h3><i>9</i>补给箱</h3>
+          <p>传送带上约每 30 秒会走来一个<b>补给箱</b>，点它领一个随机道具。它不抓、不占格子，错过就没了。</p>
+        </section>
+
+        <section class="rule">
+          <h3><i>10</i>输赢与得分</h3>
+          <p>限时内逮够目标数量的坏猫大王算赢，时间耗尽算输；笼满不算输。</p>
+          <p>从第 4 关起，<b class="red">漏网坏猫</b>或<b class="red">误点乖猫</b>到了上限会直接判负，不用等时间耗尽；上限随关卡越来越严格，具体数字在选关界面、以及游戏内「漏网」计数上都能看到。</p>
+          <p>抓一只 +5，逮捕坏猫大王 +500，赢了再按剩余秒数 ×4 加分，最多加 300。赢了累计警务分增加，输了扣 100，最低扣到 0。</p>
+        </section>
+
+        <section class="rule">
+          <h3><i>11</i>警衔与关卡</h3>
+          <p>关卡要<b>一关一关</b>打通，同时还要<b>警衔</b>够才能进。前几关只有部分机制，越往后越全，扣分越重，扑空越多，传送带也越快。</p>
+          <p class="eg"><span>见习鱼干保护者</span><em>→</em><span>第 1–3 关</span></p>
+          <p class="eg"><span>正式鱼干守护官</span><em>→</em><span>第 4–6 关</span></p>
+          <p class="eg"><span class="gold">首席鱼干守护长</span><em>→</em><span class="gold">第 7–10 关、无尽值班</span></p>
+          <p>警衔看<b>历史最高</b>的累计警务分，输了扣分也不会掉衔。打到某一关不会自动升衔，分不够就回头重玩刷分。</p>
+        </section>
+
+        <section class="rule">
+          <h3><i>12</i>无尽值班</h3>
+          <p>通关第 10 关、警衔够了就能开启。起步 60 秒，每逮捕一只坏猫大王 <b>加 10 秒</b>，同时难度再升一档。时间耗尽就收队，成绩看逮捕数，累计警务分只加不扣。</p>
+        </section>
+
+      </div>
+      <button type="button" class="btn btn-main" id="btnHelpDone">明白了</button>
+    </div>
+
   </section>
-  <footer class="sl-foot">Spark Light</footer>
-</main>
-<script type="module" src="../../../core/boot.js"></script>
-<script type="module" src="game.js"></script>
+
+</div>
+
+<script src="./app.js"></script>
 </body>
 </html>

@@ -5,11 +5,11 @@
     {
       "id": "catch-bad-cat",
       "title": "抓坏猫",
-      "summary": null,
+      "summary": "夜班巡警出勤：点击传送带上的坏猫，把它们抓进押解笼；同色合成、连锁升级，最后盖章逮捕坏猫大王。注意，戴蝴蝶结的乖猫不能抓。",
       "cover": null,
-      "tags": [],
+      "tags": ["手机竖屏", "合成", "抓捕"],
       "path": "games/play/catch-bad-cat/",
-      "status": "soon"
+      "status": "ready"
     },
     {
       "id": "make-sushi",
