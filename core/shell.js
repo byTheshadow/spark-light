@@ -119,7 +119,8 @@ export function mountShell() {
   /* 外壳形态由主题声明（themes/registry.js 的 chrome）。主界面永远用它自己那一套。 */
   const themeId = html.getAttribute('data-theme');
   const theme = (window.SL_THEMES || []).filter((t) => t.id === themeId)[0];
-  const chromeKind = noHeader ? 'home' : ((theme && theme.chrome) === 'pill' ? 'pill' : 'bar');
+  /* 街机首页会替换掉原首页的整套导航，因此保留共享胶囊作为主题切换入口。 */
+  const chromeKind = noHeader && themeId !== 't3-arcade' ? 'home' : ((theme && theme.chrome) === 'pill' ? 'pill' : 'bar');
   const isPill = chromeKind === 'pill';
 
   const brandPage = h('span', { class: 'sl-brand-page' });

@@ -20,6 +20,7 @@ html[data-theme="t3-arcade"] body[data-page="home"] > .wand,
 html[data-theme="t3-arcade"] body[data-page="home"] > .pur,
 html[data-theme="t3-arcade"] body[data-page="home"] > .orb,
 html[data-theme="t3-arcade"] body[data-page="home"] > .omenu { display: none !important; }
+html[data-theme="t3-arcade"] body[data-page="home"] > .sl-dock { display: none !important; }
 
 html[data-theme="t3-arcade"] #main > * { display: none !important; }
 html[data-theme="t3-arcade"] #main > #t3-stage { display: block !important; }
