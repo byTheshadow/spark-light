@@ -240,7 +240,8 @@ svg{display:block}
   .moon{left:25%;top:76.5%;width:18%}
   .sprig{left:47%;top:75%;width:13%}
   .desk-tag{display:none}
-  .bench-ctl{flex-direction:column;align-items:stretch;text-align:center}
+  .bench-ctl{flex-direction:column;align-items:center;text-align:center}
+  .bench-ctl .btn{align-self:center;width:auto}
 }
 
 /* 翻开的字卡 */
@@ -547,7 +548,7 @@ button.pc:hover{transform:translateY(-6px)}
 .fx-film .f3{background:radial-gradient(circle at 30% 30%,#fff 0 8%,transparent 9%),linear-gradient(180deg,#24242a,#4a6a68)}
 .fx-film .f4{background:linear-gradient(180deg,#14141a 0 60%,#2c2c36 60%),radial-gradient(circle at 60% 40%,#fff 0 10%,transparent 11%)}
 @keyframes roll{to{transform:translateX(-50%)}}
-@media (max-width:760px){.pc-foot{flex-direction:column;align-items:stretch}.pbag{margin-left:0}}
+@media (max-width:760px){.pc-foot{flex-direction:column;align-items:stretch}.pbag{align-self:flex-start;margin-left:0}}
 
 /* 前世今生：前世的残影一张张走进来，牌在「前世 / 今生」之间翻转，外圈一颗星绕着转 */
 .fx-cycle .ring{position:absolute;left:22%;right:22%;top:50%;aspect-ratio:1;translate:0 -50%;border-radius:50%;border:1px dashed rgba(0,0,0,.26);animation:spin 6s linear infinite}
@@ -593,7 +594,7 @@ button.pc:hover{transform:translateY(-6px)}
   .pdm{align-items:end;padding:calc(var(--sat) + 40px) 0 0}
   .pdm-card{grid-template-columns:1fr;border-radius:26px 26px 0 0;padding:14px 16px calc(var(--sab) + 18px);transform:translateY(60px)}
   .pdm-art{aspect-ratio:1/.62;width:100%}
-  .pdm-act .btn{flex:1}
+  .pdm-act .btn{flex:0 1 auto}
 }
 /* ---------- 一封来信：站主寄出的营业须知与时间安排 ---------- */
 .post-state{display:inline-flex;align-items:center;gap:10px}
