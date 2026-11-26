@@ -472,6 +472,7 @@ export function mountT2Journal(d) {
     b.insertAdjacentHTML('beforeend', `<article class="post glass"><header class="p-head"><span class="av" data-flame></span><span><b>Shadow</b><small>@Shadow 刚刚</small></span></header>
       <div class="m-ai"><canvas width="240" height="180" aria-hidden="true"></canvas><p class="ai-prompt"><b>提示词</b><span class="ai-t"></span></p><span class="ai-tag">AI 生成</span></div>
       <p class="p-txt" style="margin:10px 0 0"><span class="ph ai-cap">${tabs[0].text}</span></p></article>`);
+    if (window.SLAiMosaic) window.SLAiMosaic(b);
     f.innerHTML = `<button class="pill ghost" type="button" data-open="price" data-tab="3">看价目</button><button class="pill solid" type="button" data-callq="AI 创作">打电话问问</button>`;
     const m = $('.m-ai', b), cv = $('canvas', m), ctx = cv.getContext('2d'), tEl = $('.ai-t', m);
     const off = document.createElement('canvas'); off.width = 240; off.height = 180; aiScene(off.getContext('2d'));
@@ -581,10 +582,11 @@ export function mountT2Journal(d) {
       sel = null; $('#t2-askbar').classList.remove('on'); $('#t2-toNotice').hidden = false;
       if (!items.length) {
         box.innerHTML = `<div class="row"><span class="av" data-flame></span><span class="typing"><span class="dots"><i></i><i></i><i></i></span>${cat.title || '该项'}的价目，Shadow 还在输入</span></div>`;
-        hydrate(box); return;
+        hydrate(box); if (cat.id === 'ai' && window.SLAiMosaic) window.SLAiMosaic(box); return;
       }
       box.innerHTML = `<div class="receipt">${items.map((p) => `<button class="pr" type="button" data-item="${p.name}"><span class="nm"><b>${p.name}</b><small>${p.note || ''}</small></span><span class="ptag"><b>${p.price}</b><em>${p.from ? '元起' : (p.unit || '元')}</em></span></button>`).join('')}</div>
         ${cat.rules && cat.rules.length ? `<ul class="rules">${cat.rules.map((r) => `<li>${r}</li>`).join('')}</ul>` : ''}`;
+      if (cat.id === 'ai' && window.SLAiMosaic) window.SLAiMosaic(box);
     }
     box.addEventListener('click', (e) => {
       const r = e.target.closest('.pr'); if (!r) return;
@@ -917,6 +919,7 @@ export function mountT2Journal(d) {
 
   function start() {
     renderNotes();
+    if (window.SLAiMosaic) window.SLAiMosaic(stage);
     $('#t2-boothBtn').innerHTML = boothSVG();
     $('#t2-miniBars').innerHTML = Array.from({ length: 9 }, (_, k) => `<i style="height:${(4 + Math.abs(Math.sin(k * .9)) * 9).toFixed(0)}px"></i>`).join('');
     $('#t2-crackPlaster').innerHTML = plasterSVG();

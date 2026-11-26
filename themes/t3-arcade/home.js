@@ -12,6 +12,40 @@ const t3button = (text, className = '') => {
   return b;
 };
 
+const T3_FLAME_FRAMES = [
+  ['......o.......', '.....oo.......', '.....oyo...o..', '....oyyo..oo..', '....oyyoo.oyo.', '...oyyyyooyyo.', '..oyyywwyyyyo.', '.oyywwwwwwyyo.', '.oywwwwwwwwyo.', 'oywwewwwwewyo.', 'oywwewwwwewwyo', 'oywpwwwwwwpwyo', '.oywwweewwwyo.', '.oyywwwwwwyyo.', '..ooyyyyyyoo..', '....oooooo....'],
+  ['.......o......', '......oo......', '..o..oyo......', '..oo.oyyo.....', '.oyo.oyyo.....', '.oyyooyyyo....', '..oyyywwyyyyo.', '.oyywwwwwwyyo.', '.oywwwwwwwwyo.', 'oywwewwwwewyo.', 'oywwewwwwewwyo', 'oywpwwwwwwpwyo', '.oywwweewwwyo.', '.oyywwwwwwyyo.', '..ooyyyyyyoo..', '....oooooo....'],
+  ['......o.......', '.....oo.......', '.....oyo...o..', '....oyyo..oo..', '....oyyoo.oyo.', '...oyyyyooyyo.', '..oyyywwyyyyo.', '.oyywwwwwwyyo.', '.oywwwwwwwwyo.', 'oywwwwwwwwwyo.', 'oyweewwwweewyo', 'oywpwwwwwwpwyo', '.oywwweewwwyo.', '.oyywwwwwwyyo.', '..ooyyyyyyoo..', '....oooooo....']
+];
+
+function t3HeroFlame() {
+  const wrap = t3el('div', 't3-hero-flame');
+  const embers = t3el('span', 't3-embers');
+  [[18, -14, 0], [32, 18, .55], [48, -22, 1.1], [65, 26, 1.65], [78, -10, .3]].forEach(([left, dx, delay]) => {
+    const ember = t3el('i');
+    ember.style.setProperty('--x', left + '%');
+    ember.style.setProperty('--dx', dx + 'px');
+    ember.style.setProperty('--delay', delay + 's');
+    embers.append(ember);
+  });
+  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  svg.setAttribute('viewBox', '0 0 15 16'); svg.setAttribute('aria-hidden', 'true');
+  T3_FLAME_FRAMES.forEach((frame, frameIndex) => {
+    const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+    g.setAttribute('class', 't3-flame-frame f' + frameIndex);
+    frame.forEach((row, y) => [...row].forEach((key, x) => {
+      if (key === '.') return;
+      const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+      rect.setAttribute('x', x); rect.setAttribute('y', y); rect.setAttribute('width', '1.02'); rect.setAttribute('height', '1.02');
+      rect.setAttribute('fill', key === 'o' ? 'var(--arc-flame)' : key === 'y' ? 'var(--arc-hi)' : key === 'w' ? 'var(--arc-core)' : key === 'p' ? 'var(--arc-candy)' : 'var(--arc-screen)');
+      g.append(rect);
+    }));
+    svg.append(g);
+  });
+  wrap.append(embers, svg);
+  return wrap;
+}
+
 function t3PriceText(item) {
   if (!item || !Number.isFinite(item.price)) return '待定';
   return (item.from ? '起 ' : '') + item.price + ' ' + (item.unit || '元');
@@ -29,9 +63,20 @@ function t3CategoryData(data) {
 
 function t3BuildCab(cat, index) {
   const b = t3button('', 't3-cab');
+  const body = t3el('span', 't3-cab-body');
+  const marquee = t3el('span', 't3-marquee');
+  marquee.append(t3el('span', '', cat.title));
+  const bulbs = t3el('span', 't3-bulbs');
+  for (let i = 0; i < 6; i += 1) bulbs.append(t3el('i'));
+  marquee.append(bulbs);
   const screen = t3el('div', 't3-cab-screen');
   screen.append(t3el('div', '', 'READY'), t3el('small', '', 'STAGE ' + String(index + 1).padStart(2, '0')));
-  b.append(screen);
+  const panel = t3el('span', 't3-cab-panel');
+  panel.append(t3el('i', 't3-stick'), t3el('i', 't3-pbtn a'), t3el('i', 't3-pbtn b'));
+  const base = t3el('span', 't3-cab-base');
+  base.append(t3el('i', 't3-coin-slot'));
+  body.append(marquee, screen, panel, base);
+  b.append(body);
   b.append(t3el('h3', '', cat.title));
   b.append(t3el('p', '', cat.summary));
   const first = cat.items[0];
@@ -64,6 +109,7 @@ function t3RenderPrice(host, cat) {
     list.append(li);
   });
   host.append(list);
+  if (window.SLAiMosaic && /AI|生图|漫剧|绘画|创作|映画|NovelAI|Midjourney/.test(cat.title + ' ' + cat.summary)) window.SLAiMosaic(host);
 }
 
 function t3RenderRules(host, data) {
@@ -188,6 +234,7 @@ export function mountT3Arcade(data) {
 
   const boot = t3el('section', 't3-boot');
   const bootInner = t3el('div', 't3-boot-inner');
+  bootInner.append(t3HeroFlame());
   bootInner.append(t3el('div', 't3-kicker', 'ARCANUM XVII / PIXEL STATION'));
   bootInner.append(t3el('h1', '', 'SPARK LIGHT'));
   bootInner.append(t3el('p', '', '插入一枚硬币，进入 Shadow 的像素街区。'));
@@ -244,5 +291,6 @@ export function mountT3Arcade(data) {
 
   stage.append(shell);
   main.append(stage);
+  if (window.SLAiMosaic) window.SLAiMosaic(stage);
   insert.addEventListener('click', () => { boot.hidden = true; stage.classList.add('is-started'); });
 }

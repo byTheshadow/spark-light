@@ -65,7 +65,7 @@ function applyAiMosaic(host) {
   while ((n = walker.nextNode())) {
     if (n.parentElement && !n.parentElement.closest('.sl-ai-mosaic') && /(?:AI|Midjourney|NovelAI|生图|漫剧)/.test(n.nodeValue)) nodes.push(n);
   }
-  const RE = /((?:AI\s*(?:生图|漫剧|绘画|创作|映画|作品)(?:与(?:生图|漫剧))?|Midjourney（MJ）与\s*NovelAI|Midjourney|NovelAI))/g;
+  const RE = /((?:AI\s*(?:生图|漫剧|绘画|创作|生成|映画|作品|内容|服务|Studio)(?:与(?:生图|漫剧))?|Midjourney（MJ）与\s*NovelAI|Midjourney|NovelAI))/g;
   nodes.forEach((tn) => {
     const text = tn.nodeValue;
     if (!RE.test(text)) return;
