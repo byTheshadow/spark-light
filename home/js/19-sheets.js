@@ -112,6 +112,24 @@ var Contact=(function(){var msg='';
 
   $('#pages').innerHTML='<p class="lab" style="margin:0">页面</p>'+DATA.pages.map(function(p){return '<button type="button" class="row" data-pg="'+p.t+'" data-href="'+p.href+'"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="'+STAR4(12,12,7,1.6)+'"/></svg></span><span>'+p.t+'</span><span class="end">筹备中</span></button>'}).join('');
   $$('[data-pg]').forEach(function(b){b.addEventListener('click',function(){location.href=b.dataset.href})});
+
+  /* 主题切换 */
+  var curTheme=document.documentElement.getAttribute('data-theme')||'t1-starfield';
+  var th1=$('#thState-t1'),th2=$('#thState-t2'),th3=$('#thState-t3');
+  if(th1&&th2){
+    th1.textContent=curTheme==='t1-starfield'?'当前':'切换';
+    th2.textContent=curTheme==='t2-journal'?'当前':'切换';
+    if(th3)th3.textContent=curTheme==='t3-arcade'?'当前':'切换';
+  }
+  $$('.theme-row').forEach(function(b){
+    b.addEventListener('click',function(){
+      var tid=b.getAttribute('data-theme-id');
+      if(tid&&window.SLSwitchTheme){
+        window.SLSwitchTheme(tid);
+      }
+    });
+  });
+
   $('#motionOpt').addEventListener('click',function(){store('sl.motion',simple?'full':'simple');applyMotion();toast(simple?'已简化动效':'已恢复完整动效')});
   function gyroText(){$('#gyroSub').textContent={on:'已开启，倾斜手机试试',denied:'未获授权，可在系统设置里允许',none:FINE?'桌面端由鼠标位置驱动':'这台设备不支持体感',auto:'倾斜手机，背景和封面会跟着动',ask:'轻点开启（需要授权）'}[Tilt.state]||''}
   gyroText();$('#gyroOpt').addEventListener('click',function(){Tilt.ask().then(gyroText)});

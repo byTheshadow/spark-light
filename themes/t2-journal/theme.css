@@ -1,0 +1,139 @@
+/* themes/t2-journal/theme.css —— 主题 2：梦女手帐 · 草莓牛奶
+   结构：一、全站变量  二、手帐专属色彩（含夜樱暗色）  三、子页面墙纸与弹层皮肤 */
+
+/* ===== 一、全站变量映射 ===== */
+:root[data-theme="t2-journal"] {
+  --sl-bg: #FBF3F2;
+  --sl-surface: #FFFAF8;
+  --sl-surface-2: #F7D7E0;
+  --sl-ink: #4D3747;
+  --sl-ink-2: #63495B;
+  --sl-mute: #9C8394;
+  --sl-faint: #C9B2C1;
+  --sl-on-ink: #FFFAF8;
+  --sl-line: rgba(120, 70, 100, .14);
+  --sl-line-2: rgba(120, 70, 100, .08);
+
+  --sl-glow-a: rgba(247, 215, 224, .85);
+  --sl-glow-b: rgba(230, 218, 246, .75);
+  --sl-glow-c: rgba(210, 229, 243, .7);
+
+  --sl-glass-bg: rgba(255, 250, 248, .82);
+  --sl-glass-blur: 18px;
+
+  --sl-font-disp: "Bodoni Moda", "Instrument Serif", "Didot", "Bodoni 72", "Times New Roman", serif;
+  --sl-font-body: "Noto Sans SC", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", system-ui, sans-serif;
+
+  /* ===== 二、草莓牛奶手帐专属变量 ===== */
+  --t2-bg: #FBF3F2;            /* 乳白底 */
+  --t2-milk: #FFFAF8;          /* 更亮的奶白 */
+  --t2-blush: #F7D7E0;         /* 雾粉 */
+  --t2-rose: #EEA4BB;          /* 草莓牛奶粉 */
+  --t2-thread: #D8466C;        /* 红线 */
+  --t2-ice: #D2E5F3;           /* 冰蓝折射 */
+  --t2-lilac: #E6DAF6;         /* 淡紫 */
+  --t2-peach: #FCE4D8;         /* 蜜桃 */
+  --t2-ink: #4D3747;           /* 正文：带紫的可可色 */
+  --t2-soft: #9C8394;          /* 次要文字 */
+  --t2-line: rgba(120, 70, 100, .13);
+  --t2-glass: rgba(255, 255, 255, .52);
+  --t2-glass-hi: rgba(255, 255, 255, .82);
+  --t2-glass-edge: rgba(255, 255, 255, .92);
+  --t2-void: #251A33;
+  --t2-void2: #43295A;
+  --t2-plaster: #F2C9B4;
+  --t2-plaster-pad: #FBE6DA;
+  --t2-shadow: 0 22px 44px -26px rgba(176, 82, 118, .45), 0 2px 6px -2px rgba(176, 82, 118, .12);
+  --t2-display: "Bodoni Moda", "Instrument Serif", "Didot", "Bodoni 72", "Times New Roman", serif;
+  --t2-serif: "Noto Serif SC", "Songti SC", "STSong", serif;
+  --t2-sans: "Noto Sans SC", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", system-ui, sans-serif;
+  --t2-px: 0;
+  --t2-py: 0;
+  color-scheme: light;
+}
+
+/* 夜樱暗色（可在手帐设置中切换为夜樱或跟随系统） */
+@media (prefers-color-scheme: dark) {
+  :root[data-theme="t2-journal"][data-t2-mode="auto"] {
+    --sl-bg: #221722; --sl-surface: #2D1F2C; --sl-surface-2: #5A2E44;
+    --sl-ink: #F8E9F0; --sl-ink-2: #EAD3DF; --sl-mute: #C3A6B7; --sl-faint: #7A5C6E; --sl-on-ink: #221722;
+    --sl-line: rgba(255, 220, 235, .14); --sl-line-2: rgba(255, 220, 235, .08);
+    --sl-glass-bg: rgba(45, 31, 44, .82);
+    --t2-bg: #221722; --t2-milk: #2D1F2C; --t2-blush: #5A2E44; --t2-rose: #9C5574; --t2-thread: #FF6F94;
+    --t2-ice: #2B4257; --t2-lilac: #3B2D55; --t2-peach: #4F3330;
+    --t2-ink: #F8E9F0; --t2-soft: #C3A6B7; --t2-line: rgba(255, 220, 235, .12);
+    --t2-glass: rgba(70, 44, 66, .48); --t2-glass-hi: rgba(80, 52, 76, .82); --t2-glass-edge: rgba(255, 220, 235, .18);
+    --t2-plaster: #C99A84; --t2-plaster-pad: #E2C0AE;
+    --t2-shadow: 0 22px 44px -26px rgba(0, 0, 0, .7);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="t2-journal"][data-t2-mode="dark"] {
+  --sl-bg: #221722; --sl-surface: #2D1F2C; --sl-surface-2: #5A2E44;
+  --sl-ink: #F8E9F0; --sl-ink-2: #EAD3DF; --sl-mute: #C3A6B7; --sl-faint: #7A5C6E; --sl-on-ink: #221722;
+  --sl-line: rgba(255, 220, 235, .14); --sl-line-2: rgba(255, 220, 235, .08);
+  --sl-glass-bg: rgba(45, 31, 44, .82);
+  --t2-bg: #221722; --t2-milk: #2D1F2C; --t2-blush: #5A2E44; --t2-rose: #9C5574; --t2-thread: #FF6F94;
+  --t2-ice: #2B4257; --t2-lilac: #3B2D55; --t2-peach: #4F3330;
+  --t2-ink: #F8E9F0; --t2-soft: #C3A6B7; --t2-line: rgba(255, 220, 235, .12);
+  --t2-glass: rgba(70, 44, 66, .48); --t2-glass-hi: rgba(80, 52, 76, .82); --t2-glass-edge: rgba(255, 220, 235, .18);
+  --t2-plaster: #C99A84; --t2-plaster-pad: #E2C0AE;
+  --t2-shadow: 0 22px 44px -26px rgba(0, 0, 0, .7);
+  color-scheme: dark;
+}
+
+/* ===== 三、子页面墙纸与外壳皮肤 ===== */
+html[data-theme="t2-journal"] body:not([data-page="home"])::before {
+  content: ""; position: fixed; inset: -20%; z-index: var(--sl-z-bg); pointer-events: none;
+  background:
+    radial-gradient(40% 35% at 15% 18%, var(--t2-blush), transparent 72%),
+    radial-gradient(36% 32% at 85% 26%, var(--t2-lilac), transparent 72%),
+    radial-gradient(38% 34% at 30% 86%, var(--t2-ice), transparent 72%),
+    radial-gradient(32% 28% at 80% 82%, var(--t2-peach), transparent 72%);
+  filter: blur(42px);
+  animation: sl-t2-drift 55s ease-in-out infinite alternate;
+}
+@keyframes sl-t2-drift {
+  from { transform: translate3d(-2%, -1%, 0) scale(1); }
+  to   { transform: translate3d(2%, 2%, 0) scale(1.06); }
+}
+
+html[data-theme="t2-journal"] body:not([data-page="home"])::after {
+  content: ""; position: fixed; inset: 0; z-index: var(--sl-z-grain); pointer-events: none;
+  opacity: .06; mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* 弹层与胶囊外壳的草莓牛奶质感 */
+html[data-theme="t2-journal"] {
+  --sl-star-fill: linear-gradient(135deg, #F48AA7 0%, #D8466C 60%, #B88AD8 100%);
+}
+html[data-theme="t2-journal"] .sl-sheet,
+html[data-theme="t2-journal"] .sl-nav-panel {
+  background:
+    radial-gradient(110% 70% at 50% -15%, rgba(247, 215, 224, .55), transparent 62%),
+    radial-gradient(90% 60% at 100% 112%, rgba(230, 218, 246, .42), transparent 60%),
+    var(--t2-milk);
+  box-shadow: inset 0 0 0 1px var(--t2-glass-edge), 0 0 0 1px rgba(216, 70, 108, .22), var(--t2-shadow);
+}
+html[data-theme="t2-journal"] .sl-btn {
+  background: var(--t2-thread);
+  color: #fff;
+  box-shadow: 0 10px 22px -10px var(--t2-thread);
+}
+html[data-theme="t2-journal"] .sl-btn--ghost {
+  background: var(--t2-glass-hi);
+  color: var(--t2-ink);
+  border: 1px solid var(--t2-glass-edge);
+  box-shadow: none;
+}
+html[data-theme="t2-journal"] .sl-hl {
+  color: var(--t2-thread);
+  background: linear-gradient(110deg, rgba(247, 215, 224, .45) 0%, rgba(230, 218, 246, .45) 50%, rgba(252, 228, 216, .45) 100%);
+  box-shadow: inset 0 -1px 0 rgba(216, 70, 108, .45);
+}
+html[data-theme="t2-journal"] .sl-ai-mosaic {
+  background-color: rgba(216, 70, 108, .15);
+  background-image: repeating-conic-gradient(rgba(216, 70, 108, .26) 0% 25%, transparent 0% 50%);
+  box-shadow: inset 0 0 0 1px rgba(216, 70, 108, .38);
+}

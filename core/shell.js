@@ -77,7 +77,13 @@ function setMotion(simple) {
 
 /* ---------- 主题切换 ---------- */
 function applyTheme(t) {
+  const prev = html.getAttribute('data-theme');
   store('sl.theme', t.id);
+  if (prev && prev !== t.id) {
+    /* 每个主题拥有独立完整的界面结构与交互，切换后直接重载当前页以干净挂载新世界观 */
+    location.reload();
+    return;
+  }
   html.setAttribute('data-theme', t.id);
   let link = doc.getElementById('sl-theme-css');
   if (!link) { link = h('link', { rel: 'stylesheet', id: 'sl-theme-css' }); doc.head.appendChild(link); }
@@ -88,6 +94,11 @@ function applyTheme(t) {
   if (pg && t.pages && t.pages[pg]) { pl = h('link', { rel: 'stylesheet', id: 'sl-theme-page-css', href: root + t.pages[pg] }); doc.head.appendChild(pl); }
   const m = doc.querySelector('meta[name="theme-color"]'); if (m && t.themeColor) m.setAttribute('content', t.themeColor);
 }
+window.SLSwitchTheme = function (themeId) {
+  const t = (window.SL_THEMES || []).find((x) => x.id === themeId && x.status === 'ready');
+  if (!t) return;
+  applyTheme(t);
+};
 
 /* ---------- 排单状态文字 ---------- */
 const STATE_TEXT = { open: '开单中', paused: '暂停接单', full: '已满单', unset: '排单状态待设置' };

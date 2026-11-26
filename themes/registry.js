@@ -3,6 +3,6 @@
    内容数据（data/*.json）完全不用动。 */
 window.SL_THEMES = [
   { id: 't1-starfield', name: '白黑弥散星空', en: 'monochrome starfield', css: 'themes/t1-starfield/theme.css', pages: { home: 'themes/t1-starfield/home.css' }, themeColor: '#f8f8f9', chrome: 'pill', status: 'ready' },
-  { id: 't2-journal',   name: '梦女手帐',     en: 'dream journal',        css: 'themes/t2-journal/theme.css',   themeColor: '#efe6da', status: 'planned' },
-  { id: 't3-arcade',    name: '像素街机',     en: 'pixel arcade',         css: 'themes/t3-arcade/theme.css',    themeColor: '#101018', status: 'planned' }
+  { id: 't2-journal',   name: '梦女手帐 · 草莓牛奶', en: 'strawberry dream journal', css: 'themes/t2-journal/theme.css', pages: { home: 'themes/t2-journal/home.css' }, themeColor: '#fbf3f2', chrome: 'pill', status: 'ready' },
+  { id: 't3-arcade',    name: '像素街机',     en: 'pixel arcade',         css: 'themes/t3-arcade/theme.css',    pages: { home: 'themes/t3-arcade/home.css' }, themeColor: '#101018', chrome: 'pill', status: 'ready' }
 ];

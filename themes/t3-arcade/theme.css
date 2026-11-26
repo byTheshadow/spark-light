@@ -1,0 +1,30 @@
+/* 主题 3：像素街机。变量只映射共享外壳，首页舞台见 home.css。 */
+:root[data-theme="t3-arcade"] {
+  --sl-bg: #eee7ff;
+  --sl-surface: #ffffff;
+  --sl-surface-2: #f6f1ff;
+  --sl-ink: #22184d;
+  --sl-ink-2: #5a4f86;
+  --sl-mute: #7b70a2;
+  --sl-faint: #b9a8f0;
+  --sl-on-ink: #f4eeff;
+  --sl-line: #22184d;
+  --sl-line-2: rgba(34, 24, 77, .16);
+  --sl-glow-a: rgba(255, 216, 74, .34);
+  --sl-glow-b: rgba(217, 61, 134, .22);
+  --sl-glow-c: rgba(15, 143, 110, .2);
+  --sl-glass-bg: rgba(255, 255, 255, .8);
+  --sl-glass-blur: 12px;
+  --sl-font-disp: "Press Start 2P", "DotGothic16", monospace;
+  --sl-font-body: "DotGothic16", "PingFang SC", "Microsoft YaHei", sans-serif;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root[data-theme="t3-arcade"] {
+    --sl-bg: #140f33; --sl-surface: #231c57; --sl-surface-2: #2b2367;
+    --sl-ink: #f4eeff; --sl-ink-2: #b7abe8; --sl-mute: #a79bda; --sl-faint: #6a5bc8;
+    --sl-on-ink: #140f33; --sl-line: #07051a; --sl-line-2: rgba(244, 238, 255, .16);
+    --sl-glass-bg: rgba(35, 28, 87, .84); color-scheme: dark;
+  }
+}

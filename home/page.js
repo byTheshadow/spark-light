@@ -5,6 +5,8 @@
    本页只依赖 core/ 与 data/，不依赖其他页面。 */
 import { loadData } from '../core/data.js';
 import { errorBox, root } from '../core/util.js';
+import { mountT2Journal } from '../themes/t2-journal/home.js';
+import { mountT3Arcade } from '../themes/t3-arcade/home.js';
 
 const esc = (v) => String(v).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const SCRIPTS = ['01-util', '02-loop', '03-tilt', '04-bg', '05-ripple', '06-kinetic', '07-cursor', '08-intro', '09-cover', '10-parallax', '11-bench', '12-craft-rail',
@@ -185,6 +187,19 @@ async function main() {
   }
   const d = {}; names.forEach((n, i) => { d[n] = results[i].value; });
   window.DATA = buildData(d);
+
+  const curTheme = document.documentElement.getAttribute('data-theme');
+  if (curTheme === 't2-journal') {
+    mountT2Journal(d);
+    window.dispatchEvent(new CustomEvent('sl:home-ready'));
+    return;
+  }
+  if (curTheme === 't3-arcade') {
+    mountT3Arcade(d);
+    window.dispatchEvent(new CustomEvent('sl:home-ready'));
+    return;
+  }
+
   fillText(d);
   for (const f of SCRIPTS) await loadScript(root + 'home/js/' + f + '.js');
   /* 底部“下单与联系”交给主界面自带的联系弹层 */
