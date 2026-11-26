@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 400" width="240" height="400" role="img" aria-labelledby="sl-03-t sl-03-d" data-deck="spark-light-archive" data-card="sl-03" data-suit="star" data-visibility="public">
+  <title id="sl-03-t">迟到的光 Late Light</title>
+  <desc id="sl-03-d">你此刻看见的星光，出发于很久以前。有些回应正在路上，只是走得慢一些。</desc>
+  <defs>
+    <radialGradient id="sl-03-glow">
+      <stop offset="0" stop-color="#E8D48A" stop-opacity="0.3"/>
+      <stop offset="1" stop-color="#E8D48A" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <g id="sl-03-bg">
+    <rect width="240" height="400" rx="12" fill="#14121F"/>
+    <circle cx="60" cy="84" r="70" fill="url(#sl-03-glow)"/>
+  </g>
+  <g id="sl-03-frame" fill="none" stroke="#E8D48A">
+    <rect x="6" y="6" width="228" height="388" rx="8" stroke-width="2"/>
+    <rect x="14" y="14" width="212" height="372" rx="4" stroke-opacity="0.45"/>
+    <path d="M14 40H226M14 316H226" stroke-opacity="0.45"/>
+  </g>
+  <g id="sl-03-ornament" fill="#E8D48A">
+    <path d="M18 18h4v4h-4zM24 18h2v2h-2zM18 24h2v2h-2zM218 18h4v4h-4zM214 18h2v2h-2zM220 24h2v2h-2zM18 378h4v4h-4zM24 380h2v2h-2zM18 374h2v2h-2zM218 378h4v4h-4zM214 380h2v2h-2zM220 374h2v2h-2z"/>
+    <path d="M119 322h2v6h-2zM116 324h8v2h-8z"/>
+  </g>
+  <g id="sl-03-art">
+    <circle cx="60" cy="84" r="16" fill="none" stroke="#E8D48A" stroke-opacity="0.3"/>
+    <circle cx="60" cy="84" r="26" fill="none" stroke="#E8D48A" stroke-opacity="0.15"/>
+    <path d="M57 81h6v6h-6zM59 71h2v10h-2zM59 87h2v10h-2zM47 83h10v2h-10zM63 83h10v2h-10z" fill="#F4E9C1"/>
+    <path d="M70 96Q118 130 116 180T156 226" fill="none" stroke="#E8D48A" stroke-width="1.5" stroke-dasharray="2 6"/>
+    <path d="M100 132h2v2h-2zM117 170h2v2h-2zM132 208h2v2h-2z" fill="#E8D48A" fill-opacity="0.7"/>
+    <rect x="130" y="228" width="56" height="36" fill="#E9DFC7"/>
+    <path d="M130 228L158 250L186 228" fill="none" stroke="#221D33" stroke-width="1.5"/>
+    <path d="M140 256h36v2h-36z" fill="#221D33" fill-opacity="0.3"/>
+  </g>
+  <g id="sl-03-label" text-anchor="middle">
+    <text x="24" y="31" text-anchor="start" font-family="'Courier New','Noto Sans Mono',monospace" font-size="8" letter-spacing="2" fill="#E8D48A">SL-03</text>
+    <text x="216" y="31" text-anchor="end" font-family="'Courier New','Noto Sans Mono',monospace" font-size="8" letter-spacing="2" fill="#E8D48A" fill-opacity="0.7">STAR FILE</text>
+    <text x="120" y="354" font-family="'Noto Serif SC','Source Han Serif SC','Songti SC',serif" font-size="22" letter-spacing="4" fill="#F4E9C1">迟到的光</text>
+    <text x="120" y="373" font-family="'Courier New','Noto Sans Mono',monospace" font-size="8" letter-spacing="2" fill="#E8D48A" fill-opacity="0.75">LATE LIGHT</text>
+  </g>
+</svg>

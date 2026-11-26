@@ -1,0 +1,256 @@
+{
+  "id": "spark-light-archive",
+  "title": "微光档案",
+  "titleEn": "Spark Light Archive",
+  "description": "在夜里的档案室，收集那些曾经照亮黑暗的微光。",
+  "visibility": "public",
+  "suits": [
+    {
+      "id": "star",
+      "title": "星卷",
+      "titleEn": "STAR FILE",
+      "color": "#E8D48A"
+    },
+    {
+      "id": "glimmer",
+      "title": "光卷",
+      "titleEn": "GLIMMER FILE",
+      "color": "#8FD3C7"
+    },
+    {
+      "id": "shadow",
+      "title": "影卷",
+      "titleEn": "SHADOW FILE",
+      "color": "#9A86C9"
+    },
+    {
+      "id": "spark",
+      "title": "火卷",
+      "titleEn": "SPARK FILE",
+      "color": "#E8945A"
+    }
+  ],
+  "cards": [
+    {
+      "id": "sl-00",
+      "name": "牌背",
+      "nameEn": "ARCHIVE BACK",
+      "suit": "back",
+      "keywords": [
+        "档案",
+        "守夜",
+        "微光"
+      ],
+      "description": "微光档案的统一牌背，用于洗牌与抽取。",
+      "asset": "assets/deck/spark-light-archive/sl-00.svg"
+    },
+    {
+      "id": "sl-01",
+      "name": "北窗",
+      "nameEn": "THE NORTH WINDOW",
+      "suit": "star",
+      "keywords": [
+        "方向",
+        "远望",
+        "坚持"
+      ],
+      "description": "窗外有一颗始终在那里的星。方向不必马上抵达，只要你还看得见它。",
+      "asset": "assets/deck/spark-light-archive/sl-01.svg"
+    },
+    {
+      "id": "sl-02",
+      "name": "星图残页",
+      "nameEn": "TORN STAR CHART",
+      "suit": "star",
+      "keywords": [
+        "线索",
+        "拼合",
+        "未完"
+      ],
+      "description": "星图缺了一角，但未知并不等于没有路。线索会在行动中逐渐拼合。",
+      "asset": "assets/deck/spark-light-archive/sl-02.svg"
+    },
+    {
+      "id": "sl-03",
+      "name": "迟到的光",
+      "nameEn": "LATE LIGHT",
+      "suit": "star",
+      "keywords": [
+        "时差",
+        "回响",
+        "延迟"
+      ],
+      "description": "有些光此刻才抵达，回应也许正在路上，只是晚了一些。",
+      "asset": "assets/deck/spark-light-archive/sl-03.svg"
+    },
+    {
+      "id": "sl-04",
+      "name": "星屑罐",
+      "nameEn": "STARDUST JAR",
+      "suit": "star",
+      "keywords": [
+        "积累",
+        "收藏",
+        "小事"
+      ],
+      "description": "一点一点收集微光，细小的事情也会慢慢装满一整罐星屑。",
+      "asset": "assets/deck/spark-light-archive/sl-04.svg"
+    },
+    {
+      "id": "sl-05",
+      "name": "守夜灯",
+      "nameEn": "NIGHT LAMP",
+      "suit": "glimmer",
+      "keywords": [
+        "陪伴",
+        "照顾",
+        "安全"
+      ],
+      "description": "有一盏灯为你亮着，让漫长的夜不必独自经过。",
+      "asset": "assets/deck/spark-light-archive/sl-05.svg"
+    },
+    {
+      "id": "sl-06",
+      "name": "对窗",
+      "nameEn": "THE OTHER WINDOW",
+      "suit": "glimmer",
+      "keywords": [
+        "回应",
+        "被看见",
+        "连接"
+      ],
+      "description": "另一扇窗也亮了起来。你发出的信号，正在得到回应。",
+      "asset": "assets/deck/spark-light-archive/sl-06.svg"
+    },
+    {
+      "id": "sl-07",
+      "name": "雾中路标",
+      "nameEn": "FOG SIGN",
+      "suit": "glimmer",
+      "keywords": [
+        "判断",
+        "指引",
+        "模糊"
+      ],
+      "description": "雾里仍有路标。看清下一步，就已经足够继续往前。",
+      "asset": "assets/deck/spark-light-archive/sl-07.svg"
+    },
+    {
+      "id": "sl-08",
+      "name": "晨前一刻",
+      "nameEn": "BEFORE DAWN",
+      "suit": "glimmer",
+      "keywords": [
+        "转折",
+        "恢复",
+        "耐心"
+      ],
+      "description": "天亮前的最后一刻并不喧哗，但新的光已经在靠近。",
+      "asset": "assets/deck/spark-light-archive/sl-08.svg"
+    },
+    {
+      "id": "sl-09",
+      "name": "影子的信",
+      "nameEn": "A LETTER FROM SHADOW",
+      "suit": "shadow",
+      "keywords": [
+        "感受",
+        "未说之言",
+        "回声"
+      ],
+      "description": "影子也有一封信。那些还没有说出口的话，正在等待被听见。",
+      "asset": "assets/deck/spark-light-archive/sl-09.svg"
+    },
+    {
+      "id": "sl-10",
+      "name": "背面",
+      "nameEn": "THE REVERSE",
+      "suit": "shadow",
+      "keywords": [
+        "另一面",
+        "视角",
+        "反转"
+      ],
+      "description": "同一件事还有另一面。换一个角度，答案也许会重新排列。",
+      "asset": "assets/deck/spark-light-archive/sl-10.svg"
+    },
+    {
+      "id": "sl-11",
+      "name": "静默抽屉",
+      "nameEn": "THE SILENT DRAWER",
+      "suit": "shadow",
+      "keywords": [
+        "暂停",
+        "存档",
+        "休息"
+      ],
+      "description": "有些东西可以先放进抽屉。暂停不是消失，而是给自己留出安静。",
+      "asset": "assets/deck/spark-light-archive/sl-11.svg"
+    },
+    {
+      "id": "sl-12",
+      "name": "长影",
+      "nameEn": "LONG SHADOW",
+      "suit": "shadow",
+      "keywords": [
+        "恐惧",
+        "放大",
+        "面对"
+      ],
+      "description": "夜里的影子会被拉长。看见它之后，才有机会把它放回原来的大小。",
+      "asset": "assets/deck/spark-light-archive/sl-12.svg"
+    },
+    {
+      "id": "sl-13",
+      "name": "第一粒火花",
+      "nameEn": "THE FIRST SPARK",
+      "suit": "spark",
+      "keywords": [
+        "开始",
+        "灵感",
+        "尝试"
+      ],
+      "description": "第一粒火花很小，却足以让一件事真正开始。",
+      "asset": "assets/deck/spark-light-archive/sl-13.svg"
+    },
+    {
+      "id": "sl-14",
+      "name": "引线",
+      "nameEn": "THE FUSE",
+      "suit": "spark",
+      "keywords": [
+        "时机",
+        "倒数",
+        "决定"
+      ],
+      "description": "引线已经点燃。现在要做的，是决定何时让它抵达那一点光。",
+      "asset": "assets/deck/spark-light-archive/sl-14.svg"
+    },
+    {
+      "id": "sl-15",
+      "name": "余烬",
+      "nameEn": "EMBER",
+      "suit": "spark",
+      "keywords": [
+        "余温",
+        "延续",
+        "复燃"
+      ],
+      "description": "火焰熄灭之后仍有余温。曾经重要的东西，也许还可以重新点亮。",
+      "asset": "assets/deck/spark-light-archive/sl-15.svg"
+    },
+    {
+      "id": "sl-16",
+      "name": "传火",
+      "nameEn": "PASSING THE FLAME",
+      "suit": "spark",
+      "keywords": [
+        "分享",
+        "传递",
+        "互助"
+      ],
+      "description": "一束火可以点亮另一束火。光在传递时，不会因此减少。",
+      "asset": "assets/deck/spark-light-archive/sl-16.svg"
+    }
+  ]
+}

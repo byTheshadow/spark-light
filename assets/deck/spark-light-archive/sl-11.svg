@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 400" width="240" height="400" role="img" aria-labelledby="sl-11-t sl-11-d" data-deck="spark-light-archive" data-card="sl-11" data-suit="shadow" data-visibility="public">
+  <title id="sl-11-t">静默抽屉 Quiet Drawer</title>
+  <desc id="sl-11-d">有些事可以先收进抽屉。这不是放弃，只是暂时不打开。</desc>
+  <defs>
+    <radialGradient id="sl-11-glow">
+      <stop offset="0" stop-color="#9A86C9" stop-opacity="0.3"/>
+      <stop offset="1" stop-color="#9A86C9" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <g id="sl-11-bg">
+    <rect width="240" height="400" rx="12" fill="#14121F"/>
+    <circle cx="120" cy="190" r="90" fill="url(#sl-11-glow)"/>
+  </g>
+  <g id="sl-11-frame" fill="none" stroke="#9A86C9">
+    <rect x="6" y="6" width="228" height="388" rx="8" stroke-width="2"/>
+    <rect x="14" y="14" width="212" height="372" rx="4" stroke-opacity="0.45"/>
+    <path d="M14 40H226M14 316H226" stroke-opacity="0.45"/>
+  </g>
+  <g id="sl-11-ornament" fill="#9A86C9">
+    <path d="M18 18h4v4h-4zM24 18h2v2h-2zM18 24h2v2h-2zM218 18h4v4h-4zM214 18h2v2h-2zM220 24h2v2h-2zM18 378h4v4h-4zM24 380h2v2h-2zM18 374h2v2h-2zM218 378h4v4h-4zM214 380h2v2h-2zM220 374h2v2h-2z"/>
+    <path d="M119 322h2v6h-2zM116 324h8v2h-8z"/>
+  </g>
+  <g id="sl-11-art">
+    <rect x="62" y="96" width="116" height="200" fill="#221D33" stroke="#9A86C9" stroke-opacity="0.6" stroke-width="2"/>
+    <g fill="none" stroke="#9A86C9" stroke-opacity="0.5">
+      <rect x="70" y="106" width="100" height="54"/>
+      <rect x="70" y="232" width="100" height="54"/>
+    </g>
+    <rect x="66" y="164" width="108" height="4" fill="#9A86C9" fill-opacity="0.75"/>
+    <rect x="64" y="170" width="112" height="56" fill="#221D33" stroke="#9A86C9" stroke-width="1.5"/>
+    <path d="M104 116h32v10h-32zM102 180h36v10h-36zM104 242h32v10h-32z" fill="#E9DFC7" fill-opacity="0.75"/>
+    <path d="M114 140h12v4h-12zM114 206h12v4h-12zM114 268h12v4h-12z" fill="#9A86C9"/>
+  </g>
+  <g id="sl-11-label" text-anchor="middle">
+    <text x="24" y="31" text-anchor="start" font-family="'Courier New','Noto Sans Mono',monospace" font-size="8" letter-spacing="2" fill="#9A86C9">SL-11</text>
+    <text x="216" y="31" text-anchor="end" font-family="'Courier New','Noto Sans Mono',monospace" font-size="8" letter-spacing="2" fill="#9A86C9" fill-opacity="0.7">SHADOW FILE</text>
+    <text x="120" y="354" font-family="'Noto Serif SC','Source Han Serif SC','Songti SC',serif" font-size="22" letter-spacing="4" fill="#F4E9C1">静默抽屉</text>
+    <text x="120" y="373" font-family="'Courier New','Noto Sans Mono',monospace" font-size="8" letter-spacing="2" fill="#9A86C9" fill-opacity="0.75">QUIET DRAWER</text>
+  </g>
+</svg>

@@ -21,7 +21,7 @@ const META = {
 };
 
 function buildData(d) {
-  const { status, services, notice, contact, cards, lenormand, site } = d;
+  const { status, services, notice, contact, cards, lenormand, deck, site } = d;
   const state = ['open', 'paused', 'full'].includes(status.state) ? status.state : 'unset';
   const total = Number.isFinite(status.total) ? Math.max(0, status.total) : 0;
   const taken = Number.isFinite(status.taken) ? Math.min(Math.max(0, status.taken), total) : 0;
@@ -41,6 +41,17 @@ function buildData(d) {
   });
 
   const chans = (contact.channels || []).filter((c) => c && c.value);
+  const publicDeck = deck && Array.isArray(deck.cards) ? {
+    id: deck.id || 'spark-light-archive',
+    title: deck.title || '微光档案',
+    titleEn: deck.titleEn || 'Spark Light Archive',
+    description: deck.description || '',
+    suits: Array.isArray(deck.suits) ? deck.suits.map((s) => ({ id: s.id, title: esc(s.title || ''), titleEn: esc(s.titleEn || ''), color: s.color || '' })) : [],
+    cards: deck.cards.map((c) => ({
+      id: c.id, name: esc(c.name || ''), nameEn: esc(c.nameEn || ''), suit: c.suit || 'back',
+      keywords: Array.isArray(c.keywords) ? c.keywords.map(esc) : [], description: esc(c.description || ''), asset: c.asset || ''
+    }))
+  } : null;
   return {
     status: { state, total, taken, next: status.note || null },
     stateLabel: { open: '开单中', paused: '暂停接单', full: '已满单', unset: '待设置' },
@@ -48,6 +59,7 @@ function buildData(d) {
     schedule: { example: false, restWeekdays: [], full: null, reply: null, delivery: null },
     cards: cards.cards.map((c) => ({ g: c.glyph, t: c.text || '字卡文案待站主提供。' })),
     lenormand: lenormand.cards.map((c) => ({ n: c.n, a: c.a, e: c.e, k: c.k || '牌义待站主提供' })),
+    deck: publicDeck,
     pricing,
     notice: notice.groups.map((g) => ({ t: esc(g.title), b: g.clauses && g.clauses.length ? g.clauses.map((c, i) => (i + 1) + '. ' + esc(c)).join('<br>') : null })),
     contact: chans.length ? chans.map((c) => ({ label: esc(c.label || ''), v: esc(c.value) })) : [{ label: '下单渠道', v: null }, { label: '联系方式', v: null }],
@@ -177,7 +189,7 @@ function loadScript(src) {
 }
 
 async function main() {
-  const names = ['site', 'status', 'services', 'notice', 'contact', 'cards', 'lenormand', 'crafts'];
+  const names = ['site', 'status', 'services', 'notice', 'contact', 'cards', 'lenormand', 'deck', 'crafts'];
   const results = await Promise.allSettled(names.map((n) => loadData(n)));
   const bad = results.map((r, i) => (r.status === 'rejected' ? r.reason : null)).filter(Boolean);
   if (bad.length) {

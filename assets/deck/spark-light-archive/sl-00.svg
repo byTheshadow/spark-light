@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 400" width="240" height="400" role="img" aria-labelledby="sl-00-t sl-00-d" data-deck="spark-light-archive" data-card="sl-00" data-suit="back" data-visibility="public">
+  <title id="sl-00-t">微光档案 Spark Light Archive</title>
+  <desc id="sl-00-d">Spark Light 的每一张档案卡，背面都是同一盏光。</desc>
+  <defs>
+    <radialGradient id="sl-00-glow">
+      <stop offset="0" stop-color="#E9DFC7" stop-opacity="0.22"/>
+      <stop offset="1" stop-color="#E9DFC7" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <g id="sl-00-bg">
+    <rect width="240" height="400" rx="12" fill="#14121F"/>
+    <circle cx="120" cy="178" r="100" fill="url(#sl-00-glow)"/>
+  </g>
+  <g id="sl-00-frame" fill="none" stroke="#E9DFC7">
+    <rect x="6" y="6" width="228" height="388" rx="8" stroke-width="2"/>
+    <rect x="14" y="14" width="212" height="372" rx="4" stroke-opacity="0.45"/>
+    <path d="M14 40H226M14 316H226" stroke-opacity="0.45"/>
+  </g>
+  <g id="sl-00-ornament" fill="#E9DFC7">
+    <path d="M18 18h4v4h-4zM24 18h2v2h-2zM18 24h2v2h-2zM218 18h4v4h-4zM214 18h2v2h-2zM220 24h2v2h-2zM18 378h4v4h-4zM24 380h2v2h-2zM18 374h2v2h-2zM218 378h4v4h-4zM214 380h2v2h-2zM220 374h2v2h-2z"/>
+    <path d="M119 322h2v6h-2zM116 324h8v2h-8z"/>
+  </g>
+  <g id="sl-00-art">
+    <circle cx="120" cy="178" r="64" fill="none" stroke="#E9DFC7" stroke-opacity="0.5"/>
+    <circle cx="120" cy="178" r="46" fill="none" stroke="#E9DFC7" stroke-opacity="0.35" stroke-dasharray="2 4"/>
+    <path d="M117 175h6v6h-6zM119 165h2v10h-2zM119 181h2v10h-2zM107 177h10v2h-10zM123 177h10v2h-10z" fill="#F4E9C1"/>
+    <path d="M119 113h2v2h-2zM119 109h2v3h-2zM119 116h2v3h-2zM115 113h3v2h-3zM122 113h3v2h-3z" fill="#E8D48A"/>
+    <rect x="180" y="174" width="8" height="8" fill="none" stroke="#8FD3C7" stroke-width="1.5"/>
+    <path d="M184 174V182M180 178H188" stroke="#8FD3C7"/>
+    <path d="M120 236L126 242L120 248L114 242Z" fill="#9A86C9"/>
+    <path d="M55 170h2v2h-2zM53 172h6v6h-6zM55 178h2v2h-2z" fill="#E8945A"/>
+  </g>
+  <g id="sl-00-label" text-anchor="middle">
+    <text x="24" y="31" text-anchor="start" font-family="'Courier New','Noto Sans Mono',monospace" font-size="8" letter-spacing="2" fill="#E9DFC7">SL-00</text>
+    <text x="216" y="31" text-anchor="end" font-family="'Courier New','Noto Sans Mono',monospace" font-size="8" letter-spacing="2" fill="#E9DFC7" fill-opacity="0.7">ARCHIVE</text>
+    <text x="120" y="354" font-family="'Noto Serif SC','Source Han Serif SC','Songti SC',serif" font-size="22" letter-spacing="4" fill="#F4E9C1">微光档案</text>
+    <text x="120" y="373" font-family="'Courier New','Noto Sans Mono',monospace" font-size="8" letter-spacing="2" fill="#E9DFC7" fill-opacity="0.75">SPARK LIGHT ARCHIVE</text>
+  </g>
+</svg>

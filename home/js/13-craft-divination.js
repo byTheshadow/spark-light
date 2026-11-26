@@ -6,7 +6,10 @@
   var TINT=[[196,186,255],[160,222,212]];
   var sprD=makeSprite(64,[[0,'rgba(22,22,32,1)'],[.4,'rgba(22,22,32,.35)'],[1,'rgba(22,22,32,0)']]);
   var sprT=TINT.map(function(c){return makeSprite(64,[[0,'rgba('+c+',1)'],[.4,'rgba('+c+',.4)'],[1,'rgba('+c+',0)']])});
-  var NAMES=DATA.lenormand.map(function(c){return c.n}).concat(DATA.lenormand.map(function(c){return c.a}));
+  var DECK=DATA.deck&&Array.isArray(DATA.deck.cards)?DATA.deck.cards.filter(function(c){return c.suit!=='back'}):[];
+  var SUITS=DATA.deck&&Array.isArray(DATA.deck.suits)?DATA.deck.suits:[];
+  if(!DECK.length)DECK=DATA.lenormand.map(function(c){return {name:c.n,nameEn:c.e,suit:'legacy',description:c.k,asset:''}});
+  var NAMES=DECK.reduce(function(all,c){return all.concat(c.name||'')},[]);
   function mk(i){var o={i:i,w:i?-.4:.4,base:i?-.4:.4,P:[],gh:['',''],gx:[0,0]};for(var k=0;k<NP;k++){var a=rand(0,6.283),rr=Math.sqrt(Math.random())*.84;o.P.push({x:Math.cos(a)*rr,y:Math.sin(a)*rr,vx:0,vy:0,tx:0,ty:0,has:false,f:0,s:rand(.07,.17),al:rand(.03,.075),tone:Math.random()<.3})}return o}
   var O=[mk(0),mk(1)],TH=[];for(var k=0;k<160;k++)TH.push({u:rand(0,6.283),sp:rand(.32,.55),z:rand(.6,1.4)});
   function size(){var w=el.clientWidth;if(!w)return;dpr=Math.min(devicePixelRatio||1,2);W=w;H=el.clientHeight;cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr);
@@ -67,12 +70,22 @@
     for(var i=pts.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),tmp=pts[i];pts[i]=pts[j];pts[j]=tmp}return pts}
   async function ask(){
     if(mode==='form'){scatter();return}
-    var card=DATA.lenormand[Math.floor(Math.random()*DATA.lenormand.length)];
-    try{if(document.fonts&&document.fonts.load)await Promise.race([document.fonts.load('600 80px "Noto Serif SC"',card.n+card.a),wait(900)])}catch(e){}
-    [card.n,card.a].forEach(function(txt,i){var pts=sample(txt),o=O[i];o.P.sort(function(){return Math.random()-.5});var M=Math.min(pts.length,Math.floor(NP*.86));o.P.forEach(function(p,k){if(k<M){p.has=true;p.tx=pts[k][0];p.ty=pts[k][1]}else p.has=false})});
+    var card=DECK[Math.floor(Math.random()*DECK.length)];
+    var parts=(card.name||'微光').split(''),mid=Math.max(1,Math.ceil(parts.length/2));
+    var left=parts.slice(0,mid).join(''),right=parts.slice(mid).join('')||left;
+    try{if(document.fonts&&document.fonts.load)await Promise.race([document.fonts.load('600 80px "Noto Serif SC"',card.name),wait(900)])}catch(e){}
+    [left,right].forEach(function(txt,i){var pts=sample(txt),o=O[i];o.P.sort(function(){return Math.random()-.5});var M=Math.min(pts.length,Math.floor(NP*.86));o.P.forEach(function(p,k){if(k<M){p.has=true;p.tx=pts[k][0];p.ty=pts[k][1]}else p.has=false})});
     mode='form';ft=0;flash=1;buzz([10,30,10]);cap.classList.remove('on');
     var c=center(el);Ripple(c.x,c.y,false);
-    setTimeout(function(){$('#capN').innerHTML=card.n+'<i>∞</i>'+card.a;$('#capE').textContent=card.e;$('#capK').textContent='正式占卜时，会结合你的问题与抽牌结果进行解读。';cap.classList.add('on')},simple?0:1300);
+    setTimeout(function(){
+      var suit=SUITS.find(function(s){return s.id===card.suit});
+      $('#capN').textContent=card.name||'微光';
+      $('#capE').textContent=card.nameEn||((suit&&suit.titleEn)||'SPARK LIGHT ARCHIVE');
+      $('#capK').textContent='正式占卜时，会结合你的问题与抽牌结果进行解读。';
+      var art=$('#capArt');
+      if(art&&card.asset){art.src=new URL((document.documentElement.dataset.root||'./')+card.asset,document.baseURI).href;art.alt=(card.name||'微光')+'牌面';art.hidden=false}
+      cap.classList.add('on')
+    },simple?0:1300);
   }
   function scatter(){mode='drift';cap.classList.remove('on');O.forEach(function(o){o.P.forEach(function(p){if(p.has){var a=rand(0,6.28);p.vx+=Math.cos(a)*rand(.3,.9);p.vy+=Math.sin(a)*rand(.3,.9)}p.has=false})})}
   function loc(e){var b=cv.getBoundingClientRect();return [e.clientX-b.left,e.clientY-b.top]}

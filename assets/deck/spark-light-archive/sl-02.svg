@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 400" width="240" height="400" role="img" aria-labelledby="sl-02-t sl-02-d" data-deck="spark-light-archive" data-card="sl-02" data-suit="star" data-visibility="public">
+  <title id="sl-02-t">星图残页 Torn Star Chart</title>
+  <desc id="sl-02-d">星图缺了一角，但已知的星仍连得成线。你手里的线索，比你以为的多。</desc>
+  <defs>
+    <radialGradient id="sl-02-glow">
+      <stop offset="0" stop-color="#E8D48A" stop-opacity="0.3"/>
+      <stop offset="1" stop-color="#E8D48A" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <g id="sl-02-bg">
+    <rect width="240" height="400" rx="12" fill="#14121F"/>
+    <circle cx="120" cy="170" r="100" fill="url(#sl-02-glow)"/>
+  </g>
+  <g id="sl-02-frame" fill="none" stroke="#E8D48A">
+    <rect x="6" y="6" width="228" height="388" rx="8" stroke-width="2"/>
+    <rect x="14" y="14" width="212" height="372" rx="4" stroke-opacity="0.45"/>
+    <path d="M14 40H226M14 316H226" stroke-opacity="0.45"/>
+  </g>
+  <g id="sl-02-ornament" fill="#E8D48A">
+    <path d="M18 18h4v4h-4zM24 18h2v2h-2zM18 24h2v2h-2zM218 18h4v4h-4zM214 18h2v2h-2zM220 24h2v2h-2zM18 378h4v4h-4zM24 380h2v2h-2zM18 374h2v2h-2zM218 378h4v4h-4zM214 380h2v2h-2zM220 374h2v2h-2z"/>
+    <path d="M119 322h2v6h-2zM116 324h8v2h-8z"/>
+  </g>
+  <g id="sl-02-art">
+    <polygon points="60,80 180,76 184,118 176,128 186,150 177,172 188,200 180,244 62,248 56,204 65,182 54,152 63,122" fill="#E9DFC7" fill-opacity="0.92"/>
+    <path d="M66 96H170M66 232H172" stroke="#221D33" stroke-opacity="0.25"/>
+    <path d="M88 112L120 134L150 106M120 134L140 172L100 192M140 172L160 212" fill="none" stroke="#221D33" stroke-width="1.2" stroke-dasharray="3 3"/>
+    <g fill="#221D33">
+      <circle cx="88" cy="112" r="3"/><circle cx="120" cy="134" r="3.5"/><circle cx="150" cy="106" r="2.5"/>
+      <circle cx="140" cy="172" r="3"/><circle cx="100" cy="192" r="2.5"/><circle cx="160" cy="212" r="3"/>
+    </g>
+    <path d="M160 212L196 268" stroke="#E8D48A" stroke-dasharray="2 5"/>
+    <path d="M195 277h6v6h-6zM197 267h2v10h-2zM197 283h2v10h-2zM185 279h10v2h-10zM201 279h10v2h-10z" fill="#E8D48A"/>
+  </g>
+  <g id="sl-02-label" text-anchor="middle">
+    <text x="24" y="31" text-anchor="start" font-family="'Courier New','Noto Sans Mono',monospace" font-size="8" letter-spacing="2" fill="#E8D48A">SL-02</text>
+    <text x="216" y="31" text-anchor="end" font-family="'Courier New','Noto Sans Mono',monospace" font-size="8" letter-spacing="2" fill="#E8D48A" fill-opacity="0.7">STAR FILE</text>
+    <text x="120" y="354" font-family="'Noto Serif SC','Source Han Serif SC','Songti SC',serif" font-size="22" letter-spacing="4" fill="#F4E9C1">星图残页</text>
+    <text x="120" y="373" font-family="'Courier New','Noto Sans Mono',monospace" font-size="8" letter-spacing="2" fill="#E8D48A" fill-opacity="0.75">TORN STAR CHART</text>
+  </g>
+</svg>

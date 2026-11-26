@@ -332,8 +332,9 @@ svg{display:block}
 .ast-sub{font-family:var(--disp);font-style:italic;font-size:10.5px;letter-spacing:.32em;color:var(--mute);opacity:.78}
 .ent-cap{position:relative;margin:2px 0 0;min-height:2.4em;text-align:center;opacity:0;transform:translateY(8px);filter:blur(6px);transition:opacity .8s var(--ease),transform .8s var(--ease),filter .8s}
 .ent-cap.on{opacity:1;transform:none;filter:blur(0)}
+.ent-card-art{display:block;width:58px;height:auto;margin:0 auto 8px;border-radius:4px;box-shadow:0 8px 18px rgba(36,28,80,.18)}
 .ent-cap b{display:block;font-size:24px;font-weight:400;letter-spacing:.3em;margin-right:-.3em}
-.ent-cap b i{font-style:normal;font-family:var(--disp);color:#8a7cf0;letter-spacing:0;margin:0 .5em 0 .2em}
+.ent-cap > i{font-style:normal;font-family:var(--disp);color:#8a7cf0;letter-spacing:0;margin:0 .5em 0 .2em}
 .ent-cap span{font-size:13px;color:var(--mute)}
 
 /* 代码 */
