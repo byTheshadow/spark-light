@@ -80,6 +80,99 @@ function t3RenderRules(host, data) {
   host.append(grid);
 }
 
+function t3AddStreet(shell, data) {
+  const sec = t3el('section', 't3-stage t3-street-stage');
+  const head = t3el('header', 't3-head');
+  const copy = t3el('div');
+  copy.append(t3el('div', 't3-kicker', 'STAGE 02 / SPARK STREET'));
+  copy.append(t3el('h2', 't3-title', '火花街'));
+  copy.append(t3el('p', 't3-copy', '天色会跟着时间变化。点亮街角的店，查看今天的排单。'));
+  head.append(copy, t3el('div', 't3-credit', 'LIVE / PIXEL WEATHER'));
+  const street = t3el('div', 't3-street');
+  const sky = t3el('div', 't3-sky');
+  sky.append(t3el('i', 't3-moon'), t3el('i', 't3-cloud cloud-a'), t3el('i', 't3-cloud cloud-b'));
+  const buildings = t3el('div', 't3-buildings');
+  ['星光杂货店', 'Spark Light', '静音游戏厅', 'RUI 事务所'].forEach((name, i) => {
+    const shop = t3button('', 't3-shop');
+    shop.append(t3el('span', 't3-shop-sign', name), t3el('span', 't3-shop-window', i === 1 ? 'OPEN' : 'PLAY'));
+    const status = data.status && data.status.state === 'open' ? '开单中' : '今日暂闭';
+    shop.addEventListener('click', () => t3Toast(name + ' · ' + status));
+    buildings.append(shop);
+  });
+  street.append(sky, buildings, t3el('div', 't3-road'));
+  const bar = t3el('div', 't3-street-bar');
+  const timeLabel = t3el('span', '', '现在是像素夜晚');
+  const times = [['清晨', 'dawn'], ['白天', 'day'], ['黄昏', 'dusk'], ['夜晚', 'night']];
+  const chips = times.map(([label, value]) => {
+    const chip = t3button(label, 't3-chip' + (value === 'night' ? ' on' : ''));
+    chip.dataset.time = value;
+    chip.addEventListener('click', () => {
+      chips.forEach((node) => node.classList.toggle('on', node === chip));
+      street.dataset.time = value;
+      timeLabel.textContent = '现在是像素' + label;
+    });
+    return chip;
+  });
+  street.dataset.time = 'night';
+  bar.append(timeLabel, ...chips);
+  sec.append(head, street, bar);
+  shell.append(sec);
+}
+
+function t3AddShop(shell, cats) {
+  const sec = t3el('section', 't3-stage');
+  const head = t3el('header', 't3-head');
+  const copy = t3el('div');
+  copy.append(t3el('div', 't3-kicker', 'STAGE 03 / ITEM SHOP'));
+  copy.append(t3el('h2', 't3-title', '道具商店'));
+  copy.append(t3el('p', 't3-copy', '点货架上的道具查看详情。价目从统一数据读取。'));
+  head.append(copy, t3el('div', 't3-credit', 'SHOPKEEPER READY'));
+  const shop = t3el('div', 't3-store');
+  const keeper = t3el('div', 't3-keeper');
+  keeper.append(t3el('div', 't3-keeper-sprite', 'RUI'), t3el('p', '', '欢迎光临。点货架上的道具，我来讲讲它。'));
+  shop.append(keeper);
+  const shelf = t3el('div', 't3-shelf');
+  cats.flatMap((cat) => cat.items.slice(0, 2).map((item) => ({ ...item, cat: cat.title }))).forEach((item, i) => {
+    const goods = t3button('', 't3-good');
+    goods.append(t3el('span', 't3-good-icon', ['CARD', 'ORB', 'WEB', 'KEY'][i % 4]), t3el('b', '', item.name || '服务道具'), t3el('small', '', t3PriceText(item)));
+    goods.addEventListener('click', () => t3Toast((item.name || '服务道具') + ' · ' + t3PriceText(item)));
+    shelf.append(goods);
+  });
+  shop.append(shelf);
+  sec.append(head, shop);
+  shell.append(sec);
+}
+
+function t3AddGame(shell, data) {
+  const sec = t3el('section', 't3-stage');
+  const head = t3el('header', 't3-head');
+  const copy = t3el('div');
+  copy.append(t3el('div', 't3-kicker', 'STAGE 05 / DAILY DRAW'));
+  copy.append(t3el('h2', 't3-title', '今日一张'));
+  copy.append(t3el('p', 't3-copy', '顶一下发光的砖块，掉出来的就是今天的字卡。'));
+  head.append(copy, t3el('div', 't3-credit', 'PLAYER 1'));
+  const game = t3el('div', 't3-game');
+  const canvas = document.createElement('canvas');
+  canvas.width = 320; canvas.height = 180; canvas.setAttribute('aria-label', '今日一张像素小游戏');
+  const status = t3el('p', 't3-game-status', '按下发光砖块');
+  const draw = t3button('顶一下', 't3-game-btn');
+  const ctx = canvas.getContext('2d');
+  const paint = () => { ctx.fillStyle = '#120d2e'; ctx.fillRect(0, 0, 320, 180); ctx.fillStyle = '#ffd23f'; for (let i = 0; i < 8; i += 1) ctx.fillRect(26 + i * 36, 28, 22, 12); ctx.fillStyle = '#ff7eb6'; ctx.fillRect(146, 135, 28, 20); ctx.fillStyle = '#6ff2c6'; ctx.fillRect(154, 108, 12, 22); };
+  paint();
+  draw.addEventListener('click', () => { const cards = data.cards && data.cards.cards; const item = Array.isArray(cards) && cards.length ? cards[Math.floor(Math.random() * cards.length)] : null; status.textContent = item ? item.text || '今日字卡文案待站主补充。' : '今日字卡文案待站主补充。'; paint(); });
+  game.append(canvas, status, draw);
+  sec.append(head, game);
+  shell.append(sec);
+}
+
+let t3ToastTimer;
+function t3Toast(message) {
+  let toast = document.getElementById('t3-toast');
+  if (!toast) { toast = t3el('div', 't3-toast'); toast.id = 't3-toast'; document.body.append(toast); }
+  toast.textContent = message; toast.classList.add('on');
+  clearTimeout(t3ToastTimer); t3ToastTimer = setTimeout(() => toast.classList.remove('on'), 2200);
+}
+
 export function mountT3Arcade(data) {
   const main = document.getElementById('main');
   if (!main) return;
@@ -116,6 +209,9 @@ export function mountT3Arcade(data) {
   if (!cats.length) cabins.append(t3el('p', '', '服务数据暂未加载。'));
   shell.append(cabins);
 
+  t3AddStreet(shell, data);
+  t3AddShop(shell, cats);
+
   const price = t3el('section', 't3-panel');
   price.id = 't3-price-panel';
   price.hidden = true;
@@ -143,6 +239,8 @@ export function mountT3Arcade(data) {
   const contact = data.contact && Array.isArray(data.contact.channels) ? data.contact.channels[0] : null;
   foot.append(t3el('span', '', contact && contact.value ? contact.value : '联系渠道待站主补充'));
   shell.append(foot);
+
+  t3AddGame(shell, data);
 
   stage.append(shell);
   main.append(stage);
